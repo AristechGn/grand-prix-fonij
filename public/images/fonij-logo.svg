@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- Feuille verte -->
+  <path d="M450,20 C500,40 550,80 580,150 C500,100 450,70 450,20 Z" fill="#0D6832" />
+  
+  <!-- Courbes vertes -->
+  <path d="M580,150 C650,130 700,120 750,110" stroke="#0D6832" stroke-width="10" fill="none" />
+  <path d="M580,170 C650,150 700,140 750,130" stroke="#0D6832" stroke-width="10" fill="none" />
+  
+  <!-- Texte FONIJ -->
+  <path d="M550,120 L550,180 L570,180 L570,160 L600,160 L600,140 L570,140 L570,120 L550,120 Z" fill="#0A3D9C" />
+  <path d="M610,120 C590,120 580,135 580,150 C580,165 590,180 610,180 C630,180 640,165 640,150 C640,135 630,120 610,120 Z M610,140 C620,140 620,160 610,160 C600,160 600,140 610,140 Z" fill="#0A3D9C" />
+  <path d="M650,120 L650,180 L670,180 L670,120 L650,120 Z" fill="#0A3D9C" />
+  <path d="M680,120 L680,180 L700,180 L700,120 L680,120 Z" fill="#0A3D9C" />
+  <path d="M710,120 L710,180 L730,180 L730,120 L710,120 Z M710,140 L730,140" fill="#0A3D9C" />
+  
+  <!-- Texte descriptif -->
+  <text x="550" y="195" font-family="Arial, sans-serif" font-size="14" fill="#0A3D9C">Fonds National pour l'insertion des Jeunes</text>
+  
+  <!-- Drapeau et armoiries de Guinée (simplifié) -->
+  <rect x="50" y="20" width="40" height="160" fill="#CE1126" />
+  <rect x="90" y="20" width="40" height="160" fill="#FCD116" />
+  <rect x="130" y="20" width="40" height="160" fill="#009460" />
+  
+  <!-- Armoiries simplifiées -->
+  <circle cx="110" cy="100" r="50" fill="#FFF" stroke="#FCD116" stroke-width="2" />
+  <path d="M110,70 L120,90 L140,90 L125,105 L130,125 L110,115 L90,125 L95,105 L80,90 L100,90 Z" fill="#FCD116" />
+  <text x="85" y="160" font-family="Arial, sans-serif" font-size="12" fill="#000">TRAVAIL</text>
+  <text x="85" y="175" font-family="Arial, sans-serif" font-size="12" fill="#000">JUSTICE</text>
+  <text x="75" y="190" font-family="Arial, sans-serif" font-size="12" fill="#000">SOLIDARITÉ</text>
+</svg> 
