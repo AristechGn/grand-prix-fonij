@@ -1,7 +1,7 @@
 import MainLayout from '@/layouts/MainLayout';
 import Hero from '@/components/Hero';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users } from 'lucide-react';
+import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users, Info, Lightbulb, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -14,6 +14,13 @@ export default function Home() {
         minutes: 0,
         seconds: 0
     });
+    const membresJuries = [
+        { nom_complet: "Membre du juri 1", photo: "https://fonijguinee.org/wp-content/uploads/2024/12/DSC06175-500x500.jpg", post:"", countrie:"", description: "Accueil et enregistrement des participants" },
+        { nom_complet: "Membre du juri 2", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/FONIJ-14-500x500.jpg", post:"", countrie:"", description: "Accueil des participants et installation des stands" },
+        { nom_complet: "Membre du juri 3", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/76ab3ee7-520f-4843-af77-5b3b510846b0-500x500.jpeg", post:"", countrie:"", description: "Message de bienvenue et introduction du jury" },
+        { nom_complet: "Membre du juri 4", photo: "https://fonijguinee.org/wp-content/uploads/2022/10/FONIJ-29-300x208-1.jpg", post:"", countrie:"", description: "Invitation de nos partenaires pour présenter leurs activités" },
+        // { nom_complet: "Membre du juri 5", photo: "https://fonijguinee.org/wp-content/uploads/2023/05/DSC06167-500x500.jpg", post:"", countrie:"", description: "Discussion sur l'écosystème entrepreneurial en Guinée" },
+    ];
 
     // Date de l'événement
     const eventDate = new Date('October 23, 2025 09:00:00');
@@ -23,7 +30,7 @@ export default function Home() {
         const timer = setInterval(() => {
             const now = new Date();
             const difference = eventDate.getTime() - now.getTime();
-            
+
             if (difference > 0) {
                 setTimeLeft({
                     days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -35,7 +42,7 @@ export default function Home() {
                 clearInterval(timer);
             }
         }, 1000);
-        
+
         return () => clearInterval(timer);
     }, []);
 
@@ -55,7 +62,7 @@ export default function Home() {
                     <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
                         <div className="flex items-center space-x-2">
                             <Calendar className="h-5 w-5 text-emerald-300" />
-                            <span>23-24 Octobre 2024</span>
+                            <span>23-24 Octobre 2025</span>
                         </div>
                         <div className="flex items-center space-x-2">
                             <MapPin className="h-5 w-5 text-emerald-300" />
@@ -73,16 +80,16 @@ export default function Home() {
                 </div>
             </div>
 
-            
+
 
             {/* Section SIMANDOU */}
-            <section className="relative py-16 bg-gradient-to-r from-green-800 to-gray-900">
+            <section className="py-16 bg-gradient-to-r from-green-800 to-gray-900">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col items-center justify-center">
                         <div className="relative w-full max-w-4xl animate-[pulse_4s_ease-in-out_infinite]">
-                            <img 
-                                src="/images/simandou2024.png" 
-                                alt="Programme SIMANDOU 2040" 
+                            <img
+                                src="/images/simandou2024.png"
+                                alt="Programme SIMANDOU 2040"
                                 className="w-[full] h-auto"
                             />
                         </div>
@@ -91,33 +98,32 @@ export default function Home() {
             </section>
 
             {/* Section Compteur et Présentation - inspiré de GFW */}
-            <div className="py-24 bg-white relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-emerald-600 to-emerald-500"></div>
-                <div className="absolute inset-0 bg-[url('/img/grid-pattern.svg')] opacity-5"></div>
+            <div className="relative py-24 bg-white relative overflow-hidden border-b">
+                <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/perspective-grid-pattern_1409-1826.jpg?t=st=1742299998~exp=1742303598~hmac=464dc3235d10687053fa3b8ea6dc31a56e4b1bdfbc504e7fabc13067dbe31a84&w=1380')] bg-cover bg-no-repeat opacity-10"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         {/* À propos amélioré */}
                         <div>
-                            <motion.div 
+                            <motion.div
                                 initial="hidden"
                                 whileInView="visible"
                                 viewport={{ once: true }}
                                 variants={fadeInUp}
                             >
                                 <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
-                                    ÉDITION 2024
+                                    ÉDITION 2025
                                 </div>
                                 <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
                                     Rejoignez le mouvement de <span className="text-emerald-600">l'innovation entrepreneuriale</span> en Guinée
                                 </h2>
                                 <div className="w-24 h-1 bg-emerald-500 mb-8"></div>
                                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                                    Le Grand Prix FONIJ est le rendez-vous incontournable de l'entrepreneuriat jeune en Guinée. 
-                                    Initié par le Fonds National pour l'Insertion des Jeunes (FONIJ), cet événement distingue et 
+                                    Le Grand Prix FONIJ est le rendez-vous incontournable de l'entrepreneuriat jeune en Guinée.
+                                    Initié par le Fonds National pour l'Insertion des Jeunes (FONIJ), cet événement distingue et
                                     récompense les initiatives exceptionnelles pour la promotion de l'esprit d'entreprise.
                                 </p>
                                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                                    Notre objectif est de rassembler les jeunes entrepreneurs, les investisseurs et les décideurs 
+                                    Notre objectif est de rassembler les jeunes entrepreneurs, les investisseurs et les décideurs
                                     politiques pour discuter des dernières tendances en matière d'innovation et de développement économique.
                                 </p>
                                 <div className="flex flex-wrap gap-6">
@@ -136,7 +142,7 @@ export default function Home() {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-gray-900">Date</h4>
-                                            <p className="text-gray-600">23-24 Oct. 2024</p>
+                                            <p className="text-gray-600">23-24 Oct. 2025</p>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +150,7 @@ export default function Home() {
                         </div>
 
                         {/* Compteur amélioré */}
-                        <motion.div 
+                        <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true }}
@@ -187,13 +193,19 @@ export default function Home() {
                         </motion.div>
                     </div>
                 </div>
+                {/* Éléments décoratifs */}
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-80 h-80 bg-emerald-500 opacity-5 rounded-full"></div>
+                    <div className="absolute top-40 left-10 w-40 h-40 bg-emerald-700 opacity-5 rounded-full"></div>
+                    <div className="absolute bottom-20 right-20 w-60 h-60 bg-emerald-300 opacity-5 rounded-full"></div>
+                </div>
             </div>
 
             {/* Section Catégories du Concours - design modernisé inspiré de GFW */}
             <div className="py-24 bg-gradient-to-b from-white to-emerald-50 relative overflow-hidden">
-                <div className="absolute top-0 inset-x-0 h-40 bg-[url('/img/wave-pattern.svg')] bg-repeat-x opacity-5"></div>
+                <div className="absolute top-20 inset-x-0 h-90 bg-[url('https://img.freepik.com/free-vector/hand-drawn-abstract-outline-background_23-2150715642.jpg?t=st=1742300857~exp=1742304457~hmac=bccdd6664f4e76a1cda416c6cd11ee5497723564fc2afe1818ac23ff1ddd305a&w=1380')] bg-repeat-x opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <motion.div 
+                    <motion.div
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
@@ -259,8 +271,8 @@ export default function Home() {
                                 color: "from-yellow-400 to-amber-600"
                             }
                         ].map((category, index) => (
-                            <motion.div 
-                                key={index} 
+                            <motion.div
+                                key={index}
                                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
                                 whileHover={{ y: -10 }}
                                 initial="hidden"
@@ -268,10 +280,10 @@ export default function Home() {
                                 viewport={{ once: true }}
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
-                                    visible: { 
-                                        opacity: 1, 
-                                        y: 0, 
-                                        transition: { duration: 0.6, delay: index * 0.1 } 
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: { duration: 0.6, delay: index * 0.1 }
                                     }
                                 }}
                             >
@@ -297,15 +309,15 @@ export default function Home() {
                                 </div>
                             </motion.div>
                         ))}
-                        </div>
                     </div>
                 </div>
+            </div>
 
             {/* Sponsors avec design amélioré */}
             <div className="py-24 bg-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/img/dots-pattern.svg')] opacity-5"></div>
+                <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/flat-black-white-halftone-background_23-2150550147.jpg?t=st=1742300094~exp=1742303694~hmac=a69654010f82a68b4035be03bb84816dfb54215fdc3f172dd5deb10cf750258b&w=1380')] opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <motion.div 
+                    <motion.div
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
@@ -326,8 +338,8 @@ export default function Home() {
                     </motion.div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center">
                         {[...Array(5)].map((_, index) => (
-                            <motion.div 
-                                key={index} 
+                            <motion.div
+                                key={index}
                                 className="p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -339,17 +351,17 @@ export default function Home() {
                                     visible: { opacity: 1, transition: { delay: index * 0.1 } }
                                 }}
                             >
-                                <img src={`https://via.placeholder.com/180x100?text=Sponsor+${index+1}`} alt={`Sponsor ${index + 1}`} 
-                                className="max-h-16 transition-opacity hover:opacity-80" />
+                                <img src={`http://ambaguitokyo.org/wp-content/uploads/2023/07/Japan-Guinea-fond-blan-1.jpg`} alt={`Sponsor ${index + 1}`}
+                                    className="max-h-16 transition-opacity hover:opacity-80" />
                             </motion.div>
                         ))}
                     </div>
-                    <div className="text-center mt-10">
+                    {/* <div className="text-center mt-10">
                         <Link href="/sponsors" className="inline-flex items-center text-emerald-600 font-medium hover:text-emerald-700">
                             Voir tous nos partenaires
                             <ChevronRight className="h-4 w-4 ml-1" />
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
@@ -357,7 +369,7 @@ export default function Home() {
             <div className="py-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/img/circuit-pattern.svg')] opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <motion.div 
+                    <motion.div
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
@@ -377,9 +389,9 @@ export default function Home() {
                         </p>
                     </motion.div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {[1, 2, 3, 4].map((item, index) => (
-                            <motion.div 
-                                key={index} 
+                        {membresJuries.map((item, index) => (
+                            <motion.div
+                                key={index}
                                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
                                 whileHover={{ y: -10 }}
                                 initial="hidden"
@@ -387,43 +399,43 @@ export default function Home() {
                                 viewport={{ once: true }}
                                 variants={{
                                     hidden: { opacity: 0, y: 20 },
-                                    visible: { 
-                                        opacity: 1, 
-                                        y: 0, 
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
                                         transition: { duration: 0.6, delay: index * 0.1 }
                                     }
                                 }}
                             >
                                 <div className="relative h-80 w-full overflow-hidden">
-                                    <img 
-                                        src={`https://randomuser.me/api/portraits/${index % 2 === 0 ? 'men' : 'women'}/${(index + 1) * 10}.jpg`} 
-                                        alt={`Membre du jury ${index + 1}`} 
+                                    <img
+                                        src={item.photo}
+                                        alt={`Membre du jury ${item.nom_complet}`}
                                         className="w-full h-full object-cover object-center transition-transform duration-500 transform hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                                         <div className="p-6 text-white">
-                                            <h3 className="font-bold text-xl mb-1">Membre du Jury {index + 1}</h3>
-                                            <p className="text-emerald-300 font-medium text-sm">Titre Professionnel</p>
-                            </div>
-                        </div>
+                                            <h3 className="font-bold text-xl mb-1">{item.nom_complet}</h3>
+                                            <p className="text-emerald-300 font-medium text-sm">{item.post}</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="p-6">
-                                    <p className="text-gray-600 mb-4">Expert en entrepreneuriat avec plus de 15 ans d'expérience dans l'accompagnement des startups africaines.</p>
+                                    <p className="text-gray-600 mb-4">{item.description}</p>
                                     <div className="flex items-center justify-between">
-                                        <p className="text-gray-500 text-sm">Guinée</p>
+                                        <p className="text-gray-500 text-sm">{item.countrie}</p>
                                         <div className="flex">
                                             <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mr-2">
                                                 <svg className="h-4 w-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z"/>
+                                                    <path d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z" />
                                                 </svg>
                                             </div>
                                             <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
                                                 <svg className="h-4 w-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                                                 </svg>
                                             </div>
-                            </div>
-                        </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
@@ -435,7 +447,7 @@ export default function Home() {
             <div className="py-24 bg-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/img/grid-pattern.svg')] opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                    <motion.div 
+                    <motion.div
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
@@ -446,7 +458,7 @@ export default function Home() {
                             PROGRAMME
                         </div>
                         <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                            Agenda Grand Prix FONIJ 2024
+                            Agenda Grand Prix FONIJ 2025
                         </h2>
                         <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -470,89 +482,9 @@ export default function Home() {
                                 <div key={index} className="flex py-4 border-b border-gray-100 last:border-0">
                                     <div className="w-36 font-medium text-emerald-600">{item.time}</div>
                                     <div className="flex-1 text-gray-800">{item.event}</div>
-                        </div>
+                                </div>
                             ))}
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Catégories du Concours - avec cards améliorées style GFW */}
-            <div className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
-                            Catégories du Concours
-                        </h2>
-                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
-                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                            Découvrez les différentes catégories pour lesquelles vous pouvez candidater
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {[
-                            {
-                                title: "Promotion de l'esprit d'entreprise",
-                                description: "Initiatives visant à promouvoir une culture entrepreneuriale",
-                                icon: Award,
-                                criteria: [
-                                    "Création d'emplois",
-                                    "Innovation dans le secteur",
-                                    "Impact communautaire"
-                                ]
-                            },
-                            {
-                                title: "Éducation aux compétences",
-                                description: "Formation et développement des compétences entrepreneuriales",
-                                icon: BookOpen,
-                                criteria: [
-                                    "Programmes de mentorat",
-                                    "Formation technique",
-                                    "Accès aux marchés"
-                                ]
-                            },
-                            {
-                                title: "Transition numérique",
-                                description: "Innovation et transformation digitale",
-                                icon: Laptop,
-                                criteria: [
-                                    "Solutions technologiques",
-                                    "Accessibilité numérique",
-                                    "Impact économique"
-                                ]
-                            },
-                            {
-                                title: "Entrepreneuriat agricole",
-                                description: "Projets agricoles durables et innovants",
-                                icon: Sprout,
-                                criteria: [
-                                    "Pratiques durables",
-                                    "Sécurité alimentaire",
-                                    "Adaptation climatique"
-                                ]
-                            }
-                        ].map((category, index) => (
-                            <motion.div 
-                                key={index} 
-                                className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300"
-                                whileHover={{ y: -10 }}
-                            >
-                                <div className="bg-emerald-100 p-4 rounded-full inline-flex items-center justify-center w-16 h-16 mb-6">
-                                    <category.icon className="h-8 w-8 text-emerald-600" />
-                                </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-4">{category.title}</h3>
-                                <p className="text-gray-600 mb-4">{category.description}</p>
-                                <ul className="list-disc pl-5 text-sm text-gray-500 mb-6">
-                                    {category.criteria.map((criterion, i) => (
-                                        <li key={i} className="mb-2">{criterion}</li>
-                                    ))}
-                                </ul>
-                                <Link href={`/categories/${index + 1}`} className="inline-flex items-center px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-colors">
-                                    En savoir plus
-                                    <ChevronRight className="h-4 w-4 ml-1" />
-                                </Link>
-                            </motion.div>
-                        ))}
                     </div>
                 </div>
             </div>
@@ -590,8 +522,8 @@ export default function Home() {
                                 steps: ["Restructuration du plan d'action", "Optimisation de la gestion", "Affinement de la stratégie commerciale"]
                             }
                         ].map((phase, index) => (
-                            <motion.div 
-                                key={index} 
+                            <motion.div
+                                key={index}
                                 className="bg-white rounded-xl shadow-lg p-8 relative"
                                 whileHover={{ y: -10 }}
                             >
@@ -636,15 +568,15 @@ export default function Home() {
                             { value: "5", label: "Prix majeurs", icon: Trophy },
                             { value: "35", label: "Âge maximum", icon: User }
                         ].map((stat, index) => (
-                            <motion.div 
-                                key={index} 
+                            <motion.div
+                                key={index}
                                 className="bg-emerald-50 p-6 rounded-xl text-center"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                             >
                                 <div className="w-12 h-12 mx-auto mb-4 bg-emerald-100 rounded-full flex items-center justify-center">
                                     <stat.icon className="h-6 w-6 text-emerald-600" />
-                            </div>
+                                </div>
                                 <div className="text-4xl font-bold text-emerald-600">{stat.value}</div>
                                 <div className="text-sm text-gray-600 mt-2">{stat.label}</div>
                             </motion.div>
