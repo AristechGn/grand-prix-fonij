@@ -33,6 +33,7 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center space-x-3">
                                 <img src="https://fonijguinee.org/wp-content/uploads/2022/09/LOGO-NEW.png" alt="FONIJ Logo" className="h-12 w-auto" />
+                                <img src="https://simandou2040.gn/wp-content/uploads/2024/09/Design-sans-titre-2.png" alt="FONIJ Logo" className="h-12 w-auto" />
                                 {/* <div className="hidden md:block">
                                     <h1 className="font-bold text-lg text-emerald-600">Grand Prix FONIJ</h1>
                                     <p className="text-xs text-gray-600">Promotion de l'Esprit d'Entreprise</p>
@@ -125,7 +126,7 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
             <main className="flex-grow">{children}</main>
 
             {/* Footer */}
-            <footer className="bg-gray-600 text-white relative">
+            <footer className="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white relative">
                 <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:16px_16px]" />
                 <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

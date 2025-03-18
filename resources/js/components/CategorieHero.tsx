@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from '@inertiajs/react';
-import { Trophy, Rocket, Award, ChevronRight, Pause, Play, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Trophy, Award, ChevronRight, Pause, Play, ArrowLeft, ArrowRight, BookOpen, Laptop, Sprout } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
 import { useState, useRef } from 'react';
@@ -9,7 +9,8 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 // import { LucideIcon } from 'lucide-react';
-import type { Swiper as SwiperRef } from 'swiper/types';
+import SwiperCore from 'swiper';
+
 
 // Ajout des types pour les slides
 // interface Slide {
@@ -26,65 +27,57 @@ import type { Swiper as SwiperRef } from 'swiper/types';
 //     slides: Slide[];
 // }
 
-const Hero = () => {
+const CategorieHero = () => {
     const [isAutoplayPaused, setIsAutoplayPaused] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(0);
     const [progress, setProgress] = useState(0);
-    const swiperRef = useRef<SwiperRef>(null);
+    const swiperRef = useRef<SwiperCore | null>(null);
     const autoplayDuration = 3000;
     const slides = [
         {
-            // title: "Mamadi Doubouya, Président",
-            subtitle: "Leader Visionnaire",
-            description: "Mamadi Doubouya, en tant que président, a su guider la Guinée vers une ère de prospérité et d'innovation. Son leadership exemplaire et son engagement envers le développement durable ont transformés le paysage entrepreneurial et social de la Guinée.",
-            image: "https://mamriguinee.com/images/hero/CoverSite-PRG.jpg",
-            buttonText: null,
-            buttonLink: null,
+            title: "Promotion de l'Esprit d'Entreprise",
+            subtitle: "Catégorie Excellence",
+            description: "Transformez vos initiatives innovantes en success stories ! Cette catégorie récompense les projets qui façonnent la culture entrepreneuriale en Guinée avec un financement allant jusqu'à 500M GNF.",
+            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.42.jpeg",
+            buttonText: "Postuler dans cette catégorie",
+            buttonLink: "/candidater?category=1",
             icon: Trophy
+        },
+        {
+            title: "Éducation aux Compétences",
+            subtitle: "Formation & Développement",
+            description: "Renforcez les compétences de demain ! Un programme complet avec mentorat expert, support technique et accès aux ressources pédagogiques pour former la nouvelle génération.",
+            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.43-1.jpeg",
+            buttonText: "Découvrir les opportunités",
+            buttonLink: "/candidater?category=2",
+            icon: BookOpen
+        },
+        {
+            title: "Transition Numérique",
+            subtitle: "Innovation Technologique",
+            description: "Propulsez la Guinée vers l'ère digitale ! Accompagnement personnalisé pour les projets numériques innovants avec accès aux outils et formations spécialisées.",
+            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.44.jpeg",
+            buttonText: "Lancer votre projet digital",
+            buttonLink: "/candidater?category=3",
+            icon: Laptop
+        },
+        {
+            title: "Entrepreneuriat Agricole",
+            subtitle: "Agriculture Durable",
+            description: "Cultivez l'avenir de la Guinée ! Soutenez l'innovation agricole avec des solutions durables et un impact environnemental positif. Financement et accompagnement technique garantis.",
+            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.45.jpeg",
+            buttonText: "Développer votre projet agricole",
+            buttonLink: "/candidater?category=4",
+            icon: Sprout
         },
         {
             title: "Grand Prix FONIJ 2024",
-            subtitle: "Édition Spéciale Innovation",
-            description: "Participez à la plus grande compétition entrepreneuriale de Guinée et transformez vos idées en succès !",
-            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.42.jpeg",
-            buttonText: "Je candidate",
-            buttonLink: "/candidater",
-            icon: Trophy
-        },
-        {
-            title: "Innovez pour la Guinée",
-            subtitle: "Programme d'Accompagnement",
-            description: "Bénéficiez d'un mentorat personnalisé, d'une formation intensive et d'un financement jusqu'à 500 millions GNF",
-            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.43-1.jpeg",
-            buttonText: "Découvrir le programme",
-            buttonLink: "/programme",
-            icon: Rocket
-        },
-        {
-            title: "Impact & Excellence",
-            subtitle: "Catégories Spéciales",
-            description: "5 catégories pour valoriser les projets innovants dans l'agriculture, le numérique, l'éducation et plus encore",
-            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.44.jpeg",
-            buttonText: "Explorer les catégories",
-            buttonLink: "/categories",
-            icon: Award
-        },
-        {
-            title: "Rejoignez l'Élite",
-            subtitle: "Réseau d'Excellence",
-            description: "Intégrez un réseau de plus de 1000 entrepreneurs innovants et contribuez au développement de la Guinée",
-            image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.45.jpeg",
-            buttonText: "Rejoindre le réseau",
-            buttonLink: "/reseau",
-            icon: Trophy
-        },
-        {
-            title: "Formation Intensive",
-            subtitle: "Boost Entrepreneur",
-            description: "12 mois d'accompagnement intensif pour accélérer votre projet et maximiser vos chances de succès",
+            subtitle: "Toutes Catégories",
+            description: "Rejoignez l'élite entrepreneuriale de la Guinée ! Plus de 1000 entrepreneurs, 4 catégories d'excellence, et un accompagnement sur mesure pour réussir votre projet.",
             image: "https://fonijguinee.org/wp-content/uploads/2024/01/WhatsApp-Image-2024-01-09-at-13.31.46.jpeg",
-            buttonText: "S'inscrire maintenant",
-            buttonLink: "/formation",
-            icon: Rocket
+            buttonText: "Candidater maintenant",
+            buttonLink: "/candidater",
+            icon: Award
         }
     ];
 
@@ -95,6 +88,16 @@ const Hero = () => {
         play: <Play className="w-6 h-6 text-white" />,
         pause: <Pause className="w-6 h-6 text-white" />
     };
+
+    // Mise à jour des badges pour correspondre aux catégories
+    const badges = [
+        { icon: Trophy, label: "Esprit d'Entreprise" },
+        { icon: BookOpen, label: "Formation" },
+        { icon: Laptop, label: "Numérique" },
+        { icon: Sprout, label: "Agriculture" },
+        { icon: Award, label: "Excellence" }
+    ];
+
 
     // Amélioration du contrôle de l'autoplay
     const toggleAutoplay = () => {
@@ -126,7 +129,9 @@ const Hero = () => {
     return (
         <section className="relative h-screen overflow-hidden">
             <Swiper
-                ref={swiperRef}
+                onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                }}
                 modules={[Autoplay, EffectFade, Navigation, Pagination]}
                 effect="fade"
                 speed={1500}
@@ -147,6 +152,10 @@ const Hero = () => {
                 }}
                 loop={true}
                 className="h-full w-full"
+                onSlideChange={(swiper) => {
+                    setActiveIndex(swiper.realIndex);
+                    setProgress(0);
+                }}
             >
                 {slides.map((slide, index) => (
                     <SwiperSlide key={index}>
@@ -163,29 +172,29 @@ const Hero = () => {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
                                 
-                                <div className="relative h-full flex items-center px-6">
-                                    <div className="max-w-6xl mx-auto w-full text-center sm:text-left">
+                                <div className="relative h-full flex items-center justify-center px-6">
+                                    <div className="max-w-6xl mx-auto text-center">
                                         <AnimatePresence mode="wait">
                                             {isActive && (
                                                 <motion.div
                                                     initial="hidden"
                                                     animate="visible"
                                                     exit="exit"
-                                                    className="space-y-8"
+                                                    className="space-y-4 sm:space-y-8"
                                                 >
                                                     <motion.div
                                                         variants={textVariants}
                                                         custom={0}
-                                                        className="mb-8 inline-flex items-center justify-center sm:justify-start px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/20 text-white text-sm font-medium"
+                                                        className="mb-4 sm:mb-8 inline-flex items-center justify-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/20 text-white text-xs sm:text-sm font-medium"
                                                     >
-                                                        <slide.icon className="h-5 w-5 mr-2" />
+                                                        <slide.icon className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                                                         <span>{slide.subtitle}</span>
                                                     </motion.div>
 
                                                     <motion.h1
                                                         variants={textVariants}
                                                         custom={1}
-                                                        className="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight sm:max-w-3xl"
+                                                        className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight"
                                                     >
                                                         {slide.title}
                                                     </motion.h1>
@@ -193,7 +202,7 @@ const Hero = () => {
                                                     <motion.p
                                                         variants={textVariants}
                                                         custom={2}
-                                                        className="text-lg sm:text-xl md:text-2xl text-white/90 mb-10 sm:max-w-2xl font-medium"
+                                                        className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-6 sm:mb-10 max-w-3xl mx-auto font-medium px-4 sm:px-0"
                                                     >
                                                         {slide.description}
                                                     </motion.p>
@@ -201,21 +210,19 @@ const Hero = () => {
                                                     <motion.div
                                                         variants={textVariants}
                                                         custom={3}
-                                                        className="flex justify-center sm:justify-start"
+                                                        className="flex justify-center px-4 sm:px-0"
                                                     >
-                                                        {slide.buttonLink && (
-                                                            <Link
-                                                                href={slide?.buttonLink || '#'}
-                                                                className="inline-flex items-center px-8 py-4 
-                                                                bg-white text-gray-900 rounded-xl 
-                                                                hover:bg-gray-100 transition-all duration-300
-                                                                font-semibold shadow-lg transform hover:scale-105
-                                                                hover:shadow-xl active:scale-95 relative overflow-hidden group"
-                                                            >
-                                                                <ChevronRight className="mr-2" size={20} />
-                                                                <span className="relative z-10">{slide.buttonText}</span>
-                                                            </Link>
-                                                        )}
+                                                        <Link
+                                                            href={slide.buttonLink}
+                                                            className="inline-flex items-center px-4 sm:px-8 py-3 sm:py-4 
+                                                            bg-white text-gray-900 rounded-xl text-sm sm:text-base
+                                                            hover:bg-gray-100 transition-all duration-300
+                                                            font-semibold shadow-lg transform hover:scale-105
+                                                            hover:shadow-xl active:scale-95 relative overflow-hidden group w-full sm:w-auto"
+                                                        >
+                                                            <ChevronRight className="mr-2" size={20} />
+                                                            <span className="relative z-10">{slide.buttonText}</span>
+                                                        </Link>
                                                     </motion.div>
                                                 </motion.div>
                                             )}
@@ -228,16 +235,16 @@ const Hero = () => {
                 ))}
 
                 {/* Navigation améliorée avec les icônes */}
-                <div className="absolute inset-y-0 left-6 z-10 flex items-center">
-                    <button className="swiper-button-prev w-14 h-14 flex items-center justify-center 
+                <div className="absolute inset-y-0 left-2 sm:left-6 z-10 flex items-center">
+                    <button className="swiper-button-prev w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center 
                         rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50
                         transition-all duration-300 group">
                         {navigationIcons.prev}
                     </button>
                 </div>
 
-                <div className="absolute inset-y-0 right-6 z-10 flex items-center">
-                    <button className="swiper-button-next w-14 h-14 flex items-center justify-center 
+                <div className="absolute inset-y-0 right-2 sm:right-6 z-10 flex items-center">
+                    <button className="swiper-button-next w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center 
                         rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50
                         transition-all duration-300 group">
                         {navigationIcons.next}
@@ -245,10 +252,10 @@ const Hero = () => {
                 </div>
 
                 {/* Contrôle de lecture avec indicateur de progression */}
-                <div className="absolute bottom-8 right-8 z-20 flex items-center space-x-4">
+                <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-20 flex items-center space-x-4">
                     <button
                         onClick={toggleAutoplay}
-                        className="relative w-14 h-14 rounded-full bg-black/30 backdrop-blur-sm
+                        className="relative w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-black/30 backdrop-blur-sm
                             flex items-center justify-center hover:bg-black/50 transition-all duration-300"
                     >
                         {isAutoplayPaused ? navigationIcons.play : navigationIcons.pause}
@@ -269,9 +276,26 @@ const Hero = () => {
                         )}
                     </button>
                 </div>
+
+                {/* Badges responsifs */}
+                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 z-20 hidden md:flex flex-wrap gap-2 sm:gap-4 max-w-[calc(100%-4rem)]">
+                    {badges.map((badge, index) => (
+                        <div
+                            key={index}
+                            className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-1 sm:py-2 rounded-full 
+                            ${activeIndex % badges.length === index 
+                                ? 'bg-white/90 text-gray-900' 
+                                : 'bg-black/20 text-white'} 
+                            backdrop-blur-sm transition-all duration-300`}
+                        >
+                            <badge.icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <span className="text-xs sm:text-sm font-medium truncate">{badge.label}</span>
+                        </div>
+                    ))}
+                </div>
             </Swiper>
         </section>
     );
 };
 
-export default Hero;
+export default CategorieHero;
