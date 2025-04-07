@@ -1,19 +1,19 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { Calendar, ChevronRight, CheckCircle, Clock, Users, ArrowRight, MapPin, Trophy, Target, Sparkles, Zap, BookOpen, Award, Info } from 'lucide-react';
+import { Calendar, ChevronRight, CheckCircle, Clock, Users, MapPin, Trophy, Target, Sparkles, Zap, BookOpen, Award, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const programmes = [
     {
         id: 1,
         title: "SMART Entrepreneur",
-        description: "Programme destiné aux porteurs de projet pour les aider à démarrer et sécuriser le lancement de leur activité.",
+        description: "De l'idée au projet structuré. Ce programme aide les jeunes à clarifier leurs idées et à bâtir un projet solide dès le départ. Vous apprendrez comment transformer une idée en projet concret, définir un problème réel à résoudre dans la société, et poser les bases d'un modèle économique viable. Ce que vous gagnez : une vision claire, des bases solides, et la motivation pour aller plus loin.",
         icon: Award,
         features: [
-            "Formalisation du business plan",
-            "Test sur le terrain du produit ou service",
-            "Choix du statut juridique",
+            "Transformer une idée en projet concret",
+            "Définir un problème réel à résoudre",
+            "Poser les bases d'un modèle économique",
             "Mise au point du pitch",
             "Stratégie digitale",
             "Plan d'action commerciale"
@@ -27,14 +27,14 @@ const programmes = [
     {
         id: 2,
         title: "Youth'Incuba",
-        description: "Programme d'incubation pour prototyper et obtenir rapidement une preuve de concept.",
+        description: "Incuber votre projet, le faire grandir. Cette phase vous offre un accompagnement personnalisé pour développer votre solution, créer un prototype et tester votre projet dans des conditions réelles. Nous vous offrons un coaching individuel avec des experts, l'accès à un espace de travail dynamique, des formations spécialisées et un accompagnement à la création du MVP. Ce que vous gagnez : un projet structuré, testé et prêt à affronter le monde réel.",
         icon: BookOpen,
         features: [
-            "Validation de l'idée d'entreprise",
-            "Découverte des réseaux et aides spécifiques",
+            "Coaching individuel avec des experts",
+            "Accès à un espace de travail dynamique",
+            "Formations en gestion et marketing",
             "Développement du MVP",
-            "Définition du business modèle",
-            "Développement des capacités de pitch"
+            "Tests en conditions réelles"
         ],
         duration: "6 mois",
         color: "from-blue-400 to-indigo-600",
@@ -45,14 +45,14 @@ const programmes = [
     {
         id: 3,
         title: "Boost Entrepreneurs",
-        description: "Programme d'accélération pour développer et booster les activités des jeunes dirigeants d'entreprise.",
+        description: "Accélérer le lancement de votre entreprise. C'est la dernière étape pour les projets matures prêts à décoller. Vous serez préparé à présenter votre projet à des investisseurs et à intégrer les réseaux d'entrepreneurs. Nous mettons à votre disposition un accompagnement à la levée de fonds, un coaching avancé en stratégie et croissance, et une préparation au pitch. Ce que vous gagnez : une entreprise prête à se lancer sur le marché, trouver ses clients, et créer de l'emploi.",
         icon: Zap,
         features: [
-            "Restructuration du plan d'action",
-            "Optimisation de la gestion",
-            "Affinement de la stratégie commerciale",
-            "Développement du pitch",
-            "Accompagnement personnalisé"
+            "Accompagnement à la levée de fonds",
+            "Coaching avancé en stratégie",
+            "Participation à des événements de networking",
+            "Préparation au pitch pour investisseurs",
+            "Affinage du modèle économique"
         ],
         duration: "12 mois",
         color: "from-purple-400 to-violet-600",
@@ -82,6 +82,19 @@ const testimonials = [
         avatar: "https://img.freepik.com/free-photo/successful-african-american-woman-smiling-pretty-female-with-arms-crossed-smile-looking-side-portrait-entrepreneur-white-background_176420-33775.jpg?t=st=1742318841~exp=1742322441~hmac=a99ba8df90b35dd08fc59fc1e0ce35c41d5bd55f1ad24e6e1ebf3dacd0cdcbff&w=740"
     }
 ];
+
+// Impact Global du Programme d'Accélération
+const impactGlobal = {
+    title: "Notre Impact",
+    points: [
+        "Plus de 160 projets accompagnés à travers la Guinée",
+        "Des jeunes de toutes les régions formés, accompagnés et valorisés",
+        "Des dizaines d'emplois créés grâce à des projets issus du programme",
+        "Une visibilité médiatique nationale (TV, radio, web)",
+        "Une forte promotion de l'entrepreneuriat féminin et inclusif"
+    ],
+    summary: "Le Grand Prix FONIJ est votre tremplin pour passer à l'action. Nos programmes sont pensés pour vous accompagner étape par étape, jusqu'à la réussite."
+};
 
 export default function Programmes() {
     // Animation variants
@@ -117,7 +130,7 @@ export default function Programmes() {
             {/* Hero Section avec overlay vert */}
             <div className="relative bg-gradient-to-r from-[#026200] to-[#024C00] py-16 md:py-24">
                 <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/perspective-grid-pattern_1409-1826.jpg')] bg-cover bg-no-repeat opacity-10"></div>
-                <div className="container mx-auto px-4 md:px-8 relative">
+                <div className="container mx-auto px-4 md:px-8">
                     <motion.div 
                         initial="hidden"
                         animate="visible"
@@ -131,7 +144,7 @@ export default function Programmes() {
                             Programmes d'Accélération FONIJ
                         </h1>
                         <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-                            Des parcours d'accompagnement sur mesure pour transformer votre idée en entreprise prospère
+                            Accompagner les jeunes vers le succès entrepreneurial. Un parcours complet pour transformer votre idée en une entreprise solide et durable.
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
                             <Link 
@@ -506,30 +519,64 @@ export default function Programmes() {
                 </div>
             </div>
 
-            {/* CTA Section - avec le style de Home.tsx */}
+            {/* Impact Global du Programme d'Accélération */}
+            <div className="py-24 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeInUp}
+                        className="text-center mb-16"
+                    >
+                        <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
+                            NOTRE IMPACT
+                        </div>
+                        <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                            {impactGlobal.title}
+                        </h2>
+                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-8"></div>
+                        
+                        <div className="flex flex-col items-center justify-center mb-10">
+                            {impactGlobal.points.map((point, index) => (
+                                <div key={index} className="flex items-center bg-white py-3 px-6 rounded-lg shadow-sm mb-3 max-w-xl w-full">
+                                    <CheckCircle className="h-6 w-6 text-emerald-500 mr-3 flex-shrink-0" />
+                                    <span className="text-gray-700">{point}</span>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <p className="text-lg text-gray-700 font-medium max-w-3xl mx-auto">
+                            {impactGlobal.summary}
+                        </p>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* CTA Section amélioré */}
             <div className="relative bg-emerald-600 py-20">
                 <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:16px_16px]" />
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-white sm:text-4xl mb-6">
-                            Prêt à développer votre projet avec le FONIJ ?
+                            Rejoignez le Mouvement
                         </h2>
                         <p className="text-lg text-emerald-100 max-w-2xl mx-auto mb-10">
-                            Rejoignez l'un de nos programmes d'accélération et bénéficiez d'un accompagnement sur mesure pour réussir votre aventure entrepreneuriale.
+                            Vous avez une idée, un rêve, ou un projet ? C'est le moment. Transformez votre vision en impact réel.
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                             <Link
                                 href="/candidater"
                                 className="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-emerald-600 bg-white hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-xl"
                             >
-                                Déposer ma candidature
+                                Postulez dès maintenant
                                 <ChevronRight className="ml-2 h-5 w-5" />
                             </Link>
                             <Link
                                 href="/contact"
                                 className="inline-flex items-center px-8 py-4 border border-white text-lg font-medium rounded-xl text-white hover:bg-white/10 transition-all duration-300"
                             >
-                                Nous contacter
+                                En savoir plus
                             </Link>
                         </div>
                     </div>

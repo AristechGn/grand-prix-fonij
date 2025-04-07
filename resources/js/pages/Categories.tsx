@@ -1,23 +1,23 @@
 import MainLayout from '@/layouts/MainLayout';
 import CategorieHero from '@/components/CategorieHero';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, Sprout, ArrowRight, Check, ChevronRight } from 'lucide-react';
+import { Award, BookOpen, Laptop, Sprout, Check, ChevronRight, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const categories = [
     {
         id: 1,
-        title: "Promotion de l'entrepreneuriat",
-        description: "Initiatives nationales qui favorisent la culture entrepreneuriale, particulièrement chez les jeunes talents de demain.",
+        title: "Promotion de l'esprit d'entreprise",
+        description: "Cette catégorie récompense les initiatives nationales qui visent à promouvoir une culture entrepreneuriale dynamique, en particulier chez les jeunes. Elle met l'accent sur le développement de leaders d'innovation capables de transformer des idées en entreprises prospères, contribuant ainsi à la croissance économique et à la création d'emplois.",
         icon: Award,
         color: "from-amber-500 to-yellow-500",
         textColor: "text-amber-600",
         image: "https://img.freepik.com/premium-photo/woman-using-sewing-machine-working-workshop_1048944-18734432.jpg?w=1380",
         criteria: [
+            "Impact sur la promotion de la culture entrepreneuriale",
+            "Engagement envers le développement des jeunes entrepreneurs",
             "Innovation dans les approches de sensibilisation",
-            "Impact mesurable sur la communauté ciblée",
-            "Durabilité et viabilité à long terme",
-            "Potentiel de croissance et d'adaptation"
+            "Durabilité et viabilité à long terme"
         ],
         benefits: [
             "Programme de mentorat personnalisé",
@@ -32,8 +32,8 @@ const categories = [
     },
     {
         id: 2,
-        title: "Éducation aux compétences",
-        description: "Programmes qui développent les compétences entrepreneuriales essentielles et préparent la main-d'œuvre de demain.",
+        title: "Éducation aux compétences entrepreneuriales",
+        description: "Cette catégorie valorise les initiatives qui améliorent les compétences entrepreneuriales et managériales, en mettant un accent particulier sur l'inclusion des groupes défavorisés. Elle soutient le développement de compétences techniques et numériques essentielles, ainsi que la promotion de l'entrepreneuriat dans les écoles et universités, préparant ainsi la main-d'œuvre de demain.",
         icon: BookOpen,
         color: "from-blue-500 to-indigo-500",
         textColor: "text-blue-600",
@@ -57,8 +57,8 @@ const categories = [
     },
     {
         id: 3,
-        title: "Transformation numérique",
-        description: "Solutions qui accélèrent la transition numérique des organisations et démocratisent l'accès aux technologies.",
+        title: "Transition numérique",
+        description: "Cette catégorie soutient les solutions qui facilitent la transition numérique des entreprises, en mettant l'accent sur l'adoption des nouvelles technologies. Elle promeut l'inclusion des femmes et des personnes handicapées, et encourage l'innovation dans le développement, la commercialisation et l'utilisation des technologies de l'information et de la communication.",
         icon: Laptop,
         color: "from-purple-500 to-pink-500",
         textColor: "text-purple-600",
@@ -67,7 +67,7 @@ const categories = [
             "Caractère novateur de la solution proposée",
             "Contribution à la transformation digitale",
             "Accessibilité et facilité d'adoption",
-            "Potentiel de déploiement à grande échelle"
+            "Inclusion des femmes et personnes handicapées"
         ],
         benefits: [
             "Accompagnement technique approfondi",
@@ -82,8 +82,8 @@ const categories = [
     },
     {
         id: 4,
-        title: "Agriculture durable",
-        description: "Initiatives agricoles innovantes qui concilient production efficace, respect de l'environnement et équité sociale.",
+        title: "Entrepreneuriat agricole durable",
+        description: "Cette catégorie récompense les initiatives agricoles qui intègrent des pratiques durables, assurant la pérennité des systèmes de production tout en répondant aux enjeux sociaux, économiques et écologiques. Elle valorise les projets qui préservent les ressources naturelles et apportent des solutions professionnelles aux problèmes environnementaux et climatiques.",
         icon: Sprout,
         color: "from-green-500 to-emerald-500",
         textColor: "text-green-600",
@@ -103,6 +103,31 @@ const categories = [
             "Projet agricole écologiquement viable",
             "Impact environnemental quantifiable",
             "Plan d'affaires réaliste et durable"
+        ]
+    },
+    {
+        id: 5,
+        title: "Grand prix du jury",
+        description: "Ce prix spécial est décerné par le jury à l'initiative la plus créative et la plus à même de promouvoir l'esprit d'entreprise, toutes catégories confondues. Il met en avant des projets qui démontrent une créativité exceptionnelle, un potentiel de transformation et un impact global sur l'entrepreneuriat.",
+        icon: Trophy,
+        color: "from-red-500 to-orange-500",
+        textColor: "text-red-600",
+        image: "https://img.freepik.com/free-photo/close-up-business-people-shaking-hands_53876-13391.jpg?t=st=1742307523~exp=1742311123~hmac=2a9be7d3eae384a01f6956bc8f3aa035ebbb858ab7ef07277f96bc5154c4567d&w=1380",
+        criteria: [
+            "Créativité exceptionnelle",
+            "Potentiel de transformation",
+            "Impact global sur l'entrepreneuriat",
+            "Innovation disruptive"
+        ],
+        benefits: [
+            "Reconnaissance nationale exceptionnelle",
+            "Prix spécial du jury",
+            "Accès à un réseau d'élite"
+        ],
+        requirements: [
+            "Projet exceptionnel toutes catégories confondues",
+            "Impact significatif démontré",
+            "Potentiel de réplication"
         ]
     }
 ];
@@ -238,7 +263,7 @@ export default function Categories() {
                                         <h2 className={`text-2xl md:text-4xl font-bold ${category.textColor}`}>
                                             {category.title}
                                         </h2>
-                                        <p className="text-base md:text-xl text-gray-600">
+                                        <p className="text-base md:text-xl text-gray-600 text-justify">
                                             {category.description}
                                         </p>
                                         
@@ -352,33 +377,15 @@ export default function Categories() {
                 </div>
             </div>
 
-            {/* CTA Section */}
-            <div className="bg-gradient-to-r from-[#026200] to-[#024C00] py-12 md:py-20">
-                <div className="container mx-auto px-4 md:px-8">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="max-w-4xl mx-auto text-center"
-                    >
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-12 shadow-xl">
-                            <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 md:mb-6">
-                                Besoin d'aide pour choisir votre catégorie ?
-                            </h2>
-                            <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto mb-6 md:mb-8">
-                                Notre équipe est disponible pour vous orienter vers la catégorie la plus adaptée à votre projet innovant.
-                            </p>
-                            <Link
-                                href="/contact"
-                                className="inline-flex items-center px-6 md:px-8 py-3 md:py-4 bg-white text-[#026200] text-base md:text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                            >
-                                Nous contacter
-                                <ArrowRight className="ml-2 md:ml-3 h-4 w-4 md:h-5 md:w-5" />
-                            </Link>
-                        </div>
-                    </motion.div>
-                </div>
+            {/* CTA vers la page des programmes */}
+            <div className="text-center mt-12">
+                <Link
+                    href="/programmes"
+                    className="inline-flex items-center px-8 py-4 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-500 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                    Découvrir nos programmes
+                    <ChevronRight className="ml-2 h-5 w-5" />
+                </Link>
             </div>
         </MainLayout>
     );
