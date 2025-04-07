@@ -35,7 +35,7 @@ const Hero = () => {
             title: "Mamadi Doubouya, Président",
             subtitle: "Leader Visionnaire",
             description: "Mamadi Doubouya, en tant que président, a su guider la Guinée vers une ère de prospérité et d'innovation. Son leadership exemplaire et son engagement envers le développement durable ont transformés le paysage entrepreneurial et social de la Guinée.",
-            image: "https://mamriguinee.com/images/hero/CoverSite-PRG.jpg",
+            image: "/images/fonij/cover.jpg",
             buttonText: null,
             buttonLink: null,
             icon: Trophy,

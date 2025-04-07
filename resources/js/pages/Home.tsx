@@ -1,7 +1,6 @@
 import MainLayout from '@/layouts/MainLayout';
-import Hero from '@/components/Hero';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users, Info, Lightbulb, UserPlus } from 'lucide-react';
+import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -14,6 +13,7 @@ export default function Home() {
         minutes: 0,
         seconds: 0
     });
+    
     const membresJuries = [
         { nom_complet: "Membre du juri 1", photo: "https://fonijguinee.org/wp-content/uploads/2024/12/DSC06175-500x500.jpg", post:"", countrie:"", description: "Accueil et enregistrement des participants" },
         { nom_complet: "Membre du juri 2", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/FONIJ-14-500x500.jpg", post:"", countrie:"", description: "Accueil des participants et installation des stands" },
@@ -54,33 +54,42 @@ export default function Home() {
 
     return (
         <MainLayout>
-            <Hero />
+            {/* Hero Section améliorée pour afficher l'image exactement comme la référence */}
+            <div className="w-full bg-emerald-500 flex justify-center items-center">
+                <div className="w-full max-w-[1400px] max-h-screen overflow-hidden justify-center mx-auto items-center">
+                    <img 
+                        src="/images/fonij/cover.jpg"
+                        alt="Grand Prix FONIJ"
+                        className="mx-auto w-full h-auto object-contain"
+                    />
+                </div>
+            </div>
 
             {/* Bande d'infos */}
-            <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl hover:from-emerald-700 hover:to-emerald-600 shadow-md hover:shadow-lg transition-all duration-200 py-4 text-white mx-auto">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
-                        <div className="flex items-center space-x-2">
-                            <Calendar className="h-5 w-5 text-emerald-300" />
-                            <span>23-24 Octobre 2025</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <MapPin className="h-5 w-5 text-emerald-300" />
-                            <span>Conakry, Guinée</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Users className="h-5 w-5 text-emerald-300" />
-                            <span>+1000 Participants</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Trophy className="h-5 w-5 text-emerald-300" />
-                            <span>5 Prix Majeurs</span>
+            <div className="relative z-20 mx-4 sm:mx-8 lg:mx-auto max-w-7xl">
+                <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl hover:from-emerald-700 hover:to-emerald-600 shadow-xl transition-all duration-300 py-4 text-white">
+                    <div className="px-4 sm:px-6 lg:px-8">
+                        <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
+                            <div className="flex items-center space-x-2">
+                                <Calendar className="h-5 w-5 text-emerald-300" />
+                                <span>23-24 Octobre 2025</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <MapPin className="h-5 w-5 text-emerald-300" />
+                                <span>Conakry, Guinée</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Users className="h-5 w-5 text-emerald-300" />
+                                <span>+1000 Participants</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Trophy className="h-5 w-5 text-emerald-300" />
+                                <span>5 Prix Majeurs</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
             {/* Section SIMANDOU */}
             <section className="py-16 bg-gradient-to-r from-green-800 to-gray-900">

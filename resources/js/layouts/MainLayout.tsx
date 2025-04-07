@@ -71,17 +71,17 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
                                 <div className="relative flex items-center">
                                     <div className="relative">
                                         <img 
-                                            src="https://fonijguinee.org/wp-content/uploads/2022/09/LOGO-NEW.png" 
+                                            src="/images/fonij/logo-transparent.png" 
                                             alt="FONIJ Logo" 
-                                            className="h-12 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                            className="h-20 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
-                                        <div className="absolute inset-0 bg-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        {/* <div className="absolute inset-0 bg-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
                                     </div>
                                     <div className="relative ml-4">
                                         <img 
-                                            src="https://simandou2040.gn/wp-content/uploads/2024/09/Design-sans-titre-2.png" 
+                                            src="/images/guinee.jpg"
                                             alt="Simandou Logo" 
-                                            className="h-12 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                            className="h-20 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
                                         <div className="absolute inset-0 bg-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                     </div>
@@ -175,7 +175,7 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <div className="md:col-span-1">
                             <div className="flex items-center space-x-3 mb-6">
-                                <img src="https://fonijguinee.org/wp-content/uploads/2022/09/LOGO-NEW.png" alt="FONIJ Logo" className="h-8 w-auto" />
+                                <img src="/images/fonij/logo-transparent.png" alt="FONIJ Logo" className="h-20 w-auto" />
                                 <h3 className="font-bold text-lg text-emerald-400">Grand Prix FONIJ</h3>
                             </div>
                             <p className="text-gray-400 text-sm leading-relaxed">

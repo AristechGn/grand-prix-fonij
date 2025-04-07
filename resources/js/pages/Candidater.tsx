@@ -319,29 +319,29 @@ export default function Candidater() {
                             <div className="p-8">
                                 <h2 className="text-3xl font-bold text-gray-900 mb-8">Informations personnelles</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Nom <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Input
-                                            type="text"
-                                            name="nom"
-                                            required
-                                            value={formData.nom}
-                                            onChange={handleChange}
+                                                type="text"
+                                                name="nom"
+                                                required
+                                                value={formData.nom}
+                                                onChange={handleChange}
                                             className={inputClass}
-                                        />
-                                    </div>
-                                    <div>
+                                            />
+                                        </div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Prénom <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Input
-                                            type="text"
-                                            name="prenom"
-                                            required
-                                            value={formData.prenom}
-                                            onChange={handleChange}
+                                                type="text"
+                                                name="prenom"
+                                                required
+                                                value={formData.prenom}
+                                                onChange={handleChange}
                                             className={inputClass}
                                         />
                                     </div>
@@ -358,9 +358,9 @@ export default function Candidater() {
                                             value={formData.age}
                                             onChange={handleChange}
                                             className={inputClass}
-                                        />
-                                    </div>
-                                    <div>
+                                            />
+                                        </div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Genre <span className="text-red-500">*</span>
                                         </label>
@@ -385,33 +385,33 @@ export default function Candidater() {
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Email <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Input
-                                            type="email"
-                                            name="email"
-                                            required
-                                            value={formData.email}
-                                            onChange={handleChange}
+                                                type="email"
+                                                name="email"
+                                                required
+                                                value={formData.email}
+                                                onChange={handleChange}
                                             className={inputClass}
-                                        />
-                                    </div>
-                                    <div>
+                                            />
+                                        </div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Téléphone <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Input
-                                            type="tel"
-                                            name="telephone"
-                                            required
-                                            value={formData.telephone}
-                                            onChange={handleChange}
+                                                type="tel"
+                                                name="telephone"
+                                                required
+                                                value={formData.telephone}
+                                                onChange={handleChange}
                                             className={inputClass}
-                                        />
-                                    </div>
-                                    <div>
+                                            />
+                                        </div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Région <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Select
                                             name="region"
                                             value={formData.region}
@@ -429,20 +429,20 @@ export default function Candidater() {
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                    </div>
-                                    <div>
+                                        </div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Ville <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Input
-                                            type="text"
-                                            name="ville"
-                                            required
-                                            value={formData.ville}
-                                            onChange={handleChange}
+                                                type="text"
+                                                name="ville"
+                                                required
+                                                value={formData.ville}
+                                                onChange={handleChange}
                                             className={inputClass}
-                                        />
-                                    </div>
+                                            />
+                                        </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Niveau d'études <span className="text-red-500">*</span>
@@ -545,20 +545,20 @@ export default function Candidater() {
                                             className={textareaClass}
                                         />
                                     </div>
-                                    <div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Public ciblé <span className="text-red-500">*</span>
-                                        </label>
+                                            </label>
                                         <Input
                                             type="text"
                                             name="publicCible"
-                                            required
+                                                required
                                             value={formData.publicCible}
-                                            onChange={handleChange}
+                                                onChange={handleChange}
                                             className={inputClass}
                                         />
-                                    </div>
-                                    <div>
+                                        </div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Votre projet est-il déjà lancé ? <span className="text-red-500">*</span>
                                         </label>
@@ -580,7 +580,7 @@ export default function Candidater() {
                                                     name="projetLance"
                                                     value="non"
                                                     checked={formData.projetLance === 'non'}
-                                                    onChange={handleChange}
+                                                onChange={handleChange}
                                                     className="form-radio h-4 w-4 text-emerald-500"
                                                 />
                                                 <span className="ml-2">Non</span>
@@ -602,7 +602,7 @@ export default function Candidater() {
                                             />
                                         </div>
                                     )}
-                                    <div>
+                                        <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Avez-vous déjà un prototype ? <span className="text-red-500">*</span>
                                         </label>
@@ -793,7 +793,7 @@ export default function Candidater() {
                                                                         id="pieceIdentite"
                                                                         name="pieceIdentite"
                                                                         type="file"
-                                                                        required
+                                                required
                                                                         className="sr-only"
                                                                         accept=".pdf,.jpg,.jpeg,.png"
                                                                         onChange={handleFileChange}
@@ -909,10 +909,10 @@ export default function Candidater() {
                                                         type="url"
                                                         name="videoPresentation"
                                                         value={formData.videoPresentation}
-                                                        onChange={handleChange}
+                                                onChange={handleChange}
                                                         placeholder="https://youtube.com/..."
                                                         className={inputClass}
-                                                    />
+                                            />
                                                     <p className="mt-2 text-xs text-gray-500">
                                                         Lien YouTube, Vimeo ou toute autre plateforme de partage vidéo
                                                     </p>
@@ -1110,4 +1110,4 @@ export default function Candidater() {
             </form>
         </MainLayout>
     );
-}
+} 
