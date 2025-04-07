@@ -58,7 +58,7 @@ export default function Home() {
         <MainLayout>
             {/* Hero Section améliorée pour afficher l'image exactement comme la référence */}
             <div className="w-full bg-emerald-500 flex justify-center items-center">
-                <div className="w-full max-w-[1400px] max-h-screen overflow-hidden justify-center mx-auto items-center">
+                <div className="w-full max-h-screen overflow-hidden justify-center mx-auto items-center">
                     <img 
                         src="/images/fonij/cover.jpg"
                         alt="Grand Prix FONIJ"
