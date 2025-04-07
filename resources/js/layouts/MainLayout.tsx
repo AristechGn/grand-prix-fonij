@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import { Menu, X, Home, Award, GraduationCap, Newspaper, Send, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Calendar, FileText, Target } from 'lucide-react';
+import { Menu, X, Home, Award, GraduationCap, Newspaper, Send, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 interface MainLayoutProps {
     children: React.ReactNode;

@@ -107,7 +107,7 @@ export default function Home() {
             </section>
 
             {/* Section Compteur et Présentation - inspiré de GFW */}
-            <div className="relative py-24 bg-white relative overflow-hidden border-b">
+            <div className="py-24 bg-white relative overflow-hidden border-b">
                 <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/perspective-grid-pattern_1409-1826.jpg?t=st=1742299998~exp=1742303598~hmac=464dc3235d10687053fa3b8ea6dc31a56e4b1bdfbc504e7fabc13067dbe31a84&w=1380')] bg-cover bg-no-repeat opacity-10"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
