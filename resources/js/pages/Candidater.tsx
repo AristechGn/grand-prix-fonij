@@ -1,19 +1,10 @@
 import MainLayout from '@/layouts/MainLayout';
 import { useState } from 'react';
-import { CheckCircle, Phone, Mail, Clock, Award, BookOpen, Zap } from 'lucide-react';
+import { CheckCircle, Phone, Mail, Award, BookOpen, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
-
-interface Programme {
-    id: number;
-    title: string;
-    description: string;
-    features: string[];
-    duration: string;
-    bgColor: string;
-    textColor: string;
-    icon: LucideIcon;
-}
+import { Input } from '@/components/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 const categories = [
     { 
@@ -76,57 +67,17 @@ const regions = [
     "Faranah", "Kankan", "Nzérékoré", "Autre"
 ];
 
-const programmes: Programme[] = [
-    {
-        id: 1,
-        title: "SMART Entrepreneur",
-        description: "De l'idée au projet structuré. Ce programme aide les jeunes à clarifier leurs idées et à bâtir un projet solide dès le départ.",
-        features: [
-            "Transformer une idée en projet concret",
-            "Définir un problème réel à résoudre",
-            "Poser les bases d'un modèle économique",
-            "Mise au point du pitch",
-            "Stratégie digitale",
-            "Plan d'action commerciale"
-        ],
-        duration: "3 mois",
-        bgColor: "emerald-100",
-        textColor: "emerald-600",
-        icon: Award
-    },
-    {
-        id: 2,
-        title: "Youth'Incuba",
-        description: "Incuber votre projet, le faire grandir. Cette phase vous offre un accompagnement personnalisé pour développer votre solution.",
-        features: [
-            "Coaching individuel avec des experts",
-            "Accès à un espace de travail dynamique",
-            "Formations en gestion et marketing",
-            "Développement du MVP",
-            "Tests en conditions réelles"
-        ],
-        duration: "6 mois",
-        bgColor: "blue-100",
-        textColor: "blue-600",
-        icon: BookOpen
-    },
-    {
-        id: 3,
-        title: "Boost Entrepreneurs",
-        description: "Accélérer le lancement de votre entreprise. C'est la dernière étape pour les projets matures prêts à décoller.",
-        features: [
-            "Accompagnement à la levée de fonds",
-            "Coaching avancé en stratégie",
-            "Participation à des événements de networking",
-            "Préparation au pitch pour investisseurs",
-            "Affinage du modèle économique"
-        ],
-        duration: "12 mois",
-        bgColor: "purple-100",
-        textColor: "purple-600",
-        icon: Zap
+// Style commun pour les inputs et selects
+const inputClass = "w-full px-4 py-2 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm text-black";
+const selectClass = "w-full px-4 py-2 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm text-black";
+const textareaClass = "w-full px-4 py-2 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm text-black";
+
+type SimulatedChangeEvent = {
+    target: {
+        name: string;
+        value: string;
     }
-];
+};
 
 export default function Candidater() {
     const [formData, setFormData] = useState({
@@ -174,7 +125,7 @@ export default function Candidater() {
     });
 
     const [currentStep, setCurrentStep] = useState(1);
-    const totalSteps = 5;
+    const totalSteps = 6;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -210,6 +161,39 @@ export default function Candidater() {
     };
 
     const goToNextStep = () => {
+        // Validation pour chaque étape
+        if (currentStep === 1) {
+            // Validation de la catégorie
+            if (!formData.categorie) {
+                alert("Veuillez sélectionner une catégorie");
+                return;
+            }
+        } else if (currentStep === 2) {
+            // Validation des informations personnelles
+            if (!formData.nom || !formData.prenom || !formData.email || !formData.telephone || !formData.region) {
+                alert("Veuillez remplir tous les champs obligatoires");
+                return;
+            }
+        } else if (currentStep === 3) {
+            // Validation des informations du projet
+            if (!formData.nomProjet || !formData.resumeProjet || !formData.problemeResolu || !formData.impactAttendu) {
+                alert("Veuillez remplir tous les champs obligatoires concernant votre projet");
+                return;
+            }
+        } else if (currentStep === 4) {
+            // Validation du programme
+            if (!formData.programme) {
+                alert("Veuillez sélectionner un programme d'accélération");
+                return;
+            }
+        } else if (currentStep === 5) {
+            // Validation des documents
+            if (!formData.pieceIdentite || !formData.businessPlan || !formData.photoProjet) {
+                alert("Veuillez joindre tous les documents requis");
+                return;
+            }
+        }
+        
         setCurrentStep(current => Math.min(current + 1, totalSteps));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -257,10 +241,10 @@ export default function Candidater() {
                         <div className="flex justify-center items-center space-x-4">
                             {[
                                 "Catégorie",
-                                "Informations",
+                                "Informations personnelles",
                                 "Projet",
-                                "Documents",
-                                "Finalisation"
+                                "Programme",
+                                "Documents"
                             ].map((step, index) => (
                                 <div key={index} className="flex items-center">
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -283,7 +267,7 @@ export default function Candidater() {
                         </div>
                     </div>
 
-                    {/* Contenu des étapes */}
+                    {/* Étape 1: Choix de la catégorie */}
                     {currentStep === 1 && (
                         <div className="mb-16">
                             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Choisissez votre catégorie</h2>
@@ -329,58 +313,8 @@ export default function Candidater() {
                         </div>
                     )}
 
+                    {/* Étape 2: Informations personnelles */}
                     {currentStep === 2 && (
-                        <div className="mb-16">
-                            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Choisissez votre programme d'accélération</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {programmes.map((programme, index) => (
-                                    <motion.div
-                                        key={programme.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className={`relative rounded-2xl p-8 cursor-pointer transition-all ${
-                                            formData.programme === programme.id.toString() 
-                                                ? 'bg-emerald-50 border-2 border-emerald-500'
-                                                : 'bg-white border-2 border-gray-100 hover:border-emerald-200'
-                                        }`}
-                                        onClick={() => setFormData({...formData, programme: programme.id.toString()})}
-                                    >
-                                        <div className="flex items-start space-x-4">
-                                            <div className={`bg-${programme.bgColor} p-3 rounded-lg`}>
-                                                <programme.icon className={`h-6 w-6 text-${programme.textColor}`} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <h3 className="text-xl font-semibold text-gray-900">{programme.title}</h3>
-                                                <p className="mt-2 text-gray-600">{programme.description}</p>
-                                                <ul className="mt-4 space-y-2">
-                                                    {programme.features.map((feature, idx) => (
-                                                        <li key={idx} className="flex items-center text-sm text-gray-500">
-                                                            <CheckCircle className="h-4 w-4 text-emerald-500 mr-2" />
-                                                            {feature}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <div className="mt-4 flex items-center text-sm text-gray-500">
-                                                    <Clock className="h-4 w-4 mr-2" />
-                                                    <span>{programme.duration}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {formData.programme === programme.id.toString() && (
-                                            <div className="absolute top-4 right-4">
-                                                <div className="bg-emerald-500 text-white rounded-full p-2">
-                                                    <CheckCircle className="h-6 w-6" />
-                                                </div>
-                                            </div>
-                                        )}
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {currentStep === 3 && (
                         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
                             <div className="p-8">
                                 <h2 className="text-3xl font-bold text-gray-900 mb-8">Informations personnelles</h2>
@@ -389,33 +323,33 @@ export default function Candidater() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Nom <span className="text-red-500">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             type="text"
                                             name="nom"
                                             required
                                             value={formData.nom}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Prénom <span className="text-red-500">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             type="text"
                                             name="prenom"
                                             required
                                             value={formData.prenom}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Âge <span className="text-red-500">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             type="number"
                                             name="age"
                                             required
@@ -423,109 +357,124 @@ export default function Candidater() {
                                             max="35"
                                             value={formData.age}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Genre <span className="text-red-500">*</span>
                                         </label>
-                                        <select
+                                        <Select 
                                             name="genre"
-                                            required
                                             value={formData.genre}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            onValueChange={(value) => {
+                                                const event = { target: { name: "genre", value } };
+                                                handleChange(event as SimulatedChangeEvent);
+                                            }}
                                         >
-                                            <option value="">Sélectionner</option>
-                                            <option value="homme">Homme</option>
-                                            <option value="femme">Femme</option>
-                                            <option value="autre">Autre</option>
-                                        </select>
+                                            <SelectTrigger className={selectClass}>
+                                                <SelectValue placeholder="Sélectionner" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="homme">Homme</SelectItem>
+                                                <SelectItem value="femme">Femme</SelectItem>
+                                                <SelectItem value="autre">Autre</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Email <span className="text-red-500">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             type="email"
                                             name="email"
                                             required
                                             value={formData.email}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Téléphone <span className="text-red-500">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             type="tel"
                                             name="telephone"
                                             required
                                             value={formData.telephone}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Région <span className="text-red-500">*</span>
                                         </label>
-                                        <select
+                                        <Select
                                             name="region"
-                                            required
                                             value={formData.region}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            onValueChange={(value) => {
+                                                const event = { target: { name: "region", value } };
+                                                handleChange(event as SimulatedChangeEvent);
+                                            }}
                                         >
-                                            <option value="">Sélectionner votre région</option>
-                                            {regions.map((region) => (
-                                                <option key={region} value={region}>{region}</option>
-                                            ))}
-                                        </select>
+                                            <SelectTrigger className={selectClass}>
+                                                <SelectValue placeholder="Sélectionner votre région" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {regions.map((region) => (
+                                                    <SelectItem key={region} value={region}>{region}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Ville <span className="text-red-500">*</span>
                                         </label>
-                                        <input
+                                        <Input
                                             type="text"
                                             name="ville"
                                             required
                                             value={formData.ville}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Niveau d'études <span className="text-red-500">*</span>
                                         </label>
-                                        <select
+                                        <Select
                                             name="niveauEtudes"
-                                            required
                                             value={formData.niveauEtudes}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            onValueChange={(value) => {
+                                                const event = { target: { name: "niveauEtudes", value } };
+                                                handleChange(event as SimulatedChangeEvent);
+                                            }}
                                         >
-                                            <option value="">Sélectionner votre niveau</option>
-                                            {niveauxEtudes.map((niveau) => (
-                                                <option key={niveau} value={niveau}>{niveau}</option>
-                                            ))}
-                                        </select>
+                                            <SelectTrigger className={selectClass}>
+                                                <SelectValue placeholder="Sélectionner votre niveau" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {niveauxEtudes.map((niveau) => (
+                                                    <SelectItem key={niveau} value={niveau}>{niveau}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Profession actuelle
                                         </label>
-                                        <input
+                                        <Input
                                             type="text"
                                             name="profession"
                                             value={formData.profession}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                                            className={inputClass}
                                             placeholder="Si applicable"
                                         />
                                     </div>
@@ -534,7 +483,292 @@ export default function Candidater() {
                         </div>
                     )}
 
+                    {/* Étape 3: Informations sur le projet */}
+                    {currentStep === 3 && (
+                        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <div className="p-8">
+                                <h2 className="text-3xl font-bold text-gray-900 mb-8">Informations sur votre projet</h2>
+                                <div className="grid grid-cols-1 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Nom du projet <span className="text-red-500">*</span>
+                                        </label>
+                                        <Input
+                                            type="text"
+                                            name="nomProjet"
+                                            required
+                                            value={formData.nomProjet}
+                                            onChange={handleChange}
+                                            className={inputClass}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Résumé du projet (200 mots maximum) <span className="text-red-500">*</span>
+                                        </label>
+                                        <Textarea
+                                            name="resumeProjet"
+                                            required
+                                            maxLength={200}
+                                            value={formData.resumeProjet}
+                                            onChange={handleChange}
+                                            rows={4}
+                                            className={textareaClass}
+                                        />
+                                        <p className="mt-1 text-sm text-gray-500">
+                                            {formData.resumeProjet.length}/200 caractères
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Quel problème votre projet résout-il ? <span className="text-red-500">*</span>
+                                        </label>
+                                        <Textarea
+                                            name="problemeResolu"
+                                            required
+                                            value={formData.problemeResolu}
+                                            onChange={handleChange}
+                                            rows={4}
+                                            className={textareaClass}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Quel est l'impact attendu ? (social, économique, environnemental) <span className="text-red-500">*</span>
+                                        </label>
+                                        <Textarea
+                                            name="impactAttendu"
+                                            required
+                                            value={formData.impactAttendu}
+                                            onChange={handleChange}
+                                            rows={4}
+                                            className={textareaClass}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Public ciblé <span className="text-red-500">*</span>
+                                        </label>
+                                        <Input
+                                            type="text"
+                                            name="publicCible"
+                                            required
+                                            value={formData.publicCible}
+                                            onChange={handleChange}
+                                            className={inputClass}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Votre projet est-il déjà lancé ? <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="flex space-x-4">
+                                            <label className="inline-flex items-center">
+                                                <Input
+                                                    type="radio"
+                                                    name="projetLance"
+                                                    value="oui"
+                                                    checked={formData.projetLance === 'oui'}
+                                                    onChange={handleChange}
+                                                    className="form-radio h-4 w-4 text-emerald-500"
+                                                />
+                                                <span className="ml-2">Oui</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <Input
+                                                    type="radio"
+                                                    name="projetLance"
+                                                    value="non"
+                                                    checked={formData.projetLance === 'non'}
+                                                    onChange={handleChange}
+                                                    className="form-radio h-4 w-4 text-emerald-500"
+                                                />
+                                                <span className="ml-2">Non</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {formData.projetLance === 'oui' && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Depuis quand ? <span className="text-red-500">*</span>
+                                            </label>
+                                            <Input
+                                                type="date"
+                                                name="dateDebutProjet"
+                                                required
+                                                value={formData.dateDebutProjet}
+                                                onChange={handleChange}
+                                                className={inputClass}
+                                            />
+                                        </div>
+                                    )}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Avez-vous déjà un prototype ? <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="flex space-x-4">
+                                            <label className="inline-flex items-center">
+                                                <Input
+                                                    type="radio"
+                                                    name="prototypeExistant"
+                                                    value="oui"
+                                                    checked={formData.prototypeExistant === 'oui'}
+                                                    onChange={handleChange}
+                                                    className="form-radio h-4 w-4 text-emerald-500"
+                                                />
+                                                <span className="ml-2">Oui</span>
+                                            </label>
+                                            <label className="inline-flex items-center">
+                                                <Input
+                                                    type="radio"
+                                                    name="prototypeExistant"
+                                                    value="non"
+                                                    checked={formData.prototypeExistant === 'non'}
+                                                    onChange={handleChange}
+                                                    className="form-radio h-4 w-4 text-emerald-500"
+                                                />
+                                                <span className="ml-2">Non</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Étape 4: Programme d'accélération */}
                     {currentStep === 4 && (
+                        <div className="mb-16">
+                            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Choisissez votre programme d'accélération</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div
+                                    className={`relative rounded-2xl p-8 cursor-pointer transition-all ${
+                                        formData.programme === "1" 
+                                            ? 'bg-emerald-50 border-2 border-emerald-500'
+                                            : 'bg-white border-2 border-gray-100 hover:border-emerald-200'
+                                    }`}
+                                    onClick={() => setFormData({...formData, programme: "1"})}
+                                >
+                                    <div className="flex flex-col items-center text-center">
+                                        <div className="bg-emerald-100 p-4 rounded-full mb-4">
+                                            <Award className="h-8 w-8 text-emerald-600" />
+                                        </div>
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-2">SMART Entrepreneur</h3>
+                                        <p className="text-gray-600 mb-4">De l'idée au projet structuré. Idéal pour les projets en phase initiale.</p>
+                                        <div className="bg-emerald-50 w-full p-3 rounded-lg text-center mb-4">
+                                            <span className="font-medium text-emerald-700">3 mois</span>
+                                        </div>
+                                        <ul className="text-left w-full space-y-2 mb-4">
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-emerald-500 mr-2 flex-shrink-0" />
+                                                <span>Transformer une idée en projet concret</span>
+                                            </li>
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-emerald-500 mr-2 flex-shrink-0" />
+                                                <span>Définir un problème réel à résoudre</span>
+                                            </li>
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-emerald-500 mr-2 flex-shrink-0" />
+                                                <span>Poser les bases d'un modèle économique</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {formData.programme === "1" && (
+                                        <div className="absolute top-4 right-4">
+                                            <div className="bg-emerald-500 text-white rounded-full p-2">
+                                                <CheckCircle className="h-6 w-6" />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div
+                                    className={`relative rounded-2xl p-8 cursor-pointer transition-all ${
+                                        formData.programme === "2" 
+                                            ? 'bg-emerald-50 border-2 border-emerald-500'
+                                            : 'bg-white border-2 border-gray-100 hover:border-emerald-200'
+                                    }`}
+                                    onClick={() => setFormData({...formData, programme: "2"})}
+                                >
+                                    <div className="flex flex-col items-center text-center">
+                                        <div className="bg-blue-100 p-4 rounded-full mb-4">
+                                            <BookOpen className="h-8 w-8 text-blue-600" />
+                                        </div>
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Youth'Incuba</h3>
+                                        <p className="text-gray-600 mb-4">Incuber votre projet, le faire grandir. Pour les projets ayant déjà une structure de base.</p>
+                                        <div className="bg-blue-50 w-full p-3 rounded-lg text-center mb-4">
+                                            <span className="font-medium text-blue-700">6 mois</span>
+                                        </div>
+                                        <ul className="text-left w-full space-y-2 mb-4">
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-blue-500 mr-2 flex-shrink-0" />
+                                                <span>Coaching individuel avec des experts</span>
+                                            </li>
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-blue-500 mr-2 flex-shrink-0" />
+                                                <span>Accès à un espace de travail dynamique</span>
+                                            </li>
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-blue-500 mr-2 flex-shrink-0" />
+                                                <span>Développement du MVP</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {formData.programme === "2" && (
+                                        <div className="absolute top-4 right-4">
+                                            <div className="bg-emerald-500 text-white rounded-full p-2">
+                                                <CheckCircle className="h-6 w-6" />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div
+                                    className={`relative rounded-2xl p-8 cursor-pointer transition-all ${
+                                        formData.programme === "3" 
+                                            ? 'bg-emerald-50 border-2 border-emerald-500'
+                                            : 'bg-white border-2 border-gray-100 hover:border-emerald-200'
+                                    }`}
+                                    onClick={() => setFormData({...formData, programme: "3"})}
+                                >
+                                    <div className="flex flex-col items-center text-center">
+                                        <div className="bg-purple-100 p-4 rounded-full mb-4">
+                                            <Zap className="h-8 w-8 text-purple-600" />
+                                        </div>
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Boost Entrepreneurs</h3>
+                                        <p className="text-gray-600 mb-4">Accélérer le lancement de votre entreprise. Pour les projets matures prêts à décoller.</p>
+                                        <div className="bg-purple-50 w-full p-3 rounded-lg text-center mb-4">
+                                            <span className="font-medium text-purple-700">12 mois</span>
+                                        </div>
+                                        <ul className="text-left w-full space-y-2 mb-4">
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-purple-500 mr-2 flex-shrink-0" />
+                                                <span>Accompagnement à la levée de fonds</span>
+                                            </li>
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-purple-500 mr-2 flex-shrink-0" />
+                                                <span>Coaching avancé en stratégie</span>
+                                            </li>
+                                            <li className="flex items-center text-sm text-gray-500">
+                                                <CheckCircle className="h-4 w-4 text-purple-500 mr-2 flex-shrink-0" />
+                                                <span>Préparation au pitch pour investisseurs</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {formData.programme === "3" && (
+                                        <div className="absolute top-4 right-4">
+                                            <div className="bg-emerald-500 text-white rounded-full p-2">
+                                                <CheckCircle className="h-6 w-6" />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Étape 5: Documents à joindre */}
+                    {currentStep === 5 && (
                         <div className="mb-16">
                             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Documents à joindre</h2>
                             <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -555,7 +789,7 @@ export default function Candidater() {
                                                             <div className="flex text-sm text-gray-600">
                                                                 <label htmlFor="pieceIdentite" className="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
                                                                     <span>Téléverser un fichier</span>
-                                                                    <input
+                                                                    <Input
                                                                         id="pieceIdentite"
                                                                         name="pieceIdentite"
                                                                         type="file"
@@ -596,7 +830,7 @@ export default function Candidater() {
                                                             <div className="flex text-sm text-gray-600">
                                                                 <label htmlFor="businessPlan" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                                                                     <span>Téléverser un fichier</span>
-                                                                    <input
+                                                                    <Input
                                                                         id="businessPlan"
                                                                         name="businessPlan"
                                                                         type="file"
@@ -636,7 +870,7 @@ export default function Candidater() {
                                                             <div className="flex text-sm text-gray-600">
                                                                 <label htmlFor="photoProjet" className="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-purple-500">
                                                                     <span>Téléverser un fichier</span>
-                                                                    <input
+                                                                    <Input
                                                                         id="photoProjet"
                                                                         name="photoProjet"
                                                                         type="file"
@@ -671,13 +905,13 @@ export default function Candidater() {
                                                     Une vidéo courte (2-3 minutes) présentant votre projet augmentera vos chances de sélection
                                                 </p>
                                                 <div className="mt-2">
-                                                    <input
+                                                    <Input
                                                         type="url"
                                                         name="videoPresentation"
                                                         value={formData.videoPresentation}
                                                         onChange={handleChange}
                                                         placeholder="https://youtube.com/..."
-                                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                                                        className={inputClass}
                                                     />
                                                     <p className="mt-2 text-xs text-gray-500">
                                                         Lien YouTube, Vimeo ou toute autre plateforme de partage vidéo
@@ -691,7 +925,8 @@ export default function Candidater() {
                         </div>
                     )}
 
-                    {currentStep === 5 && (
+                    {/* Étape 6: Finalisation de la candidature */}
+                    {currentStep === 6 && (
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -712,33 +947,42 @@ export default function Candidater() {
                                             </p>
                                             <div className="space-y-4">
                                                 <label className="flex items-center space-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        name="disponibiliteMatin"
-                                                        checked={formData.disponibiliteMatin}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                                                    />
+                                                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                                        <Input 
+                                                            type="checkbox"
+                                                            name="disponibiliteMatin"
+                                                            checked={formData.disponibiliteMatin}
+                                                            onChange={handleCheckboxChange}
+                                                            className="text-black absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-emerald-500"
+                                                        />
+                                                        <span className={`block overflow-hidden h-6 rounded-full bg-gray-300 ${formData.disponibiliteMatin ? 'bg-emerald-500' : ''}`}></span>
+                                                    </div>
                                                     <span className="text-gray-700">Matin (9h - 12h)</span>
                                                 </label>
                                                 <label className="flex items-center space-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        name="disponibiliteApresMidi"
-                                                        checked={formData.disponibiliteApresMidi}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                                                    />
+                                                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                                        <Input 
+                                                            type="checkbox"
+                                                            name="disponibiliteApresMidi"
+                                                            checked={formData.disponibiliteApresMidi}
+                                                            onChange={handleCheckboxChange}
+                                                            className="text-black absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-emerald-500"
+                                                        />
+                                                        <span className={`block overflow-hidden h-6 rounded-full bg-gray-300 ${formData.disponibiliteApresMidi ? 'bg-emerald-500' : ''}`}></span>
+                                                    </div>
                                                     <span className="text-gray-700">Après-midi (14h - 17h)</span>
                                                 </label>
                                                 <label className="flex items-center space-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        name="disponibiliteSoir"
-                                                        checked={formData.disponibiliteSoir}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                                                    />
+                                                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                                        <Input 
+                                                            type="checkbox"
+                                                            name="disponibiliteSoir"
+                                                            checked={formData.disponibiliteSoir}
+                                                            onChange={handleCheckboxChange}
+                                                            className="text-black absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-emerald-500"
+                                                        />
+                                                        <span className={`block overflow-hidden h-6 rounded-full bg-gray-300 ${formData.disponibiliteSoir ? 'bg-emerald-500' : ''}`}></span>
+                                                    </div>
                                                     <span className="text-gray-700">Soir (17h - 19h)</span>
                                                 </label>
                                             </div>
@@ -751,40 +995,49 @@ export default function Candidater() {
                                             </label>
                                             <div className="space-y-4">
                                                 <label className="flex items-start space-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        name="certificationExactitude"
-                                                        required
-                                                        checked={formData.certificationExactitude}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 mt-1 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                                                    />
+                                                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in mt-1">
+                                                        <Input
+                                                            type="checkbox"
+                                                            name="certificationExactitude"
+                                                            required
+                                                            checked={formData.certificationExactitude}
+                                                            onChange={handleCheckboxChange}
+                                                            className="text-black absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-emerald-500"
+                                                        />
+                                                        <span className={`block overflow-hidden h-6 rounded-full bg-gray-300 ${formData.certificationExactitude ? 'bg-emerald-500' : ''}`}></span>
+                                                    </div>
                                                     <span className="text-gray-700">
                                                         Je certifie sur l'honneur l'exactitude des informations fournies dans ce formulaire
                                                     </span>
                                                 </label>
                                                 <label className="flex items-start space-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        name="participationGratuite"
-                                                        required
-                                                        checked={formData.participationGratuite}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 mt-1 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                                                    />
+                                                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in mt-1">
+                                                        <Input
+                                                            type="checkbox"
+                                                            name="participationGratuite"
+                                                            required
+                                                            checked={formData.participationGratuite}
+                                                            onChange={handleCheckboxChange}
+                                                            className="text-black absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-emerald-500"
+                                                        />
+                                                        <span className={`block overflow-hidden h-6 rounded-full bg-gray-300 ${formData.participationGratuite ? 'bg-emerald-500' : ''}`}></span>
+                                                    </div>
                                                     <span className="text-gray-700">
                                                         Je comprends que la participation au Grand Prix FONIJ est gratuite et m'engage à suivre le processus jusqu'à son terme
                                                     </span>
                                                 </label>
                                                 <label className="flex items-start space-x-3">
-                                                    <input
-                                                        type="checkbox"
-                                                        name="autorisationCommunication"
-                                                        required
-                                                        checked={formData.autorisationCommunication}
-                                                        onChange={handleCheckboxChange}
-                                                        className="h-4 w-4 mt-1 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-                                                    />
+                                                    <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in mt-1">
+                                                        <Input
+                                                            type="checkbox"
+                                                            name="autorisationCommunication"
+                                                            required
+                                                            checked={formData.autorisationCommunication}
+                                                            onChange={handleCheckboxChange}
+                                                            className="text-black absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:right-0 checked:border-emerald-500"
+                                                        />
+                                                        <span className={`block overflow-hidden h-6 rounded-full bg-gray-300 ${formData.autorisationCommunication ? 'bg-emerald-500' : ''}`}></span>
+                                                    </div>
                                                     <span className="text-gray-700">
                                                         J'autorise le FONIJ à utiliser les informations de mon projet à des fins de communication et de promotion
                                                     </span>
@@ -809,7 +1062,7 @@ export default function Candidater() {
                     )}
 
                     {/* Navigation entre les étapes */}
-                    {currentStep < 5 && (
+                    {currentStep < 6 && (
                         <div className="mt-8 flex justify-between">
                             {currentStep > 1 && (
                                 <button
