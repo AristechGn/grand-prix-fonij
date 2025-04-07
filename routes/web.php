@@ -1,8 +1,31 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+/*
+ * Nom       : Gnimassou
+ * Prénom    : Jean-Marie Aristide 
+ * Email     : aristechdev@gmail.com
+ *
+ * Signature DREAMER:
+ *
+ *  _______   _______   ________   ______   __       __  ________  _______  
+ * /       \ /       \ /        | /      \ /  \     /  |/        |/       \ 
+ * $$$$$$$  |$$$$$$$  |$$$$$$$$/ /$$$$$$  |$$  \   /$$ |$$$$$$$$/ $$$$$$$  |
+ * $$ |  $$ |$$ |__$$ |$$ |__    $$ |__$$ |$$$  \ /$$$ |$$ |__    $$ |__$$ |
+ * $$ |  $$ |$$    $$< $$    |   $$    $$ |$$$$  /$$$$ |$$    |   $$    $$< 
+ * $$ |  $$ |$$$$$$$  |$$$$$/    $$$$$$$$ |$$ $$ $$/$$ |$$$$$/    $$$$$$$  |
+ * $$ |__$$ |$$ |  $$ |$$ |_____ $$ |  $$ |$$ |$$$/ $$ |$$ |_____ $$ |  $$ |
+ * $$    $$/ $$ |  $$ |$$       |$$ |  $$ |$$ | $/  $$ |$$       |$$ |  $$ |
+ * $$$$$$/  $$/   $$/ $$$$$$$$/ $$/   $$/ $$/      $$/ $$$$$$$$/ $$/   $$/ 
+ *
+ */
+
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+
+
+Route::get('/init', [RegisteredUserController::class, 'init'])->name('app.init');
 
 Route::get('/', function () {
     return Inertia::render('Home');

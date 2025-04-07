@@ -32,10 +32,19 @@ export interface SharedData {
 
 export interface User {
     id: number;
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
+    phone: string;
     avatar?: string;
     email_verified_at: string | null;
+    phone_verified_at: string | null;
+    role: 'super_admin' | 'admin' | 'user' | 'candidat' | 'jury';
+    status: number;
+    address: string;
+    birth_date: string;
+    gender: string;
+    profession: string;
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
