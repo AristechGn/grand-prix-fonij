@@ -23,7 +23,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-
+use App\Http\Controllers\UserController;
 
 Route::get('/init', [RegisteredUserController::class, 'init'])->name('app.init');
 
@@ -55,6 +55,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::get('/utilisateurs', [UserController::class, 'index'])->name('users.index');
+    Route::get('/utilisateurs/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/utilisateurs', [UserController::class, 'store'])->name('users.store');
+    Route::get('/utilisateurs/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/utilisateurs/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::get('/utilisateurs/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::delete('/utilisateurs/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
 require __DIR__.'/settings.php';

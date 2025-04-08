@@ -1,7 +1,7 @@
-import { SVGAttributes } from 'react';
+import { ImgHTMLAttributes } from 'react';
 
-export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
+export default function AppLogoIcon(props: ImgHTMLAttributes<HTMLImageElement>) {
     return (
-        <img src="/images/affiche2.jpg" alt="Logo" {...props} />
+        <img src="/images/fonij/logo-transparent.png" alt="Logo" {...props} />
     );
 }

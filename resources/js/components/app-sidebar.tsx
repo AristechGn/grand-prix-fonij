@@ -13,37 +13,37 @@ import AppLogo from './app-logo';
 const adminNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/admin/dashboard',
+        href: '/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Gestion des candidats',
-        href: '/admin/candidats',
+        href: '/candidats',
         icon: Users,
     },
     {
         title: 'Projets soumis',
-        href: '/admin/projets',
+        href: '/projets',
         icon: FileText,
     },
     {
         title: 'Planification des entretiens',
-        href: '/admin/entretiens',
+        href: '/entretiens',
         icon: Calendar,
     },
     {
         title: 'Évaluation des projets',
-        href: '/admin/evaluations',
+        href: '/evaluations',
         icon: CheckCircle,
     },
     {
         title: 'Programmes d\'accompagnement',
-        href: '/admin/programmes',
+        href: '/programmes',
         icon: Award,
     },
     {
         title: 'Paramètres',
-        href: '/admin/parametres',
+        href: '/parametres',
         icon: Settings,
     },
 ];
@@ -52,47 +52,47 @@ const adminNavItems: NavItem[] = [
 const superAdminNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/superadmin/dashboard',
+        href: '/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Gestion des utilisateurs',
-        href: '/superadmin/utilisateurs',
+        href: '/utilisateurs',
         icon: Users,
     },
     {
         title: 'Gestion des rôles',
-        href: '/superadmin/roles',
+        href: '/roles',
         icon: Shield,
     },
     {
         title: 'Configuration système',
-        href: '/superadmin/systeme',
+        href: '/systeme',
         icon: Database,
     },
     {
         title: 'Statistiques globales',
-        href: '/superadmin/statistiques',
+        href: '/statistiques',
         icon: ChartBar,
     },
     {
         title: 'Gestion des partenaires',
-        href: '/superadmin/partenaires',
+        href: '/partenaires',
         icon: Briefcase,
     },
     {
         title: 'Messagerie',
-        href: '/superadmin/messages',
+        href: '/messages',
         icon: MessageSquare,
     },
     {
         title: 'Financement',
-        href: '/superadmin/financement',
+        href: '/financement',
         icon: CreditCard,
     },
     {
         title: 'Journal des activités',
-        href: '/superadmin/logs',
+        href: '/logs',
         icon: AlertCircle,
     },
 ];
@@ -100,32 +100,32 @@ const superAdminNavItems: NavItem[] = [
 const juryNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/jury/dashboard',
+        href: '/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Gestion des candidats',
-        href: '/jury/candidats',
+        href: '/candidats',
         icon: Users,
     },  
     {
         title: 'Gestion des projets',
-        href: '/jury/projets',
+        href: '/projets',
         icon: FileText,
     },
     {
         title: 'Gestion des entretiens',
-        href: '/jury/entretiens',
+        href: '/entretiens',
         icon: Calendar,
     },
     {
         title: 'Gestion des évaluations',
-        href: '/jury/evaluations',
+        href: '/evaluations',
         icon: CheckCircle,
     },
     {
         title: 'Gestion des programmes',
-        href: '/jury/programmes',
+        href: '/programmes',
         icon: Award,
     },
 ];
@@ -133,12 +133,12 @@ const juryNavItems: NavItem[] = [
 const candidatNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/candidat/dashboard',
+        href: '/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Gestion des projets',
-        href: '/candidat/projets',
+        href: '/projets',
         icon: FileText,
     },
     
@@ -175,8 +175,6 @@ export function AppSidebar({ userRole = 'user' }: AppSidebarProps) {
                 : userRole === 'candidat'
                     ? candidatNavItems
                     : [];
-
-    console.log('mainNavItems', mainNavItems);
     
 
     return (
