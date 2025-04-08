@@ -377,16 +377,63 @@ export default function Categories() {
                 </div>
             </div>
 
-            {/* CTA vers la page des programmes */}
-            <div className="text-center mt-12">
-                <Link
-                    href="/programmes"
-                    className="inline-flex items-center px-8 py-4 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-500 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                    Découvrir nos programmes
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                </Link>
-            </div>
+            {/* Bannière CTA pour l'accompagnement */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="relative bg-gradient-to-r from-[#026200] to-emerald-600 py-16 overflow-hidden"
+            >
+                {/* Éléments décoratifs */}
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
+                    <div className="absolute bottom-0 left-10 w-32 h-32 bg-white/10 rounded-full"></div>
+                </div>
+                
+                <div className="container mx-auto px-4 md:px-8 relative z-10">
+                    <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20 shadow-xl">
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                            <div className="md:col-span-3 space-y-4">
+                                <h2 className="text-2xl md:text-4xl font-bold text-white leading-tight">
+                                    Gagnez et bénéficiez de nos programmes d'accompagnement
+                                </h2>
+                                <p className="text-white/80 text-base md:text-lg">
+                                    Les lauréats du Grand Prix FONIJ bénéficient de programmes d'accompagnement exclusifs et personnalisés pour transformer leur projet en entreprise prospère et durable.
+                                </p>
+                            </div>
+                            <div className="md:col-span-2 flex flex-col items-start space-y-4">
+                                <div className="flex items-center text-white">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 mr-3">
+                                        <Check className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span>Mentorat personnalisé par des experts</span>
+                                </div>
+                                <div className="flex items-center text-white">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 mr-3">
+                                        <Check className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span>Financement et formation spécialisée</span>
+                                </div>
+                                <div className="flex items-center text-white">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 mr-3">
+                                        <Check className="w-4 h-4 text-white" />
+                                    </div>
+                                    <span>Intégration à notre réseau d'excellence</span>
+                                </div>
+                                <Link
+                                    href={route('programmes')}
+                                    className="mt-6 inline-flex items-center px-6 py-4 bg-white text-emerald-700 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-xl w-full justify-center"
+                                >
+                                    Découvrir les avantages des lauréats
+                                    <ChevronRight className="ml-2 h-5 w-5" />
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+            
         </MainLayout>
     );
 }

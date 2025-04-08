@@ -6,6 +6,11 @@ import { useEffect, useState } from 'react';
 
 
 export default function Home() {
+    // Dates configurables
+    const dateEvenement = new Date('April 30, 2025 09:00:00');
+    const dateFinalEvenement = new Date('July 31, 2025 18:00:00');
+    const dateFinInscriptions = new Date('April 23, 2025 00:00:00');
+    
     // État pour le compteur
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
@@ -22,14 +27,11 @@ export default function Home() {
         // { nom_complet: "Membre du juri 5", photo: "https://fonijguinee.org/wp-content/uploads/2023/05/DSC06167-500x500.jpg", post:"", countrie:"", description: "Discussion sur l'écosystème entrepreneurial en Guinée" },
     ];
 
-    // Date de l'événement
-    const eventDate = new Date('October 23, 2025 09:00:00');
-
-    // Calculer le temps restant
+    // Calculer le temps restant jusqu'à la fin des inscriptions
     useEffect(() => {
         const timer = setInterval(() => {
             const now = new Date();
-            const difference = eventDate.getTime() - now.getTime();
+            const difference = dateFinInscriptions.getTime() - now.getTime();
 
             if (difference > 0) {
                 setTimeLeft({
@@ -72,7 +74,7 @@ export default function Home() {
                         <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
                             <div className="flex items-center space-x-2">
                                 <Calendar className="h-5 w-5 text-emerald-300" />
-                                <span>23-24 Octobre 2025</span>
+                                <span>Du {dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <MapPin className="h-5 w-5 text-emerald-300" />
@@ -151,7 +153,7 @@ export default function Home() {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-gray-900">Date</h4>
-                                            <p className="text-gray-600">23-24 Oct. 2025</p>
+                                            <p className="text-gray-600">Du {dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -168,7 +170,8 @@ export default function Home() {
                         >
                             <div className="absolute -top-20 -right-20 w-64 h-64 bg-emerald-100 rounded-full opacity-30"></div>
                             <div className="bg-white rounded-2xl shadow-2xl border border-emerald-100 p-10 relative">
-                                <h3 className="text-3xl font-bold text-gray-900 mb-8">Compte à rebours</h3>
+                                <h3 className="text-3xl font-bold text-gray-900 mb-8">Fin des inscriptions dans</h3>
+                                <p className="text-base text-gray-600 mb-6">Jusqu'au {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                 <div className="grid grid-cols-4 gap-4">
                                     <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl shadow text-center">
                                         <div className="text-4xl font-bold text-emerald-700">{timeLeft.days.toString().padStart(2, '0')}</div>
@@ -188,15 +191,15 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className="mt-10 flex justify-center">
-                                    <Link
-                                        href="/inscription"
-                                        className="inline-flex items-center justify-center px-6 py-4 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-500 transition-all duration-300 shadow-lg hover:shadow-xl w-full"
+                                    <a
+                                        href={route('candidater')}
+                                        className="inline-flex items-center justify-center px-6 py-4 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-800 transition-all duration-300 shadow-lg hover:shadow-xl w-full"
                                     >
                                         S'inscrire maintenant
-                                    </Link>
+                                    </a>
                                 </div>
                                 <div className="mt-6 text-center text-sm text-gray-500">
-                                    Profitez des inscriptions anticipées jusqu'au 15 septembre
+                                    Vous pouvez vous inscrire avant la fin du compte à rebours
                                 </div>
                             </div>
                         </motion.div>
@@ -453,7 +456,7 @@ export default function Home() {
             </div>
 
             {/* Agenda modernisé */}
-            <div className="py-24 bg-white relative overflow-hidden">
+            <div id="agenda" className="py-24 bg-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/img/grid-pattern.svg')] opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <motion.div

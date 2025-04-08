@@ -35,9 +35,13 @@ Route::get('/categories', function () {
     return Inertia::render('Categories');
 })->name('categories');
 
-Route::get('/programmes', function () {
+Route::get('/accompagnement', function () {
     return Inertia::render('Programmes');
 })->name('programmes');
+
+Route::get('/deroulement', function () {
+    return Inertia::render('Deroulement');
+})->name('deroulement');
 
 Route::get('/actualites', function () {
     return Inertia::render('Actualites');

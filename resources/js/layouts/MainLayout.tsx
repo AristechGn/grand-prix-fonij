@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import { Menu, X, Home, Award, GraduationCap, Newspaper, Send, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Menu, X, Home, Award, GraduationCap, Send, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Calendar } from 'lucide-react';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -20,6 +20,13 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
             'active': 'home',
         },
         {
+            'name': 'agenda',
+            'label': 'Agenda',
+            'icon': Calendar,
+            'href': '/#agenda',
+            'active': 'agenda',
+        },
+        {
             'name': 'categories',
             'label': 'Catégories',
             'icon': Award,
@@ -27,19 +34,26 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
             'active': 'categories',
         },
         {
-            'name': 'programmes',
-            'label': 'Programmes',
+            'name': 'deroulement',
+            'label': 'Déroulement',
             'icon': GraduationCap,
-            'href': '/programmes',
-            'active': 'programmes',
+            'href': route('deroulement'),
+            'active': 'deroulement',
         },
         {
-            'name': 'actualites',
-            'label': 'Actualités',
-            'icon': Newspaper,
-            'href': route('actualites'),
-            'active': 'actualites',
+            'name': 'accompagnement',
+            'label': 'Accompagnement',
+            'icon': GraduationCap,
+            'href': route('programmes'),
+            'active': 'accompagnement',
         },
+        // {
+        //     'name': 'actualites',
+        //     'label': 'Actualités',
+        //     'icon': Newspaper,
+        //     'href': route('actualites'),
+        //     'active': 'actualites',
+        // },
     ];
 
     const isActiveRoute = (routeName: string) => route().current(routeName);
@@ -73,7 +87,7 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
                                         <img 
                                             src="/images/fonij/logo-transparent.png" 
                                             alt="FONIJ Logo" 
-                                            className="h-20 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                            className="h-16 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
                                         {/* <div className="absolute inset-0 bg-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
                                     </div>
@@ -81,9 +95,9 @@ export default function MainLayout({ children, title = 'Grand Prix FONIJ' }: Mai
                                         <img 
                                             src="/images/guinee.jpg"
                                             alt="Simandou Logo" 
-                                            className="h-20 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                            className="h-14 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
-                                        <div className="absolute inset-0 bg-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                        {/* <div className="absolute inset-0 bg-emerald-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
                                     </div>
                                 </div>
                             </Link>
