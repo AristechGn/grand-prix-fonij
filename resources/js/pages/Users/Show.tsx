@@ -39,11 +39,11 @@ export default function ShowUser({ user }: ShowProps) {
                                     </CardDescription>
                                 </div>
                                 <div className="flex space-x-2">
-                                    <Link href={route('users.edit', user.id)}>
+                                    <Link href={route('admin.users.edit', user.id)}>
                                         <Button variant="outline">Modifier</Button>
                                     </Link>
                                     <Link 
-                                        href={route('users.destroy', user.id)} 
+                                        href={route('admin.users.destroy', user.id)} 
                                         method="delete" 
                                         as="button"
                                     >

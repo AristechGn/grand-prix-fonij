@@ -47,7 +47,7 @@ export default function CreateUser() {
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('users.store'));
+        post(route('admin.users.store'));
     };
     
     const isEmailValid = data.email && data.email.includes('@');

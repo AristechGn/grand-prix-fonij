@@ -56,14 +56,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::get('/utilisateurs', [UserController::class, 'index'])->name('users.index');
-    Route::get('/utilisateurs/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/utilisateurs', [UserController::class, 'store'])->name('users.store');
-    Route::get('/utilisateurs/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/utilisateurs/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::get('/utilisateurs/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::delete('/utilisateurs/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::redirect('/utilisateurs', '/admin/users')->name('users.redirect');
 });
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';

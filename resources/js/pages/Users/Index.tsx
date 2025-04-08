@@ -136,7 +136,7 @@ export default function Users({ users }: UsersPageProps) {
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                     
-                                    <Link href={route('users.create')}>
+                                    <Link href={route('admin.users.create')}>
                                         <Button className="flex items-center bg-green-600 hover:bg-green-700">
                                             <PlusIcon className="h-4 w-4 mr-2" />
                                             Nouvel utilisateur
@@ -246,13 +246,13 @@ export default function Users({ users }: UsersPageProps) {
                                                     </TableCell>
                                                     <TableCell className="text-right">
                                                         <div className="flex justify-end space-x-2">
-                                                            <Link href={route('users.show', user.id)}>
+                                                            <Link href={route('admin.users.show', user.id)}>
                                                                 <Button variant="outline" size="sm" className="h-8 w-8 p-0">
                                                                     <EyeIcon className="h-4 w-4" />
                                                                 </Button>
                                                             </Link>
                                                             
-                                                            <Link href={route('users.edit', user.id)}>
+                                                            <Link href={route('admin.users.edit', user.id)}>
                                                                 <Button variant="outline" size="sm" className="h-8 w-8 p-0">
                                                                     <PencilIcon className="h-4 w-4" />
                                                                 </Button>
@@ -266,13 +266,13 @@ export default function Users({ users }: UsersPageProps) {
                                                                 </DropdownMenuTrigger>
                                                                 <DropdownMenuContent align="end">
                                                                     <DropdownMenuItem asChild>
-                                                                        <Link href={route('users.show', user.id)}>
+                                                                        <Link href={route('admin.users.show', user.id)}>
                                                                             <EyeIcon className="h-4 w-4 mr-2" />
                                                                             Voir le profil
                                                                         </Link>
                                                                     </DropdownMenuItem>
                                                                     <DropdownMenuItem asChild>
-                                                                        <Link href={route('users.edit', user.id)}>
+                                                                        <Link href={route('admin.users.edit', user.id)}>
                                                                             <PencilIcon className="h-4 w-4 mr-2" />
                                                                             Modifier
                                                                         </Link>
@@ -280,7 +280,7 @@ export default function Users({ users }: UsersPageProps) {
                                                                     <DropdownMenuSeparator />
                                                                     <DropdownMenuItem asChild>
                                                                         <Link 
-                                                                            href={route('users.destroy', user.id)} 
+                                                                            href={route('admin.users.destroy', user.id)} 
                                                                             method="delete" 
                                                                             as="button"
                                                                             className="text-red-500 w-full text-left"

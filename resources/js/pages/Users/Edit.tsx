@@ -52,7 +52,7 @@ export default function EditUser({ user }: EditProps) {
 
     const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('users.update', user.id));
+        put(route('admin.users.update', user.id));
     };
 
     const isEmailValid = data.email && data.email.includes('@');

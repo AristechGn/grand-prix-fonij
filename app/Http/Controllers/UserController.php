@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,14 +16,41 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('role', '!=', 'super_admin')
-                      ->where('role', '!=', 'candidate')
-                      ->paginate(10);
+        $search = $request->input('search', '');
+        $role = $request->input('role', 'all');
+        $perPage = $request->input('per_page', 10);
+        
+        $query = User::query()
+            ->where('role', '!=', 'super_admin')
+            ->where('role', '!=', 'candidate');
+            
+        // Filtrage par recherche
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+        
+        // Filtrage par rôle
+        if ($role !== 'all') {
+            $query->where('role', $role);
+        }
+        
+        $users = $query->paginate($perPage)
+                      ->withQueryString();
         
         return Inertia::render('Users/Index', [
-            'users' => $users
+            'users' => $users,
+            'filters' => [
+                'search' => $search,
+                'role' => $role,
+                'perPage' => $perPage
+            ]
         ]);
     }
 
@@ -58,17 +86,15 @@ class UserController extends Controller
         ]);
 
         // Formater la date de naissance si elle existe
-        if (isset($validated['birth_date'])) {
+        if (isset($validated['birth_date']) && !empty($validated['birth_date'])) {
             $validated['birth_date'] = Carbon::parse($validated['birth_date'])->format('Y-m-d');
         }
-
-        $validated['gender'] = $validated['gender'] == 'male' ? 'Homme' : 'Femme';
 
         $validated['password'] = Hash::make($validated['password']);
         
         User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès');
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur créé avec succès');
     }
 
     /**
@@ -79,6 +105,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        // Protection contre l'accès aux utilisateurs super_admin
+        if ($user->role === 'super_admin' && !Auth::user()->isSuperAdmin()) {
+            abort(403, 'Accès non autorisé');
+        }
+        
         return Inertia::render('Users/Show', [
             'user' => $user
         ]);
@@ -92,6 +123,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        // Protection contre l'accès aux utilisateurs super_admin
+        if ($user->role === 'super_admin' && !Auth::user()->isSuperAdmin()) {
+            abort(403, 'Accès non autorisé');
+        }
+        
         return Inertia::render('Users/Edit', [
             'user' => $user
         ]);
@@ -106,6 +142,11 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // Protection contre la modification des utilisateurs super_admin
+        if ($user->role === 'super_admin' && !Auth::user()->isSuperAdmin()) {
+            abort(403, 'Accès non autorisé');
+        }
+        
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -118,11 +159,15 @@ class UserController extends Controller
             'profession' => 'nullable|string|max:255',
         ]);
 
+        // Empêcher un utilisateur de changer son propre rôle
+        if (Auth::id() === $user->id && $user->role !== $validated['role']) {
+            $validated['role'] = $user->role;
+        }
+
         // Formater la date de naissance si elle existe
-        if (isset($validated['birth_date'])) {
+        if (isset($validated['birth_date']) && !empty($validated['birth_date'])) {
             $validated['birth_date'] = Carbon::parse($validated['birth_date'])->format('Y-m-d');
         }
-        $validated['gender'] = $validated['gender'] == 'male' ? 'Homme' : 'Femme';
 
         // Si le mot de passe est fourni, le hacher
         if ($request->filled('password')) {
@@ -134,7 +179,7 @@ class UserController extends Controller
 
         $user->update($validated);
         
-        return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès');
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès');
     }
 
     /**
@@ -145,7 +190,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // Protection contre la suppression des utilisateurs super_admin
+        if ($user->role === 'super_admin') {
+            abort(403, 'Accès non autorisé');
+        }
+        
+        // Empêcher un utilisateur de se supprimer lui-même
+        if (Auth::id() === $user->id) {
+            return redirect()->route('admin.users.index')->with('error', 'Vous ne pouvez pas supprimer votre propre compte');
+        }
+        
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Utilisateur supprimé avec succès');
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur supprimé avec succès');
     }
 }
