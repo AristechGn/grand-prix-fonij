@@ -18,7 +18,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user() || !($request->user()->isAdmin() || $request->user()->isSuperAdmin())) {
-            return redirect()->route('dashboard')->with('error', 'Vous n\'avez pas les droits d\'accès à cette page.');
+            return redirect()->route('home')->with('error', 'Vous n\'avez pas les droits d\'accès à cette page.');
         }
 
         return $next($request);
