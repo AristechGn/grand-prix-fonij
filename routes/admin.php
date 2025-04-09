@@ -1,8 +1,12 @@
 <?php
 
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\PhaseController;
+use App\Http\Controllers\PrizeController;
+use App\Http\Controllers\EditionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +32,13 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class.':admin'])->prefix
     Route::get('/statistiques', function () {
         return Inertia::render('Admin/Statistics');
     })->name('statistics');
+
+    // Gestion des éditions et configurations
+    Route::resource('editions', EditionController::class);
+
+    // Gestion des phases par édition
+    Route::resource('editions.phases', PhaseController::class)->shallow();
+
+    // Gestion des prix par édition
+    Route::resource('editions.prizes', PrizeController::class)->shallow();
 }); 

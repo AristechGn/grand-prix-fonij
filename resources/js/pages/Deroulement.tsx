@@ -483,10 +483,10 @@ export default function Deroulement() {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
                         {stats.map((stat, index) => (
-                            <motion.div
+            <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 className="flex flex-col items-center justify-center text-center"
                             >
@@ -521,7 +521,7 @@ export default function Deroulement() {
                             Le Grand Prix FONIJ vise à identifier, soutenir et accompagner les projets innovants 
                             portés par les jeunes guinéens, pour créer un impact durable sur le développement économique du pays.
                         </p>
-                    </motion.div>
+            </motion.div>
                 </div>
             </div>
 

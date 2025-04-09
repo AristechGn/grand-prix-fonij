@@ -1,10 +1,21 @@
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { 
+    Sidebar, 
+    SidebarContent, 
+    SidebarFooter, 
+    SidebarHeader, 
+    SidebarMenu, 
+    SidebarMenuButton, 
+    SidebarMenuItem,
+    SidebarSeparator,
+    SidebarGroup,
+    SidebarGroupLabel
+} from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, Users, FileText, Settings, Award, ChartBar, CheckCircle, AlertCircle, Shield, Database, Briefcase, MessageSquare, Calendar, CreditCard } from 'lucide-react';
+import { BookOpen, LayoutGrid, Users, FileText, Award, ChartBar, CheckCircle, AlertCircle, Briefcase, Calendar, Clock } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -13,38 +24,44 @@ import AppLogo from './app-logo';
 const adminNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/dashboard',
+        href: '/admin/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Gestion des candidats',
-        href: '/candidats',
+        href: '/admin/candidats',
         icon: Users,
     },
     {
         title: 'Projets soumis',
-        href: '/projets',
+        href: '/admin/projets',
         icon: FileText,
     },
     {
         title: 'Planification des entretiens',
-        href: '/entretiens',
+        href: '/admin/entretiens',
         icon: Calendar,
     },
     {
         title: 'Évaluation des projets',
-        href: '/evaluations',
+        href: '/admin/evaluations',
         icon: CheckCircle,
     },
     {
         title: 'Programmes d\'accompagnement',
-        href: '/programmes',
+        href: '/admin/programmes',
         icon: Award,
     },
     {
-        title: 'Paramètres',
-        href: '/parametres',
-        icon: Settings,
+        title: 'Gestion des éditions',
+        href: '/admin/editions',
+        active: 'admin.editions.*',
+        icon: Calendar,
+    },
+    {
+        title: 'Déroulement',
+        href: '/deroulement',
+        icon: Clock,
     },
 ];
 
@@ -52,48 +69,35 @@ const adminNavItems: NavItem[] = [
 const superAdminNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/dashboard',
+        href: '/admin/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Gestion des utilisateurs',
-        href: '/utilisateurs',
+        href: route('admin.users.index'),
+        active: 'admin.users.*',
         icon: Users,
     },
     {
-        title: 'Gestion des rôles',
-        href: '/roles',
-        icon: Shield,
-    },
-    {
-        title: 'Configuration système',
-        href: '/systeme',
-        icon: Database,
-    },
-    {
         title: 'Statistiques globales',
-        href: '/statistiques',
+        href: '/admin/statistiques',
         icon: ChartBar,
     },
     {
         title: 'Gestion des partenaires',
-        href: '/partenaires',
+        href: '/admin/partenaires',
         icon: Briefcase,
     },
     {
-        title: 'Messagerie',
-        href: '/messages',
-        icon: MessageSquare,
+        title: 'Gestion des éditions',
+        href: '/admin/editions',
+        active: 'admin.editions.*',
+        icon: Calendar,
     },
     {
-        title: 'Financement',
-        href: '/financement',
-        icon: CreditCard,
-    },
-    {
-        title: 'Journal des activités',
-        href: '/logs',
-        icon: AlertCircle,
+        title: 'Déroulement',
+        href: '/deroulement',
+        icon: Clock,
     },
 ];
 
@@ -128,6 +132,11 @@ const juryNavItems: NavItem[] = [
         href: '/programmes',
         icon: Award,
     },
+    {
+        title: 'Déroulement',
+        href: '/deroulement',
+        icon: Clock,
+    },
 ];
 
 const candidatNavItems: NavItem[] = [
@@ -141,7 +150,11 @@ const candidatNavItems: NavItem[] = [
         href: '/projets',
         icon: FileText,
     },
-    
+    {
+        title: 'Déroulement',
+        href: '/deroulement',
+        icon: Clock,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -179,7 +192,7 @@ export function AppSidebar({ userRole = 'user' }: AppSidebarProps) {
 
     return (
         <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+            <SidebarHeader className="p-3">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
@@ -191,12 +204,23 @@ export function AppSidebar({ userRole = 'user' }: AppSidebarProps) {
                 </SidebarMenu>
             </SidebarHeader>
 
+            <SidebarSeparator />
+
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <SidebarGroup>
+                    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+                    <NavMain items={mainNavItems} />
+                </SidebarGroup>
             </SidebarContent>
 
+            <SidebarSeparator />
+
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                <SidebarGroup>
+                    <SidebarGroupLabel>Support</SidebarGroupLabel>
+                    <NavFooter items={footerNavItems} />
+                </SidebarGroup>
+                <SidebarSeparator className="my-2" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

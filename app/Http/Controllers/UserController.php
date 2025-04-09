@@ -81,7 +81,7 @@ class UserController extends Controller
             'role' => 'required|string|in:user,admin,jury',
             'address' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
-            'gender' => 'nullable|string|in:male,female,other',
+            'gender' => 'required|string|in:male,female',
             'profession' => 'nullable|string|max:255',
         ]);
 
@@ -89,6 +89,8 @@ class UserController extends Controller
         if (isset($validated['birth_date']) && !empty($validated['birth_date'])) {
             $validated['birth_date'] = Carbon::parse($validated['birth_date'])->format('Y-m-d');
         }
+
+        $validated['gender'] = $validated['gender'] === 'male' ? 'Homme' : 'Femme';
 
         $validated['password'] = Hash::make($validated['password']);
         
@@ -176,6 +178,8 @@ class UserController extends Controller
             ]);
             $validated['password'] = Hash::make($request->password);
         }
+
+        $validated['gender'] = $validated['gender'] === 'male' ? 'Homme' : 'Femme';
 
         $user->update($validated);
         
