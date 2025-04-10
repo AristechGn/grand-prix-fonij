@@ -139,7 +139,7 @@ export default function Categories() {
             <CategorieHero />
 
             {/* Introduction et présentation */}
-            <div className="bg-gradient-to-b from-[#026200] to-[#024C00] text-white py-12 md:py-20">
+            <div className="bg-gradient-fonij text-background py-12 md:py-20">
                 <div className="container mx-auto px-4 md:px-8">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
@@ -149,7 +149,7 @@ export default function Categories() {
                         className="max-w-3xl mx-auto text-center"
                     >
                         <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Catégories du Grand Prix</h2>
-                        <p className="text-base md:text-xl text-white/80 mb-6 md:mb-8">
+                        <p className="text-base md:text-xl text-background/80 mb-6 md:mb-8">
                             Explorez nos quatre catégories d'excellence et trouvez celle qui correspond le mieux à votre projet innovant pour transformer la Guinée.
                         </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-sm md:max-w-2xl mx-auto">
@@ -160,7 +160,7 @@ export default function Categories() {
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                                    className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl p-3 md:p-4 flex flex-col items-center transition-all duration-300"
+                                    className="bg-background/10 hover:bg-background/20 backdrop-blur-sm rounded-xl p-3 md:p-4 flex flex-col items-center transition-all duration-300"
                                 >
                                     <cat.icon className="w-6 h-6 md:w-8 md:h-8 mb-1 md:mb-2" />
                                     <span className="text-xs md:text-sm text-center font-medium">{cat.title}</span>
@@ -172,7 +172,7 @@ export default function Categories() {
             </div>
 
             {/* Categories Section avec nouveau design */}
-            <div className="py-16 md:py-24 bg-gray-50">
+            <div className="py-16 md:py-24 bg-muted">
                 <div className="container mx-auto px-4 md:px-8">
                     <div className="space-y-20 md:space-y-32">
                         {categories.map((category, index) => (
@@ -190,64 +190,12 @@ export default function Categories() {
                             >
                                 {/* Index number */}
                                 <div className="absolute -top-10 md:-top-16 left-0 md:left-10 z-10">
-                                    <div className={`bg-gradient-to-r ${category.color} w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg`}>
+                                    <div className="bg-gradient-fonij w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-background text-xl md:text-2xl font-bold shadow-lg">
                                         {category.id}
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                                    {/* Image side for mobile (always show at top) */}
-                                    <motion.div 
-                                        variants={{
-                                            hidden: { opacity: 0, y: 20 },
-                                            visible: { 
-                                                opacity: 1, 
-                                                y: 0, 
-                                                transition: { duration: 0.8, delay: 0.2 } 
-                                            }
-                                        }}
-                                        className="relative md:hidden"
-                                    >
-                                        <div className="relative h-[250px] w-full overflow-hidden rounded-2xl shadow-xl">
-                                            <img 
-                                                src={category.image} 
-                                                alt={category.title}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className={`absolute inset-0 bg-gradient-to-tr ${category.color} opacity-20`}></div>
-                                        </div>
-                                        <div className={`absolute top-4 right-4 bg-gradient-to-r ${category.color} rounded-full p-3 shadow-lg`}>
-                                            <category.icon className="h-6 w-6 text-white" />
-                                        </div>
-                                    </motion.div>
-                                    
-                                    {/* Image side for desktop (alternating) */}
-                                    {index % 2 === 0 ? (
-                                        <motion.div 
-                                            variants={{
-                                                hidden: { opacity: 0, x: -50 },
-                                                visible: { 
-                                                    opacity: 1, 
-                                                    x: 0, 
-                                                    transition: { duration: 0.8, delay: 0.2 } 
-                                                }
-                                            }}
-                                            className="relative hidden md:block"
-                                        >
-                                            <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden rounded-2xl shadow-xl">
-                                                <img 
-                                                    src={category.image} 
-                                                    alt={category.title}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                                <div className={`absolute inset-0 bg-gradient-to-tr ${category.color} opacity-20`}></div>
-                                            </div>
-                                            <div className={`absolute top-6 left-6 bg-gradient-to-r ${category.color} rounded-full p-4 shadow-lg`}>
-                                                <category.icon className="h-8 w-8 text-white" />
-                                            </div>
-                                        </motion.div>
-                                    ) : null}
-
                                     {/* Content side */}
                                     <motion.div 
                                         variants={{
@@ -260,28 +208,28 @@ export default function Categories() {
                                         }}
                                         className="space-y-4 md:space-y-6 mt-4 md:mt-0"
                                     >
-                                        <h2 className={`text-2xl md:text-4xl font-bold ${category.textColor}`}>
+                                        <h2 className="text-2xl md:text-4xl font-bold text-primary">
                                             {category.title}
                                         </h2>
-                                        <p className="text-base md:text-xl text-gray-600 text-justify">
+                                        <p className="text-base md:text-xl text-muted-foreground text-justify">
                                             {category.description}
                                         </p>
                                         
                                         {/* Tabs for details */}
                                         <div className="mt-4 md:mt-8 space-y-4 md:space-y-6">
-                                            <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                                            <div className="bg-background rounded-xl shadow-md overflow-hidden">
                                                 <div className="p-4 md:p-6">
-                                                    <h3 className="text-base md:text-lg font-semibold text-gray-900 flex items-center mb-3 md:mb-4">
-                                                        <span className={`w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-to-r ${category.color} flex items-center justify-center`}>
-                                                            <Check className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                                                    <h3 className="text-base md:text-lg font-semibold text-foreground flex items-center mb-3 md:mb-4">
+                                                        <span className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-fonij flex items-center justify-center">
+                                                            <Check className="w-4 h-4 md:w-5 md:h-5 text-background" />
                                                         </span>
                                                         Critères d'évaluation
                                                     </h3>
                                                     <ul className="space-y-1 md:space-y-2">
                                                         {category.criteria.map((criterion, i) => (
                                                             <li key={i} className="flex items-start">
-                                                                <span className={`text-base md:text-lg ${category.textColor} mr-2`}>•</span>
-                                                                <span className="text-sm md:text-base text-gray-700">{criterion}</span>
+                                                                <span className="text-base md:text-lg text-primary mr-2">•</span>
+                                                                <span className="text-sm md:text-base text-muted-foreground">{criterion}</span>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -289,38 +237,38 @@ export default function Categories() {
                                             </div>
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                                                <div className="bg-background rounded-xl shadow-md overflow-hidden">
                                                     <div className="p-4 md:p-6">
-                                                        <h3 className="text-base md:text-lg font-semibold text-gray-900 flex items-center mb-3 md:mb-4">
-                                                            <span className={`w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-to-r ${category.color} flex items-center justify-center`}>
-                                                                <Check className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                                                        <h3 className="text-base md:text-lg font-semibold text-foreground flex items-center mb-3 md:mb-4">
+                                                            <span className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-fonij flex items-center justify-center">
+                                                                <Check className="w-4 h-4 md:w-5 md:h-5 text-background" />
                                                             </span>
                                                             Avantages
                                                         </h3>
                                                         <ul className="space-y-1 md:space-y-2">
                                                             {category.benefits.map((benefit, i) => (
                                                                 <li key={i} className="flex items-start">
-                                                                    <span className={`text-base md:text-lg ${category.textColor} mr-2`}>•</span>
-                                                                    <span className="text-sm md:text-base text-gray-700">{benefit}</span>
+                                                                    <span className="text-base md:text-lg text-primary mr-2">•</span>
+                                                                    <span className="text-sm md:text-base text-muted-foreground">{benefit}</span>
                                                                 </li>
                                                             ))}
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                                                <div className="bg-background rounded-xl shadow-md overflow-hidden">
                                                     <div className="p-4 md:p-6">
-                                                        <h3 className="text-base md:text-lg font-semibold text-gray-900 flex items-center mb-3 md:mb-4">
-                                                            <span className={`w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-to-r ${category.color} flex items-center justify-center`}>
-                                                                <Check className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                                                        <h3 className="text-base md:text-lg font-semibold text-foreground flex items-center mb-3 md:mb-4">
+                                                            <span className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-fonij flex items-center justify-center">
+                                                                <Check className="w-4 h-4 md:w-5 md:h-5 text-background" />
                                                             </span>
                                                             Conditions requises
                                                         </h3>
                                                         <ul className="space-y-1 md:space-y-2">
                                                             {category.requirements.map((requirement, i) => (
                                                                 <li key={i} className="flex items-start">
-                                                                    <span className={`text-base md:text-lg ${category.textColor} mr-2`}>•</span>
-                                                                    <span className="text-sm md:text-base text-gray-700">{requirement}</span>
+                                                                    <span className="text-base md:text-lg text-primary mr-2">•</span>
+                                                                    <span className="text-sm md:text-base text-muted-foreground">{requirement}</span>
                                                                 </li>
                                                             ))}
                                                         </ul>
@@ -331,45 +279,43 @@ export default function Categories() {
                                         
                                         {/* CTA */}
                                         <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                                            <div className="text-xs md:text-sm text-gray-500">
-                                                Date limite : <span className="font-semibold text-gray-700">15 septembre 2025</span>
+                                            <div className="text-xs md:text-sm text-muted-foreground">
+                                                Date limite : <span className="font-semibold text-foreground">15 septembre 2025</span>
                                             </div>
                                             <Link
                                                 href={`/candidater?category=${category.id}`}
-                                                className={`inline-flex items-center px-4 md:px-5 py-2 md:py-3 bg-gradient-to-r ${category.color} text-white font-medium rounded-full w-full sm:w-auto justify-center sm:justify-start hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}
+                                                className="inline-flex items-center px-4 md:px-5 py-2 md:py-3 bg-gradient-fonij text-background font-medium rounded-full w-full sm:w-auto justify-center sm:justify-start hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                                             >
                                                 Candidater
                                                 <ChevronRight className="ml-2 h-4 w-4" />
                                             </Link>
                                         </div>
                                     </motion.div>
-                                    
-                                    {/* Image side for odd indexes (desktop only) */}
-                                    {index % 2 !== 0 ? (
-                                        <motion.div 
-                                            variants={{
-                                                hidden: { opacity: 0, x: 50 },
-                                                visible: { 
-                                                    opacity: 1, 
-                                                    x: 0, 
-                                                    transition: { duration: 0.8, delay: 0.2 } 
-                                                }
-                                            }}
-                                            className="relative hidden md:block"
-                                        >
-                                            <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden rounded-2xl shadow-xl">
-                                                <img 
-                                                    src={category.image} 
-                                                    alt={category.title}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                                <div className={`absolute inset-0 bg-gradient-to-tr ${category.color} opacity-20`}></div>
-                                            </div>
-                                            <div className={`absolute top-6 right-6 bg-gradient-to-r ${category.color} rounded-full p-4 shadow-lg`}>
-                                                <category.icon className="h-8 w-8 text-white" />
-                                            </div>
-                                        </motion.div>
-                                    ) : null}
+
+                                    {/* Image side */}
+                                    <motion.div 
+                                        variants={{
+                                            hidden: { opacity: 0, x: index % 2 === 0 ? -50 : 50 },
+                                            visible: { 
+                                                opacity: 1, 
+                                                x: 0, 
+                                                transition: { duration: 0.8, delay: 0.2 } 
+                                            }
+                                        }}
+                                        className={`relative ${index % 2 === 0 ? 'md:order-first' : 'md:order-last'}`}
+                                    >
+                                        <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden rounded-2xl shadow-xl">
+                                            <img 
+                                                src={category.image} 
+                                                alt={category.title}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-fonij opacity-20"></div>
+                                        </div>
+                                        <div className="absolute top-6 right-6 bg-gradient-fonij rounded-full p-4 shadow-lg">
+                                            <category.icon className="h-8 w-8 text-background" />
+                                        </div>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         ))}
@@ -383,47 +329,49 @@ export default function Categories() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="relative bg-gradient-to-r from-[#026200] to-emerald-600 py-16 overflow-hidden"
+                className="relative bg-gradient-fonij py-16 overflow-hidden text-white"
             >
+                
                 {/* Éléments décoratifs */}
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full"></div>
-                    <div className="absolute bottom-0 left-10 w-32 h-32 bg-white/10 rounded-full"></div>
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/30 rounded-full"></div>
+                    <div className="absolute top-20 left-90 w-64 h-64 bg-yellow-400/50 rounded-full"></div>
+                    <div className="absolute bottom-0 left-10 w-32 h-32 bg-white/30 rounded-full"></div>
                 </div>
                 
                 <div className="container mx-auto px-4 md:px-8 relative z-10">
-                    <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20 shadow-xl">
+                    <div className="max-w-5xl mx-auto bg-background/50 backdrop-blur-xl rounded-2xl p-8 md:p-12 border border-background/20 shadow-xl">
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
                             <div className="md:col-span-3 space-y-4">
-                                <h2 className="text-2xl md:text-4xl font-bold text-white leading-tight">
+                                <h2 className="text-2xl md:text-4xl font-bold text-background leading-tight">
                                     Gagnez et bénéficiez de nos programmes d'accompagnement
                                 </h2>
-                                <p className="text-white/80 text-base md:text-lg">
+                                <p className="text-background/80 text-base md:text-lg">
                                     Les lauréats du Grand Prix FONIJ bénéficient de programmes d'accompagnement exclusifs et personnalisés pour transformer leur projet en entreprise prospère et durable.
                                 </p>
                             </div>
                             <div className="md:col-span-2 flex flex-col items-start space-y-4">
-                                <div className="flex items-center text-white">
-                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 mr-3">
-                                        <Check className="w-4 h-4 text-white" />
+                                <div className="flex items-center text-background">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-background/20 mr-3">
+                                        <Check className="w-4 h-4 text-background" />
                                     </div>
                                     <span>Mentorat personnalisé par des experts</span>
                                 </div>
-                                <div className="flex items-center text-white">
-                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 mr-3">
-                                        <Check className="w-4 h-4 text-white" />
+                                <div className="flex items-center text-background">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-background/20 mr-3">
+                                        <Check className="w-4 h-4 text-background" />
                                     </div>
                                     <span>Financement et formation spécialisée</span>
                                 </div>
-                                <div className="flex items-center text-white">
-                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 mr-3">
-                                        <Check className="w-4 h-4 text-white" />
+                                <div className="flex items-center text-background">
+                                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-background/20 mr-3">
+                                        <Check className="w-4 h-4 text-background" />
                                     </div>
                                     <span>Intégration à notre réseau d'excellence</span>
                                 </div>
                                 <Link
                                     href={route('programmes')}
-                                    className="mt-6 inline-flex items-center px-6 py-4 bg-white text-emerald-700 font-medium rounded-xl hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-xl w-full justify-center"
+                                    className="mt-6 inline-flex items-center px-6 py-4 bg-background text-primary font-medium rounded-xl hover:bg-background/90 transition-all duration-300 shadow-lg hover:shadow-xl w-full justify-center"
                                 >
                                     Découvrir les avantages des lauréats
                                     <ChevronRight className="ml-2 h-5 w-5" />

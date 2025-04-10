@@ -2,14 +2,14 @@ import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
 import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 
 export default function Home() {
     // Dates configurables
     const dateEvenement = new Date('April 30, 2025 09:00:00');
     const dateFinalEvenement = new Date('July 31, 2025 18:00:00');
-    const dateFinInscriptions = new Date('April 23, 2025 00:00:00');
+    const dateFinInscriptions = useMemo(() => new Date('April 23, 2025 00:00:00'), []);
     
     // État pour le compteur
     const [timeLeft, setTimeLeft] = useState({
@@ -46,7 +46,7 @@ export default function Home() {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [dateFinInscriptions]);
 
     // Animation variants
     const fadeInUp = {
@@ -57,7 +57,7 @@ export default function Home() {
     return (
         <MainLayout>
             {/* Hero Section améliorée pour afficher l'image exactement comme la référence */}
-            <div className="w-full bg-emerald-500 flex justify-center items-center">
+            <div className="w-full bg-primary flex justify-center items-center">
                 <div className="w-full max-h-screen overflow-hidden justify-center mx-auto items-center">
                     <img 
                         src="/images/fonij/cover.jpg"
@@ -69,23 +69,23 @@ export default function Home() {
 
             {/* Bande d'infos */}
             <div className="relative z-20 mx-4 sm:mx-8 lg:mx-auto max-w-7xl">
-                <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-xl hover:from-emerald-700 hover:to-emerald-600 shadow-xl transition-all duration-300 py-4 text-white">
+                <div className="bg-gradient-fonij rounded-xl hover:bg-primary/90 shadow-xl transition-all duration-300 py-4 text-background">
                     <div className="px-4 sm:px-6 lg:px-8">
                         <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
                             <div className="flex items-center space-x-2">
-                                <Calendar className="h-5 w-5 text-emerald-300" />
+                                <Calendar className="h-5 w-5 text-primary-light" />
                                 <span>Du {dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <MapPin className="h-5 w-5 text-emerald-300" />
+                                <MapPin className="h-5 w-5 text-primary-light" />
                                 <span>Conakry, Guinée</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Users className="h-5 w-5 text-emerald-300" />
+                                <Users className="h-5 w-5 text-primary-light" />
                                 <span>+1000 Participants</span>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Trophy className="h-5 w-5 text-emerald-300" />
+                                <Trophy className="h-5 w-5 text-primary-light" />
                                 <span>5 Prix Majeurs</span>
                             </div>
                         </div>
@@ -94,7 +94,7 @@ export default function Home() {
             </div>
 
             {/* Section SIMANDOU */}
-            <section className="py-16 bg-gradient-to-r from-green-800 to-gray-900">
+            <section className="py-16 bg-gradient-to-r from-primary-dark to-gray-900">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col items-center justify-center">
                         <div className="relative w-full max-w-4xl animate-[pulse_4s_ease-in-out_infinite]">
@@ -121,39 +121,39 @@ export default function Home() {
                                 viewport={{ once: true }}
                                 variants={fadeInUp}
                             >
-                                <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
+                                <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
                                     ÉDITION 2025
                                 </div>
-                                <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                                    Rejoignez le mouvement de <span className="text-emerald-600">l'innovation entrepreneuriale</span> en Guinée
+                                <h2 className="text-4xl font-bold text-foreground mb-6 leading-tight">
+                                    Rejoignez le mouvement de <span className="text-primary">l'innovation entrepreneuriale</span> en Guinée
                                 </h2>
-                                <div className="w-24 h-1 bg-emerald-500 mb-8"></div>
-                                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                                <div className="w-24 h-1 bg-primary mb-8"></div>
+                                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
                                     Le Grand Prix FONIJ est le rendez-vous incontournable de l'entrepreneuriat jeune en Guinée.
                                     Initié par le Fonds National pour l'Insertion des Jeunes (FONIJ), cet événement distingue et
                                     récompense les initiatives exceptionnelles pour la promotion de l'esprit d'entreprise.
                                 </p>
-                                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                                     Notre objectif est de rassembler les jeunes entrepreneurs, les investisseurs et les décideurs
                                     politiques pour discuter des dernières tendances en matière d'innovation et de développement économique.
                                 </p>
                                 <div className="flex flex-wrap gap-6">
                                     <div className="flex items-center">
-                                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mr-4">
+                                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mr-4">
                                             <MapPin className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <h4 className="font-semibold text-gray-900">Lieu</h4>
-                                            <p className="text-gray-600">Conakry, Guinée</p>
+                                            <h4 className="font-semibold text-foreground">Lieu</h4>
+                                            <p className="text-primary-light">Conakry, Guinée</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center">
-                                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mr-4">
+                                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mr-4">
                                             <Calendar className="w-5 h-5" />
                                         </div>
                                         <div>
-                                            <h4 className="font-semibold text-gray-900">Date</h4>
-                                            <p className="text-gray-600">Du {dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                            <h4 className="font-semibold text-foreground">Date</h4>
+                                            <p className="text-primary-light">Du {dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -168,37 +168,37 @@ export default function Home() {
                             variants={fadeInUp}
                             className="relative"
                         >
-                            <div className="absolute -top-20 -right-20 w-64 h-64 bg-emerald-100 rounded-full opacity-30"></div>
-                            <div className="bg-white rounded-2xl shadow-2xl border border-emerald-100 p-10 relative">
-                                <h3 className="text-3xl font-bold text-gray-900 mb-8">Fin des inscriptions dans</h3>
-                                <p className="text-base text-gray-600 mb-6">Jusqu'au {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                            <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full opacity-30"></div>
+                            <div className="bg-white rounded-2xl shadow-2xl border border-primary/10 p-10 relative">
+                                <h3 className="text-3xl font-bold text-foreground mb-8">Fin des inscriptions dans</h3>
+                                <p className="text-base text-muted-foreground mb-6">Jusqu'au {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                 <div className="grid grid-cols-4 gap-4">
-                                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl shadow text-center">
-                                        <div className="text-4xl font-bold text-emerald-700">{timeLeft.days.toString().padStart(2, '0')}</div>
-                                        <div className="text-xs font-medium text-emerald-900 mt-2">Jours</div>
+                                    <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-4 rounded-xl shadow text-center">
+                                        <div className="text-4xl font-bold text-primary">{timeLeft.days.toString().padStart(2, '0')}</div>
+                                        <div className="text-xs font-medium text-primary-dark mt-2">Jours</div>
                                     </div>
-                                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl shadow text-center">
-                                        <div className="text-4xl font-bold text-emerald-700">{timeLeft.hours.toString().padStart(2, '0')}</div>
-                                        <div className="text-xs font-medium text-emerald-900 mt-2">Heures</div>
+                                    <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-4 rounded-xl shadow text-center">
+                                        <div className="text-4xl font-bold text-primary">{timeLeft.hours.toString().padStart(2, '0')}</div>
+                                        <div className="text-xs font-medium text-primary-dark mt-2">Heures</div>
                                     </div>
-                                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl shadow text-center">
-                                        <div className="text-4xl font-bold text-emerald-700">{timeLeft.minutes.toString().padStart(2, '0')}</div>
-                                        <div className="text-xs font-medium text-emerald-900 mt-2">Minutes</div>
+                                    <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-4 rounded-xl shadow text-center">
+                                        <div className="text-4xl font-bold text-primary">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+                                        <div className="text-xs font-medium text-primary-dark mt-2">Minutes</div>
                                     </div>
-                                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl shadow text-center">
-                                        <div className="text-4xl font-bold text-emerald-700">{timeLeft.seconds.toString().padStart(2, '0')}</div>
-                                        <div className="text-xs font-medium text-emerald-900 mt-2">Secondes</div>
+                                    <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-4 rounded-xl shadow text-center">
+                                        <div className="text-4xl font-bold text-primary">{timeLeft.seconds.toString().padStart(2, '0')}</div>
+                                        <div className="text-xs font-medium text-primary-dark mt-2">Secondes</div>
                                     </div>
                                 </div>
                                 <div className="mt-10 flex justify-center">
                                     <a
                                         href={route('candidater')}
-                                        className="inline-flex items-center justify-center px-6 py-4 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-800 transition-all duration-300 shadow-lg hover:shadow-xl w-full"
+                                        className="inline-flex items-center justify-center px-6 py-4 bg-primary text-background font-medium rounded-xl hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl w-full"
                                     >
                                         S'inscrire maintenant
                                     </a>
                                 </div>
-                                <div className="mt-6 text-center text-sm text-gray-500">
+                                <div className="mt-6 text-center text-sm text-muted-foreground">
                                     Vous pouvez vous inscrire avant la fin du compte à rebours
                                 </div>
                             </div>
@@ -207,14 +207,14 @@ export default function Home() {
                 </div>
                 {/* Éléments décoratifs */}
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute -top-10 -right-10 w-80 h-80 bg-emerald-500 opacity-5 rounded-full"></div>
-                    <div className="absolute top-40 left-10 w-40 h-40 bg-emerald-700 opacity-5 rounded-full"></div>
-                    <div className="absolute bottom-20 right-20 w-60 h-60 bg-emerald-300 opacity-5 rounded-full"></div>
+                    <div className="absolute -top-10 -right-10 w-80 h-80 bg-primary opacity-5 rounded-full"></div>
+                    <div className="absolute top-40 left-10 w-40 h-40 bg-primary-dark opacity-5 rounded-full"></div>
+                    <div className="absolute bottom-20 right-20 w-60 h-60 bg-primary-light opacity-5 rounded-full"></div>
                 </div>
             </div>
 
             {/* Section Catégories du Concours - design modernisé inspiré de GFW */}
-            <div className="py-24 bg-gradient-to-b from-white to-emerald-50 relative overflow-hidden">
+            <div className="py-24 bg-gradient-to-b from-white to-primary relative overflow-hidden">
                 <div className="absolute top-20 inset-x-0 h-90 bg-[url('https://img.freepik.com/free-vector/hand-drawn-abstract-outline-background_23-2150715642.jpg?t=st=1742300857~exp=1742304457~hmac=bccdd6664f4e76a1cda416c6cd11ee5497723564fc2afe1818ac23ff1ddd305a&w=1380')] bg-repeat-x opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <motion.div
@@ -224,14 +224,14 @@ export default function Home() {
                         variants={fadeInUp}
                         className="text-center mb-16"
                     >
-                        <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
+                        <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
                             PARTICIPEZ AU CONCOURS
                         </div>
-                        <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                        <h2 className="text-4xl font-bold text-foreground mb-6">
                             Catégories du Grand Prix
                         </h2>
-                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
-                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                             Découvrez les différentes catégories pour lesquelles vous pouvez candidater
                             et montrer votre talent entrepreneurial
                         </p>
@@ -247,7 +247,7 @@ export default function Home() {
                                     "Innovation dans le secteur",
                                     "Impact communautaire"
                                 ],
-                                color: "from-green-400 to-emerald-600"
+                                color: "from-green-400 to-primary"
                             },
                             {
                                 title: "Éducation aux compétences",
@@ -299,22 +299,22 @@ export default function Home() {
                                     }
                                 }}
                             >
-                                <div className={`h-2 bg-gradient-to-r ${category.color}`}></div>
+                                <div className={`h-2 bg-gradient-fonij`}></div>
                                 <div className="p-8">
-                                    <div className="bg-emerald-100 p-4 rounded-xl inline-flex items-center justify-center w-16 h-16 mb-6">
-                                        <category.icon className="h-8 w-8 text-emerald-600" />
+                                    <div className="bg-primary/10 p-4 rounded-xl inline-flex items-center justify-center w-16 h-16 mb-6">
+                                        <category.icon className="h-8 w-8 text-primary" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-4">{category.title}</h3>
-                                    <p className="text-gray-600 mb-6">{category.description}</p>
+                                    <h3 className="text-xl font-bold text-foreground mb-4">{category.title}</h3>
+                                    <p className="text-muted-foreground mb-6">{category.description}</p>
                                     <div className="space-y-3 mb-8">
                                         {category.criteria.map((criterion, i) => (
                                             <div key={i} className="flex items-start">
-                                                <CheckCircle className="h-5 w-5 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" />
-                                                <span className="text-gray-700">{criterion}</span>
+                                                <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                                                <span className="text-foreground">{criterion}</span>
                                             </div>
                                         ))}
                                     </div>
-                                    <Link href={`/categories/${index + 1}`} className="inline-flex items-center px-5 py-2.5 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 transition-colors font-medium">
+                                    <Link href={`/categories/${index + 1}`} className="inline-flex items-center px-5 py-2.5 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors font-medium">
                                         En savoir plus
                                         <ChevronRight className="h-4 w-4 ml-1" />
                                     </Link>
@@ -336,14 +336,14 @@ export default function Home() {
                         variants={fadeInUp}
                         className="text-center mb-16"
                     >
-                        <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
+                        <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
                             ILS NOUS SOUTIENNENT
                         </div>
-                        <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                        <h2 className="text-4xl font-bold text-foreground mb-6">
                             Nos Partenaires
                         </h2>
-                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
-                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                             Le Grand Prix FONIJ est soutenu par des organisations prestigieuses
                             qui partagent notre vision de l'entrepreneuriat en Guinée
                         </p>
@@ -369,7 +369,7 @@ export default function Home() {
                         ))}
                     </div>
                     {/* <div className="text-center mt-10">
-                        <Link href="/sponsors" className="inline-flex items-center text-emerald-600 font-medium hover:text-emerald-700">
+                        <Link href="/sponsors" className="inline-flex items-center text-primary font-medium hover:text-primary-dark">
                             Voir tous nos partenaires
                             <ChevronRight className="h-4 w-4 ml-1" />
                         </Link>
@@ -388,14 +388,14 @@ export default function Home() {
                         variants={fadeInUp}
                         className="text-center mb-16"
                     >
-                        <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
+                        <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
                             PANEL D'EXPERTS
                         </div>
-                        <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                        <h2 className="text-4xl font-bold text-foreground mb-6">
                             Membres du Jury
                         </h2>
-                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
-                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                             Un panel d'experts reconnus pour évaluer les projets entrepreneuriaux
                             et sélectionner les plus innovants
                         </p>
@@ -425,24 +425,24 @@ export default function Home() {
                                         className="w-full h-full object-cover object-center transition-transform duration-500 transform hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                                        <div className="p-6 text-white">
+                                        <div className="p-6 text-foreground">
                                             <h3 className="font-bold text-xl mb-1">{item.nom_complet}</h3>
-                                            <p className="text-emerald-300 font-medium text-sm">{item.post}</p>
+                                            <p className="text-primary-light font-medium text-sm">{item.post}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="p-6">
-                                    <p className="text-gray-600 mb-4">{item.description}</p>
+                                    <p className="text-muted-foreground mb-4">{item.description}</p>
                                     <div className="flex items-center justify-between">
-                                        <p className="text-gray-500 text-sm">{item.countrie}</p>
+                                        <p className="text-primary-light text-sm">{item.countrie}</p>
                                         <div className="flex">
-                                            <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mr-2">
-                                                <svg className="h-4 w-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-2">
+                                                <svg className="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z" />
                                                 </svg>
                                             </div>
-                                            <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                                                <svg className="h-4 w-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                                <svg className="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                                                 </svg>
                                             </div>
@@ -466,21 +466,21 @@ export default function Home() {
                         variants={fadeInUp}
                         className="text-center mb-16"
                     >
-                        <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm font-medium mb-6">
+                        <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
                             PROGRAMME
                         </div>
-                        <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                        <h2 className="text-4xl font-bold text-foreground mb-6">
                             Agenda Grand Prix FONIJ 2025
                         </h2>
-                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
-                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                             Découvrez le programme complet de l'événement sur deux jours
                         </p>
                     </motion.div>
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                         <div className="flex border-b">
-                            <button className="flex-1 py-5 font-medium text-center bg-emerald-600 text-white">JOUR 1</button>
-                            <button className="flex-1 py-5 font-medium text-center text-gray-600 hover:bg-gray-50">JOUR 2</button>
+                            <button className="flex-1 py-5 font-medium text-center bg-primary text-background">JOUR 1</button>
+                            <button className="flex-1 py-5 font-medium text-center text-muted-foreground hover:bg-muted">JOUR 2</button>
                         </div>
                         <div className="p-8">
                             {[
@@ -492,8 +492,8 @@ export default function Home() {
                                 { time: "12h00 - 13h00", event: "Pause Déjeuner Visite Officielle des Stands", description: "Pause déjeuner et visite des stands des partenaires" },
                             ].map((item, index) => (
                                 <div key={index} className="flex py-4 border-b border-gray-100 last:border-0">
-                                    <div className="w-36 font-medium text-emerald-600">{item.time}</div>
-                                    <div className="flex-1 text-gray-800">{item.event}</div>
+                                    <div className="w-36 font-medium text-primary">{item.time}</div>
+                                    <div className="flex-1 text-foreground">{item.event}</div>
                                 </div>
                             ))}
                         </div>
@@ -505,11 +505,11 @@ export default function Home() {
             <div className="py-20 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
+                        <h2 className="text-3xl font-bold text-foreground sm:text-4xl mb-4">
                             Programme d'Accélération
                         </h2>
-                        <div className="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
-                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+                        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                             Un accompagnement complet en trois phases pour assurer le succès de votre projet entrepreneurial
                         </p>
                     </div>
@@ -539,27 +539,27 @@ export default function Home() {
                                 className="bg-white rounded-xl shadow-lg p-8 relative"
                                 whileHover={{ y: -10 }}
                             >
-                                <div className="absolute top-4 right-4 bg-emerald-100 text-emerald-600 rounded-full w-8 h-8 flex items-center justify-center font-bold">
+                                <div className="absolute top-4 right-4 bg-primary/10 text-primary rounded-full w-8 h-8 flex items-center justify-center font-bold">
                                     {index + 1}
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                                    <span className="text-emerald-500">{phase.title}</span>
+                                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
+                                    <span className="text-primary">{phase.title}</span>
                                 </h3>
-                                <div className="flex items-center mb-4 text-sm text-emerald-600">
+                                <div className="flex items-center mb-4 text-sm text-primary-dark">
                                     <Clock className="h-4 w-4 mr-1" />
                                     <span>Durée : {phase.duration}</span>
                                 </div>
-                                <p className="text-gray-600 mb-6">{phase.description}</p>
+                                <p className="text-muted-foreground mb-6">{phase.description}</p>
                                 <ul className="space-y-2 mb-6">
                                     {phase.steps.map((step, i) => (
                                         <li key={i} className="flex items-start">
-                                            <CheckCircle className="h-5 w-5 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" />
-                                            <span className="text-gray-700">{step}</span>
+                                            <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                                            <span className="text-foreground">{step}</span>
                                         </li>
                                     ))}
                                 </ul>
                                 <div className="pt-4 border-t border-gray-100">
-                                    <Link href={`/acceleration/${index + 1}`} className="inline-flex items-center text-emerald-600 hover:text-emerald-700">
+                                    <Link href={`/acceleration/${index + 1}`} className="inline-flex items-center text-primary hover:text-primary-dark">
                                         Détails du programme
                                         <ChevronRight className="h-4 w-4 ml-1" />
                                     </Link>
@@ -582,15 +582,15 @@ export default function Home() {
                         ].map((stat, index) => (
                             <motion.div
                                 key={index}
-                                className="bg-emerald-50 p-6 rounded-xl text-center"
+                                className="bg-primary/10 p-6 rounded-xl text-center"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                             >
-                                <div className="w-12 h-12 mx-auto mb-4 bg-emerald-100 rounded-full flex items-center justify-center">
-                                    <stat.icon className="h-6 w-6 text-emerald-600" />
+                                <div className="w-12 h-12 mx-auto mb-4 bg-primary rounded-full flex items-center justify-center">
+                                    <stat.icon className="h-6 w-6 text-primary" />
                                 </div>
-                                <div className="text-4xl font-bold text-emerald-600">{stat.value}</div>
-                                <div className="text-sm text-gray-600 mt-2">{stat.label}</div>
+                                <div className="text-4xl font-bold text-primary">{stat.value}</div>
+                                <div className="text-sm text-primary-dark mt-2">{stat.label}</div>
                             </motion.div>
                         ))}
                     </div>
@@ -598,27 +598,36 @@ export default function Home() {
             </div>
 
             {/* Section CTA - avec le style GFW */}
-            <div className="relative bg-emerald-600 py-20">
-                <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:16px_16px]" />
+            <div className="relative bg-primary py-20">
+                
+                
+                {/* Éléments décoratifs */}
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/30 rounded-full"></div>
+                    <div className="absolute top-20 left-90 w-64 h-64 bg-white/30 rounded-full"></div>
+                    <div className="absolute bottom-0 left-10 w-32 h-32 bg-white/30 rounded-full"></div>
+                </div>
+                
+                <div className="absolute inset-0 bg-grid-white/[0.5] bg-[length:16px_16px]" />
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-white sm:text-4xl mb-6">
                             Prêt à participer au Grand Prix FONIJ ?
                         </h2>
-                        <p className="text-lg text-emerald-100 max-w-2xl mx-auto mb-10">
+                        <p className="text-lg text-gray-100 max-w-2xl mx-auto mb-10">
                             Rejoignez la communauté des entrepreneurs innovants et contribuez au développement de la Guinée.
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                             <Link
                                 href="/candidater"
-                                className="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-emerald-600 bg-white hover:bg-emerald-50 transition-all duration-300 shadow-lg hover:shadow-xl"
+                                className="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-primary bg-background hover:bg-primary/10 transition-all duration-300 shadow-lg hover:shadow-xl"
                             >
                                 Déposer ma candidature
                                 <ChevronRight className="ml-2 h-5 w-5" />
                             </Link>
                             <Link
                                 href="/contact"
-                                className="inline-flex items-center px-8 py-4 border border-white text-lg font-medium rounded-xl text-white hover:bg-white/10 transition-all duration-300"
+                                className="inline-flex items-center px-8 py-4 border border-background text-lg font-medium rounded-xl text-background hover:bg-background/10 transition-all duration-300"
                             >
                                 Nous contacter
                             </Link>

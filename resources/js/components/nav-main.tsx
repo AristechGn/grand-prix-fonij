@@ -44,7 +44,7 @@ export function NavMain({ items, className }: NavMainProps) {
             <SidebarMenuButton 
               asChild
               tooltip={item.title}
-              className={active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : ""}
+              className={active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : "text-foreground hover:text-primary-900"}
             >
               <Link href={item.href}>
                 {item.icon && <item.icon className="mr-2 h-4 w-4" />}
