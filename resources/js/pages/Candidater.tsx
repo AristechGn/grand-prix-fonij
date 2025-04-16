@@ -69,7 +69,7 @@ const regions = [
 
 // Style commun pour les inputs et selects
 const inputClass = "w-full px-4 py-2 border border-primary/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background shadow-sm text-foreground";
-const selectClass = "w-full px-4 py-2 border border-primary/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background shadow-sm text-foreground";
+// const selectClass = "w-full px-4 py-2 border border-primary/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background shadow-sm text-foreground";
 const textareaClass = "w-full px-4 py-2 border border-primary/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background shadow-sm text-foreground";
 
 interface Edition {
@@ -272,7 +272,7 @@ export default function Candidater({ edition }: CandidaterProps) {
         }
         
         // Mémoriser la position de défilement actuelle
-        const currentScrollPosition = window.scrollY;
+        // const currentScrollPosition = window.scrollY;
         
         setCurrentStep(current => Math.min(current + 1, totalSteps));
         
@@ -289,7 +289,7 @@ export default function Candidater({ edition }: CandidaterProps) {
 
     const goToPreviousStep = () => {
         // Mémoriser la position de défilement actuelle
-        const currentScrollPosition = window.scrollY;
+        // const currentScrollPosition = window.scrollY;
         
         setCurrentStep(current => Math.max(current - 1, 1));
         
