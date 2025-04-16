@@ -22,34 +22,27 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/init', [RegisteredUserController::class, 'init'])->name('app.init');
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/', [WelcomeController::class, 'home'])->name('home');
 
-Route::get('/categories', function () {
-    return Inertia::render('Categories');
-})->name('categories');
+Route::get('/categories', [WelcomeController::class, 'categories'])->name('categories');
 
-Route::get('/accompagnement', function () {
-    return Inertia::render('Programmes');
-})->name('programmes');
+Route::get('/accompagnement', [WelcomeController::class, 'accompagnement'])->name('programmes');
 
-Route::get('/deroulement', function () {
-    return Inertia::render('Deroulement');
-})->name('deroulement');
+Route::get('/deroulement', [WelcomeController::class, 'deroulement'])->name('deroulement');
 
-Route::get('/actualites', function () {
-    return Inertia::render('Actualites');
-})->name('actualites');
+Route::get('/actualites', [WelcomeController::class, 'actualites'])->name('actualites');
 
-Route::get('/candidater', function () {
-    return Inertia::render('Candidater');
-})->name('candidater');
+Route::get('/candidater', [WelcomeController::class, 'candidater'])->name('candidater');
+
+Route::get('/a-propos', [WelcomeController::class, 'about'])->name('about.index');
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

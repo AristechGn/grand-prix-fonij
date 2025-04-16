@@ -4,12 +4,26 @@ import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Cal
 import { motion } from 'framer-motion';
 import { useEffect, useState, useMemo } from 'react';
 
+interface EditionProps {
+    name: string;
+    year: number;
+    startDate: string;
+    endDate: string;
+    registrationDeadline: string;
+}
 
-export default function Home() {
-    // Dates configurables
-    const dateEvenement = new Date('April 30, 2025 09:00:00');
-    const dateFinalEvenement = new Date('July 31, 2025 18:00:00');
-    const dateFinInscriptions = useMemo(() => new Date('April 23, 2025 00:00:00'), []);
+interface HomeProps {
+    edition: EditionProps | null;
+}
+
+export default function Home({ edition }: HomeProps) {
+    // Utiliser les dates de l'édition actuelle ou des dates par défaut si non disponibles
+    const dateEvenement = edition ? new Date(edition.startDate) : new Date('now');
+    const dateFinalEvenement = edition ? new Date(edition.endDate) : new Date('now');
+    const dateFinInscriptions = useMemo(() => 
+        edition ? new Date(edition.registrationDeadline) : new Date('now'), 
+        [edition]
+    );
     
     // État pour le compteur
     const [timeLeft, setTimeLeft] = useState({
@@ -20,10 +34,10 @@ export default function Home() {
     });
     
     const membresJuries = [
-        { nom_complet: "Membre du juri 1", photo: "https://fonijguinee.org/wp-content/uploads/2024/12/DSC06175-500x500.jpg", post:"", countrie:"", description: "Accueil et enregistrement des participants" },
-        { nom_complet: "Membre du juri 2", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/FONIJ-14-500x500.jpg", post:"", countrie:"", description: "Accueil des participants et installation des stands" },
-        { nom_complet: "Membre du juri 3", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/76ab3ee7-520f-4843-af77-5b3b510846b0-500x500.jpeg", post:"", countrie:"", description: "Message de bienvenue et introduction du jury" },
-        { nom_complet: "Membre du juri 4", photo: "https://fonijguinee.org/wp-content/uploads/2022/10/FONIJ-29-300x208-1.jpg", post:"", countrie:"", description: "Invitation de nos partenaires pour présenter leurs activités" },
+        { nom_complet: "Membre du juri 1", photo: "https://fonijguinee.org/wp-content/uploads/2024/12/DSC06175-500x500.jpg", post:"ADMINSTRATEUR - INCUBA", countrie:"GUINEE", description: "Accueil et enregistrement des participants" },
+        { nom_complet: "Membre du juri 2", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/FONIJ-14-500x500.jpg", post:"RESPONSABLE IT - CGUITECH", countrie:"GUINEE", description: "Accueil des participants et installation des stands" },
+        { nom_complet: "Membre du juri 3", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/76ab3ee7-520f-4843-af77-5b3b510846b0-500x500.jpeg", post:"COMPTABLE - GUINEE ACCOMPTE", countrie:"GUINEE", description: "Message de bienvenue et introduction du jury" },
+        { nom_complet: "Membre du juri 4", photo: "https://fonijguinee.org/wp-content/uploads/2022/10/FONIJ-29-300x208-1.jpg", post:"DIRECTEUR GENERAl - FONIJ", countrie:"GUINEE", description: "Invitation de nos partenaires pour présenter leurs activités" },
         // { nom_complet: "Membre du juri 5", photo: "https://fonijguinee.org/wp-content/uploads/2023/05/DSC06167-500x500.jpg", post:"", countrie:"", description: "Discussion sur l'écosystème entrepreneurial en Guinée" },
     ];
 
@@ -54,6 +68,9 @@ export default function Home() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
     };
 
+    // Extraire l'année de l'édition actuelle
+    const currentYear = edition ? edition.year : new Date().getFullYear();
+
     return (
         <MainLayout>
             {/* Hero Section améliorée pour afficher l'image exactement comme la référence */}
@@ -68,8 +85,8 @@ export default function Home() {
             </div>
 
             {/* Bande d'infos */}
-            <div className="relative z-20 mx-4 sm:mx-8 lg:mx-auto max-w-7xl">
-                <div className="bg-gradient-fonij rounded-xl hover:bg-primary/90 shadow-xl transition-all duration-300 py-4 text-background">
+            <div className="relative z-20 mx-4 sm:mx-8 lg:mx-auto w-full">
+                <div className="bg-gradient-fonij hover:bg-primary-900 shadow-xl transition-all duration-300 py-4 text-white">
                     <div className="px-4 sm:px-6 lg:px-8">
                         <div className="flex flex-wrap justify-center md:justify-between items-center gap-4">
                             <div className="flex items-center space-x-2">
@@ -122,7 +139,7 @@ export default function Home() {
                                 variants={fadeInUp}
                             >
                                 <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
-                                    ÉDITION 2025
+                                    ÉDITION {currentYear}
                                 </div>
                                 <h2 className="text-4xl font-bold text-foreground mb-6 leading-tight">
                                     Rejoignez le mouvement de <span className="text-primary">l'innovation entrepreneuriale</span> en Guinée
@@ -425,9 +442,9 @@ export default function Home() {
                                         className="w-full h-full object-cover object-center transition-transform duration-500 transform hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                                        <div className="p-6 text-foreground">
+                                        <div className="p-6 text-white">
                                             <h3 className="font-bold text-xl mb-1">{item.nom_complet}</h3>
-                                            <p className="text-primary-light font-medium text-sm">{item.post}</p>
+                                            <p className="text-secondary font-medium text-sm">{item.post}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -435,18 +452,6 @@ export default function Home() {
                                     <p className="text-muted-foreground mb-4">{item.description}</p>
                                     <div className="flex items-center justify-between">
                                         <p className="text-primary-light text-sm">{item.countrie}</p>
-                                        <div className="flex">
-                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center mr-2">
-                                                <svg className="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M22.162 5.656a8.384 8.384 0 0 1-2.402.658A4.196 4.196 0 0 0 21.6 4c-.82.488-1.719.83-2.656 1.015a4.182 4.182 0 0 0-7.126 3.814 11.874 11.874 0 0 1-8.62-4.37 4.168 4.168 0 0 0-.566 2.103c0 1.45.738 2.731 1.86 3.481a4.168 4.168 0 0 1-1.894-.523v.052a4.185 4.185 0 0 0 3.355 4.101 4.21 4.21 0 0 1-1.89.072A4.185 4.185 0 0 0 7.97 16.65a8.394 8.394 0 0 1-6.191 1.732 11.83 11.83 0 0 0 6.41 1.88c7.693 0 11.9-6.373 11.9-11.9 0-.18-.005-.362-.013-.54a8.496 8.496 0 0 0 2.087-2.165z" />
-                                                </svg>
-                                            </div>
-                                            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                                                <svg className="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                                </svg>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </motion.div>
@@ -470,7 +475,7 @@ export default function Home() {
                             PROGRAMME
                         </div>
                         <h2 className="text-4xl font-bold text-foreground mb-6">
-                            Agenda Grand Prix FONIJ 2025
+                            Agenda Grand Prix FONIJ {currentYear}
                         </h2>
                         <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
                         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
@@ -599,8 +604,6 @@ export default function Home() {
 
             {/* Section CTA - avec le style GFW */}
             <div className="relative bg-primary py-20">
-                
-                
                 {/* Éléments décoratifs */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/30 rounded-full"></div>
@@ -609,6 +612,7 @@ export default function Home() {
                 </div>
                 
                 <div className="absolute inset-0 bg-grid-white/[0.5] bg-[length:16px_16px]" />
+                
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h2 className="text-3xl font-bold text-white sm:text-4xl mb-6">

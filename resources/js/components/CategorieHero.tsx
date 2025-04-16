@@ -38,7 +38,7 @@ const CategorieHero = () => {
             title: "Grand Prix FONIJ 2024",
             subtitle: "Toutes Catégories",
             description: "Rejoignez l'élite entrepreneuriale de la Guinée ! Plus de 1000 entrepreneurs, 4 catégories d'excellence, et un accompagnement sur mesure pour réussir votre projet.",
-            image: "https://img.freepik.com/free-photo/people-office-work-day_23-2150690154.jpg?t=st=1742307630~exp=1742311230~hmac=9b97c3630a4ba569a98dc23d18fb51110d38ef49e340670989b70353383b3e93&w=1380",
+            image: "https://www.ecofinanceguinee.com/wp-content/uploads/2024/04/IMG_0959-e1712053781999.jpg",
             buttonText: "Candidater maintenant",
             buttonLink: "/candidater",
             icon: Award
@@ -47,7 +47,7 @@ const CategorieHero = () => {
             title: "Promotion de l'Esprit d'Entreprise",
             subtitle: "Catégorie Excellence",
             description: "Transformez vos initiatives innovantes en success stories ! Cette catégorie récompense les projets qui façonnent la culture entrepreneuriale en Guinée avec un financement allant jusqu'à 500M GNF.",
-            // image: "https://img.freepik.com/premium-photo/woman-using-sewing-machine-working-workshop_1048944-18734432.jpg?w=1380",
+            image: "https://cnrdrefondationguinee.com/wp-content/uploads/2016/12/Les-Exploits-du-CNRD-sous-la-Presidence-du-General-Mamadi-Doumbouya-Un-Nouveau-Chapitre-dans-lHistoire-de-la-Guinee-1024x658.jpeg",
             buttonText: "Postuler dans cette catégorie",
             buttonLink: "/candidater?category=1",
             icon: Trophy
@@ -56,7 +56,7 @@ const CategorieHero = () => {
             title: "Éducation aux Compétences",
             subtitle: "Formation & Développement",
             description: "Renforcez les compétences de demain ! Un programme complet avec mentorat expert, support technique et accès aux ressources pédagogiques pour former la nouvelle génération.",
-            // image: "https://img.freepik.com/free-photo/development-knowledge-study-education-concept_53876-144838.jpg?t=st=1742306869~exp=1742310469~hmac=fc5f725e7137d2b12fe6937fa9405e730bc034cea22ba24e85ee0dbc78434e88&w=1380",
+            image: "https://libreopinionguinee.com/wp-content/uploads/2023/11/IMG_2306.jpeg",
             buttonText: "Découvrir les opportunités",
             buttonLink: "/candidater?category=2",
             icon: BookOpen

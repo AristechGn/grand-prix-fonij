@@ -1,8 +1,18 @@
 import MainLayout from '@/layouts/MainLayout';
-import CategorieHero from '@/components/CategorieHero';
 import { Link } from '@inertiajs/react';
 import { Award, BookOpen, Laptop, Sprout, Check, ChevronRight, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+interface Edition {
+    id: number;
+    name: string;
+    year: number;
+    registrationDeadline: string;
+}
+
+interface CategoriesProps {
+    edition: Edition | null;
+}
 
 const categories = [
     {
@@ -12,7 +22,7 @@ const categories = [
         icon: Award,
         color: "from-amber-500 to-yellow-500",
         textColor: "text-amber-600",
-        image: "https://img.freepik.com/premium-photo/woman-using-sewing-machine-working-workshop_1048944-18734432.jpg?w=1380",
+        image: "https://img.freepik.com/free-photo/two-african-dressmaker-woman-sews-clothes-sewing-machine-tailor-office-black-seamstress-girls_627829-13693.jpg",
         criteria: [
             "Impact sur la promotion de la culture entrepreneuriale",
             "Engagement envers le développement des jeunes entrepreneurs",
@@ -37,7 +47,7 @@ const categories = [
         icon: BookOpen,
         color: "from-blue-500 to-indigo-500",
         textColor: "text-blue-600",
-        image: "https://img.freepik.com/free-photo/development-knowledge-study-education-concept_53876-144838.jpg?t=st=1742306869~exp=1742310469~hmac=fc5f725e7137d2b12fe6937fa9405e730bc034cea22ba24e85ee0dbc78434e88&w=1380",
+        image: "https://img.freepik.com/free-photo/study-group-african-people_23-2149156391.jpg",
         criteria: [
             "Excellence pédagogique et méthodologique",
             "Inclusion des groupes sous-représentés",
@@ -62,7 +72,7 @@ const categories = [
         icon: Laptop,
         color: "from-purple-500 to-pink-500",
         textColor: "text-purple-600",
-        image: "https://img.freepik.com/free-photo/standard-quality-control-concept-m_23-2150041864.jpg?t=st=1742307154~exp=1742310754~hmac=53f11f67cf4b0e906ec71d95521312b99ec3d7b61afe4bcbbe930c74955e9fe4&w=1380",
+        image: "https://img.freepik.com/free-photo/front-view-man-looking-away_23-2148291498.jpg",
         criteria: [
             "Caractère novateur de la solution proposée",
             "Contribution à la transformation digitale",
@@ -87,7 +97,7 @@ const categories = [
         icon: Sprout,
         color: "from-green-500 to-emerald-500",
         textColor: "text-green-600",
-        image: "https://img.freepik.com/free-photo/medium-shot-man-holding-vegetables_23-2148761604.jpg?t=st=1742307379~exp=1742310979~hmac=0c4124fab8d8935fe82cae63d1e5d68de46baba0581b7fc7f5b3b05b3ff7d02e&w=1380",
+        image: "https://img.freepik.com/free-photo/medium-shot-man-holding-vegetables_23-2148761604.jpg",
         criteria: [
             "Empreinte environnementale positive",
             "Innovation dans les pratiques agricoles",
@@ -112,7 +122,7 @@ const categories = [
         icon: Trophy,
         color: "from-red-500 to-orange-500",
         textColor: "text-red-600",
-        image: "https://img.freepik.com/free-photo/close-up-business-people-shaking-hands_53876-13391.jpg?t=st=1742307523~exp=1742311123~hmac=2a9be7d3eae384a01f6956bc8f3aa035ebbb858ab7ef07277f96bc5154c4567d&w=1380",
+        image: "https://img.freepik.com/premium-photo/close-up-trophies-against-yellow-background_1048944-14102810.jpg",
         criteria: [
             "Créativité exceptionnelle",
             "Potentiel de transformation",
@@ -132,14 +142,88 @@ const categories = [
     }
 ];
 
-export default function Categories() {
+export default function Categories({ edition }: CategoriesProps) {
+    // Date limite d'inscription formatée
+    const dateFinInscriptions = edition 
+        ? new Date(edition.registrationDeadline) 
+        : new Date('2025-09-15');
+        
+    // Année de l'édition actuelle
+    const currentYear = edition ? edition.year : new Date().getFullYear();
+    
     return (
         <MainLayout>
-            {/* Hero Section */}
-            <CategorieHero />
+            {/* Hero Section améliorée */}
+            <div className="w-full bg-primary relative">
+                <div className="w-full min-h-[150vh] overflow-visible relative">
+                    <div className="h-screen sticky top-0">
+                        <img 
+                            src="https://libreopinionguinee.com/wp-content/uploads/2023/11/IMG_2306.jpeg"
+                            alt="Grand Prix FONIJ"
+                            className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-transparent">
+                        </div>
+                    </div>
+
+                    <div className="absolute inset-0 flex flex-col">
+                        <div className="h-[50vh]"></div>
+                        <div className="flex justify-center items-start mx-auto px-4 md:px-8 w-full">
+                            <div className="max-w-7xl w-full space-y-6 backdrop-blur-sm bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl">
+                                <div className="space-y-3 text-center">
+                                    <span className="text-white/70 font-semibold text-lg md:text-xl uppercase tracking-wider">République de Guinée</span>
+                                    <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
+                                        Grand Prix FONIJ {currentYear}
+                                    </h1>
+                                    <p className="text-xl md:text-2xl text-yellow-400 font-semibold tracking-wide">
+                                        <span className="text-red-500">Innovation</span> • Excellence • <span className="text-primary">Leadership</span>
+                                    </p>
+                                </div>
+                                
+                                <div className="grid md:grid-cols-2 gap-8 text-white/90 mt-8">
+                                    <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
+                                        <h2 className="text-2xl md:text-3xl font-bold text-white">Vision Présidentielle</h2>
+                                        <p className="text-lg md:text-xl leading-relaxed">
+                                            Sous le leadership éclairé de Son Excellence le Colonel Mamadi Doumbouya, 
+                                            Président de la Transition, la Guinée s'engage résolument dans une transformation 
+                                            profonde vers l'excellence et l'innovation.
+                                        </p>
+                                    </div>
+
+                                    <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
+                                        <h2 className="text-2xl md:text-3xl font-bold text-white">Simandou 2040</h2>
+                                        <p className="text-lg md:text-xl leading-relaxed">
+                                            Le Grand Prix FONIJ s'inscrit dans la vision ambitieuse de Simandou 2040, 
+                                            catalyseur majeur du développement économique et social, pour faire de la 
+                                            Guinée un hub d'innovation en Afrique.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-4 pt-8 justify-center">
+                                    <Link
+                                        href={route('candidater')}
+                                        className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-lg transform hover:-translate-y-1"
+                                    >
+                                        Déposer ma candidature
+                                        <ChevronRight className="ml-2 h-5 w-5" />
+                                    </Link>
+                                    <Link
+                                        href="#category-1"
+                                        className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-lg border border-white/20 transform hover:-translate-y-1"
+                                    >
+                                        Découvrir les catégories
+                                        <ChevronRight className="ml-2 h-5 w-5" />
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {/* Introduction et présentation */}
-            <div className="bg-gradient-fonij text-background py-12 md:py-20">
+            <div className="bg-gradient-fonij text-white py-12 md:py-20">
                 <div className="container mx-auto px-4 md:px-8">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
@@ -149,7 +233,7 @@ export default function Categories() {
                         className="max-w-3xl mx-auto text-center"
                     >
                         <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Catégories du Grand Prix</h2>
-                        <p className="text-base md:text-xl text-background/80 mb-6 md:mb-8">
+                        <p className="text-base md:text-xl text-white/80 mb-6 md:mb-8">
                             Explorez nos quatre catégories d'excellence et trouvez celle qui correspond le mieux à votre projet innovant pour transformer la Guinée.
                         </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-sm md:max-w-2xl mx-auto">
@@ -172,7 +256,7 @@ export default function Categories() {
             </div>
 
             {/* Categories Section avec nouveau design */}
-            <div className="py-16 md:py-24 bg-muted">
+            <div className="py-16 md:py-24">
                 <div className="container mx-auto px-4 md:px-8">
                     <div className="space-y-20 md:space-y-32">
                         {categories.map((category, index) => (
@@ -190,7 +274,7 @@ export default function Categories() {
                             >
                                 {/* Index number */}
                                 <div className="absolute -top-10 md:-top-16 left-0 md:left-10 z-10">
-                                    <div className="bg-gradient-fonij w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-background text-xl md:text-2xl font-bold shadow-lg">
+                                    <div className="bg-gradient-fonij w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg">
                                         {category.id}
                                     </div>
                                 </div>
@@ -280,11 +364,11 @@ export default function Categories() {
                                         {/* CTA */}
                                         <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                             <div className="text-xs md:text-sm text-muted-foreground">
-                                                Date limite : <span className="font-semibold text-foreground">15 septembre 2025</span>
+                                                Date limite : <span className="font-semibold text-foreground">{dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                                             </div>
                                             <Link
                                                 href={`/candidater?category=${category.id}`}
-                                                className="inline-flex items-center px-4 md:px-5 py-2 md:py-3 bg-gradient-fonij text-background font-medium rounded-full w-full sm:w-auto justify-center sm:justify-start hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                                                className="inline-flex items-center px-4 md:px-5 py-2 md:py-3 bg-gradient-fonij text-white font-medium rounded-full w-full sm:w-auto justify-center sm:justify-start hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                                             >
                                                 Candidater
                                                 <ChevronRight className="ml-2 h-4 w-4" />
@@ -310,10 +394,10 @@ export default function Categories() {
                                                 alt={category.title}
                                                 className="w-full h-full object-cover"
                                             />
-                                            <div className="absolute inset-0 bg-gradient-fonij opacity-20"></div>
+                                            <div className="absolute inset-0 bg-gradient-fonij opacity-1"></div>
                                         </div>
                                         <div className="absolute top-6 right-6 bg-gradient-fonij rounded-full p-4 shadow-lg">
-                                            <category.icon className="h-8 w-8 text-background" />
+                                            <category.icon className="h-8 w-8 text-white" />
                                         </div>
                                     </motion.div>
                                 </div>
@@ -347,7 +431,7 @@ export default function Categories() {
                                     Gagnez et bénéficiez de nos programmes d'accompagnement
                                 </h2>
                                 <p className="text-background/80 text-base md:text-lg">
-                                    Les lauréats du Grand Prix FONIJ bénéficient de programmes d'accompagnement exclusifs et personnalisés pour transformer leur projet en entreprise prospère et durable.
+                                    Les lauréats du Grand Prix FONIJ {currentYear} bénéficient de programmes d'accompagnement exclusifs et personnalisés pour transformer leur projet en entreprise prospère et durable.
                                 </p>
                             </div>
                             <div className="md:col-span-2 flex flex-col items-start space-y-4">

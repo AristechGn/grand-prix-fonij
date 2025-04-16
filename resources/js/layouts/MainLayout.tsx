@@ -65,6 +65,13 @@ export default function MainLayout({
             'href': route('programmes'),
             'active': 'programmes',
         },
+        {
+            'name': 'A Propos',
+            'label': 'APropos',
+            'icon': GraduationCap,
+            'href': route('about.index'),
+            'active': 'about.index',
+        },
     ];
 
     const isActiveRoute = (routeName: string) => route().current(routeName);
@@ -143,16 +150,16 @@ export default function MainLayout({
                                     href={route.href} 
                                     className={`inline-flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative ${
                                         isActiveRoute(route.active) 
-                                            ? 'bg-primary text-white shadow-sm' 
+                                            ? 'bg-primary text-white shadow-sm border-b-4 border-yellow-400' 
                                             : 'text-black hover:text-white hover:bg-primary-900'
                                     }`}
                                     aria-current={isActiveRoute(route.active) ? 'page' : undefined}
                                 >
                                     <route.icon className="h-4 w-4 mr-2" />
                                     {route.label}
-                                    {isActiveRoute(route.active) && (
-                                        <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-secondary rounded-full" />
-                                    )}
+                                    {/* {isActiveRoute(route.active) && (
+                                        <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-1 bg-secondary rounded-full" />
+                                    )} */}
                                 </Link>
                             ))}
                         </div>

@@ -14,7 +14,7 @@ const cn = (...inputs: (string | undefined)[]) => {
 // Logo FONIJ pour le MacBook
 const FonijLogo = () => {
     return (
-        <img src="/images/fonij/logo-brands-2.png" alt="FONIJ Logo" className="h-10 w-10" />
+        <img src="/images/fonij/cover.jpg" alt="FONIJ Logo" className="h-auto w-1/2 mx-auto" />
     );
 };
 
@@ -63,7 +63,7 @@ const MacbookScroll = ({
         <div
             ref={ref}
             className="flex min-h-[200vh] shrink-0 scale-[0.35] transform flex-col items-center justify-start py-0 [perspective:800px] sm:scale-50 md:scale-100 md:py-40"
-        >
+         >
             <motion.h2
                 style={{
                     translateY: textTransform,
@@ -701,47 +701,54 @@ export default function Deroulement() {
     return (
         <MainLayout>
             {/* Hero Section avec MacbookScroll */}
-            <div className="bg-gradient-to-b from-muted to-background">
-                <MacbookScroll
-                    title={
-                        <div>
-                            <div className="inline-block rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary mb-6">
-                                GRAND PRIX FONIJ ÉDITION 2025-2026
+            <div className="bg-primary relative">
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    <div className="absolute top-20 left-90 w-64 h-64 bg-yellow-400/20 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+                </div>
+                <div className="relative">
+                    <MacbookScroll
+                        title={
+                            <div className="relative z-10">
+                                <div className="inline-block rounded-full bg-white/10 backdrop-blur-xl px-4 py-1 text-sm font-medium text-white mb-6">
+                                    GRAND PRIX FONIJ ÉDITION 2025-2026
+                                </div>
+                                <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+                                    Calendrier du Programme
+                                </h1>
+                                <p className="text-lg text-white/80 max-w-2xl mx-auto">
+                                    Découvrez les étapes clés pour participer au Grand Prix FONIJ
+                                </p>
                             </div>
-                            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-                                Calendrier du Programme
-                            </h1>
-                            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                                Découvrez les étapes clés pour participer au Grand Prix FONIJ
-                            </p>
-                        </div>
-                    }
-                    badge={
-                        <div className="flex items-center gap-2 bg-primary text-background px-3 py-1.5 rounded-full text-sm font-medium">
-                            <Calendar className="h-4 w-4" />
-                            Juin 2025 - Mai 2026
-                        </div>
-                    }
-                    src="/images/fonij/logo-transparent.png"
-                />
+                        }
+                        badge={
+                            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-xl text-white px-3 py-1.5 rounded-full text-sm font-medium border border-white/20">
+                                <Calendar className="h-4 w-4" />
+                                Juin 2025 - Mai 2026
+                            </div>
+                        }
+                        src="/images/fonij/logo-transparent.png"
+                    />
+                </div>
             </div>
 
             {/* Bande d'infos avec design moderne */}
-            <div className="bg-background border-b border-border py-6 shadow-sm">
+            <div className="bg-gradient-fonij py-8 shadow-lg">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
                         {stats.map((stat, index) => (
-            <motion.div
+                            <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 className="flex flex-col items-center justify-center text-center"
                             >
-                                <div className="mb-2 rounded-full bg-primary/10 p-3">
-                                    <stat.icon className="h-6 w-6 text-primary" stroke={1.5} />
+                                <div className="mb-2 rounded-full bg-white/10 backdrop-blur-xl p-3 border border-white/20">
+                                    <stat.icon className="h-6 w-6 text-white" stroke={1.5} />
                                 </div>
-                                <span className="text-sm font-medium text-foreground md:text-base">{stat.label}</span>
+                                <span className="text-sm font-medium text-white md:text-base">{stat.label}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -749,7 +756,7 @@ export default function Deroulement() {
             </div>
 
             {/* Section Objectif */}
-            <div className="bg-background py-16">
+            <div className="bg-background -mt-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -758,36 +765,36 @@ export default function Deroulement() {
                         transition={{ duration: 0.6 }}
                         className="mx-auto max-w-3xl text-center"
                     >
-                        <span className="inline-block rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary mb-6">
+                        <span className="inline-block rounded-full bg-gradient-fonij px-4 py-1 text-sm font-medium text-white mb-6">
                             NOTRE MISSION
                         </span>
                         <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">
                             Accompagner l'innovation guinéenne
                         </h2>
-                        <div className="mx-auto mb-8 h-1 w-20 bg-primary"></div>
+                        <div className="mx-auto mb-8 h-1 w-20 bg-gradient-fonij"></div>
                         <p className="mx-auto text-lg text-muted-foreground">
                             Le Grand Prix FONIJ vise à identifier, soutenir et accompagner les projets innovants 
                             portés par les jeunes guinéens, pour créer un impact durable sur le développement économique du pays.
                         </p>
-            </motion.div>
+                    </motion.div>
                 </div>
             </div>
 
-            {/* Section des phases avec timeline simple */}
-            <div className="bg-gray-50 py-20 -mt-20">
+            {/* Section des phases avec timeline */}
+            <div className="bg-muted/30 py-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-48">
-                        <span className="inline-block rounded-full bg-emerald-100 px-4 py-1 text-sm font-medium text-emerald-800 mb-6">
+                        <span className="inline-block rounded-full bg-gradient-fonij px-4 py-1 text-sm font-medium text-white mb-6">
                             CHRONOLOGIE
                         </span>
-                        <h2 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
+                        <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">
                             Les 7 phases du programme
                         </h2>
-                        <div className="mx-auto mb-8 h-1 w-20 bg-emerald-500"></div>
+                        <div className="mx-auto mb-8 h-1 w-20 bg-gradient-fonij"></div>
                     </div>
 
                     <div className="relative max-w-4xl mx-auto">
-                        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-emerald-300 to-emerald-600"></div>
+                        <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary via-primary to-primary/50"></div>
                         
                         {phases.map((phase, index) => (
                             <motion.div
@@ -801,8 +808,8 @@ export default function Deroulement() {
                                 <div className={`flex flex-col md:flex-row items-start ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
                                     <div className="absolute left-1/2 transform -translate-x-1/2 -mt-2 z-10">
                                         <div className={cn(
-                                            "w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white",
-                                            colorVariants[phase.color].icon
+                                            "w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-background",
+                                            "bg-gradient-fonij text-white"
                                         )}>
                                             <phase.icon className="w-6 h-6" />
                                         </div>
@@ -813,36 +820,26 @@ export default function Deroulement() {
                                         index % 2 === 1 ? 'md:pr-16 ml-auto text-right' : 'md:pl-16'
                                     )}>
                                         <div className={cn(
-                                            "bg-background rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border",
-                                            index % 2 === 0 ? 'ml-4 md:ml-0' : 'mr-4 md:mr-0',
-                                            "border-border"
+                                            "backdrop-blur-sm bg-background/80 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/10",
+                                            index % 2 === 0 ? 'ml-4 md:ml-0' : 'mr-4 md:mr-0'
                                         )}>
                                             <div className="p-6">
-                                                <div className={cn(
-                                                    "inline-block px-3 py-1 rounded-full text-sm font-medium mb-3",
-                                                    "bg-primary/10 text-primary"
-                                                )}>
+                                                <div className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-3 bg-gradient-fonij text-white">
                                                     {phase.date}
                                                 </div>
-                                                <h3 className={cn(
-                                                    "text-xl font-bold mb-3",
-                                                    "text-foreground"
-                                                )}>
+                                                <h3 className="text-xl font-bold mb-3 text-foreground">
                                                     Phase {phase.id} : {phase.title}
                                                 </h3>
                                                 {phase.lieu && (
-                                                    <p className="text-gray-700 flex items-center gap-2 mb-4">
+                                                    <p className="text-muted-foreground flex items-center gap-2 mb-4">
                                                         <Target className="w-4 h-4" />
                                                         {phase.lieu}
                                                     </p>
                                                 )}
                                                 <ul className="space-y-2">
                                                     {phase.activites.map((activite, i) => (
-                                                        <li key={i} className="flex items-start gap-2 text-gray-700">
-                                                            <div className={cn(
-                                                                "mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0",
-                                                                colorVariants[phase.color].line
-                                                            )}></div>
+                                                        <li key={i} className="flex items-start gap-2 text-muted-foreground">
+                                                            <div className="mt-1.5 h-1.5 w-1.5 rounded-full flex-shrink-0 bg-gradient-fonij"></div>
                                                             <span>{activite}</span>
                                                         </li>
                                                     ))}
@@ -859,27 +856,30 @@ export default function Deroulement() {
 
             {/* CTA Section */}
             <div className="relative overflow-hidden bg-gradient-fonij">
-                <div className="absolute inset-0 bg-grid-white/10 opacity-20"></div>
+                <div className="absolute inset-0">
+                    <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+                </div>
                 <div className="container relative mx-auto px-4 py-24 sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-3xl text-center">
-                        <h2 className="mb-6 text-3xl font-bold text-background sm:text-4xl">
+                        <h2 className="mb-6 text-3xl font-bold text-white sm:text-4xl">
                             Prêt à relever le défi ?
                         </h2>
-                        <p className="mx-auto mb-10 max-w-2xl text-lg text-background/80">
+                        <p className="mx-auto mb-10 max-w-2xl text-lg text-white/80">
                             Saisissez cette opportunité unique de développer votre projet entrepreneurial 
                             et de bénéficier d'un accompagnement d'exception !
                         </p>
                         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                             <a 
                                 href={route('candidater')}
-                                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-background px-8 py-4 font-medium text-primary shadow-lg transition-all duration-300 hover:bg-background/90 hover:shadow-xl"
+                                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 backdrop-blur-xl px-8 py-4 font-medium text-white border border-white/20 shadow-lg transition-all duration-300 hover:bg-white/20 hover:shadow-xl"
                             >
                                 <span>Déposer ma candidature</span>
                                 <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                             </a>
                             <a 
                                 href="/contact"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-background px-8 py-4 font-medium text-background transition-all duration-300 hover:bg-background/10"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-8 py-4 font-medium text-white backdrop-blur-xl transition-all duration-300 hover:bg-white/10"
                             >
                                 Nous contacter
                             </a>
