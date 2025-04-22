@@ -169,12 +169,24 @@ export default function Categories({ edition }: CategoriesProps) {
                     <div className="absolute inset-0 flex flex-col">
                         <div className="h-[50vh]"></div>
                         <div className="flex justify-center items-start mx-auto px-4 md:px-8 w-full">
-                            <div className="max-w-7xl w-full space-y-6 backdrop-blur-sm bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl">
+                            <div className="max-w-7xl w-full space-y-6 bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl">
                                 <div className="space-y-3 text-center">
                                     <span className="text-white/70 font-semibold text-lg md:text-xl uppercase tracking-wider">République de Guinée</span>
                                     <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
                                         Grand Prix FONIJ {currentYear}
                                     </h1>
+                                    {edition && (
+                                        <div className="flex flex-col gap-2 items-center">
+                                            <div className="bg-white/20 py-1 px-3 rounded-full inline-flex">
+                                                <span className="text-white font-semibold">{edition.name}</span>
+                                            </div>
+                                            <div className="bg-yellow-500/20 py-1 px-3 rounded-full inline-flex">
+                                                <span className="text-yellow-300 font-semibold">
+                                                    Date limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
                                     <p className="text-xl md:text-2xl text-yellow-400 font-semibold tracking-wide">
                                         <span className="text-red-500">Innovation</span> • Excellence • <span className="text-primary">Leadership</span>
                                     </p>
@@ -184,18 +196,17 @@ export default function Categories({ edition }: CategoriesProps) {
                                     <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
                                         <h2 className="text-2xl md:text-3xl font-bold text-white">Vision Présidentielle</h2>
                                         <p className="text-lg md:text-xl leading-relaxed">
-                                            Sous le leadership éclairé de Son Excellence le Colonel Mamadi Doumbouya, 
-                                            Président de la Transition, la Guinée s'engage résolument dans une transformation 
-                                            profonde vers l'excellence et l'innovation.
+                                            Ce projet s'aligne sur la vision du Président de la République, le Général de Corps d'Armée Mamadi Doumbouya, 
+                                            qui a placé la jeunesse au cœur de la Refondation nationale.
                                         </p>
                                     </div>
 
                                     <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
                                         <h2 className="text-2xl md:text-3xl font-bold text-white">Simandou 2040</h2>
                                         <p className="text-lg md:text-xl leading-relaxed">
-                                            Le Grand Prix FONIJ s'inscrit dans la vision ambitieuse de Simandou 2040, 
-                                            catalyseur majeur du développement économique et social, pour faire de la 
-                                            Guinée un hub d'innovation en Afrique.
+                                            Sous la tutelle du Ministère de la Jeunesse et des Sports, le FONIJ déploie ce 
+                                            projet structurant pour renforcer l'esprit d'entreprise chez les jeunes et favoriser 
+                                            leur contribution active à la construction d'une Guinée moderne et inclusive.
                                         </p>
                                     </div>
                                 </div>
@@ -210,7 +221,7 @@ export default function Categories({ edition }: CategoriesProps) {
                                     </Link>
                                     <Link
                                         href="#category-1"
-                                        className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 backdrop-blur-sm transition-all duration-300 text-lg border border-white/20 transform hover:-translate-y-1"
+                                        className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 text-lg border border-white/20 transform hover:-translate-y-1"
                                     >
                                         Découvrir les catégories
                                         <ChevronRight className="ml-2 h-5 w-5" />
@@ -236,20 +247,35 @@ export default function Categories({ edition }: CategoriesProps) {
                         <p className="text-base md:text-xl text-white/80 mb-6 md:mb-8">
                             Explorez nos quatre catégories d'excellence et trouvez celle qui correspond le mieux à votre projet innovant pour transformer la Guinée.
                         </p>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-sm md:max-w-2xl mx-auto">
-                            {categories.map((cat, index) => (
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-sm md:max-w-2xl mx-auto justify-center items-center">
+                            {categories.slice(0, 4).map((cat, index) => (
                                 <motion.a
                                     href={`#category-${cat.id}`}
                                     key={cat.id}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                                    className="bg-background/10 hover:bg-background/20 backdrop-blur-sm rounded-xl p-3 md:p-4 flex flex-col items-center transition-all duration-300"
+                                    className="bg-background/10 hover:bg-background/20 rounded-xl p-3 md:p-4 flex flex-col items-center transition-all duration-300"
                                 >
                                     <cat.icon className="w-6 h-6 md:w-8 md:h-8 mb-1 md:mb-2" />
                                     <span className="text-xs md:text-sm text-center font-medium">{cat.title}</span>
                                 </motion.a>
                             ))}
+                        </div>
+                        <div className="flex justify-center mt-4">
+                            {categories.length > 4 && (
+                                <motion.a
+                                    href={`#category-${categories[4].id}`}
+                                    key={categories[4].id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.4, delay: 0.5 }}
+                                    className="bg-black/30 hover:bg-black/20 rounded-xl p-7 md:p-8 flex flex-col items-center animate-pulse transition-all duration-1500"
+                                >
+                                    <Trophy className="w-10 h-10 md:w-12 md:h-12 mb-1 md:mb-2 text-secondary font-extrabold" />
+                                    <span className="text-xs md:text-sm text-center font-bold text-secondary">Grand prix du jury</span>
+                                </motion.a>
+                            )}
                         </div>
                     </motion.div>
                 </div>
