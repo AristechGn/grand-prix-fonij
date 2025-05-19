@@ -2,6 +2,7 @@ import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
 import { Award, BookOpen, Laptop, Sprout, Check, ChevronRight, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { FONIJ } from '../utils';
 
 interface Edition {
     id: number;
@@ -14,133 +15,7 @@ interface CategoriesProps {
     edition: Edition | null;
 }
 
-const categories = [
-    {
-        id: 1,
-        title: "Promotion de l'esprit d'entreprise",
-        description: "Cette catégorie récompense les initiatives nationales qui visent à promouvoir une culture entrepreneuriale dynamique, en particulier chez les jeunes. Elle met l'accent sur le développement de leaders d'innovation capables de transformer des idées en entreprises prospères, contribuant ainsi à la croissance économique et à la création d'emplois.",
-        icon: Award,
-        color: "from-amber-500 to-yellow-500",
-        textColor: "text-amber-600",
-        image: "https://img.freepik.com/free-photo/two-african-dressmaker-woman-sews-clothes-sewing-machine-tailor-office-black-seamstress-girls_627829-13693.jpg",
-        criteria: [
-            "Impact sur la promotion de la culture entrepreneuriale",
-            "Engagement envers le développement des jeunes entrepreneurs",
-            "Innovation dans les approches de sensibilisation",
-            "Durabilité et viabilité à long terme"
-        ],
-        benefits: [
-            "Programme de mentorat personnalisé",
-            "Couverture médiatique nationale",
-            "Accès au réseau d'entrepreneurs établis"
-        ],
-        requirements: [
-            "Candidats âgés de 15 à 35 ans",
-            "Projet innovant avec modèle clair",
-            "Démonstration d'impact social"
-        ]
-    },
-    {
-        id: 2,
-        title: "Éducation aux compétences entrepreneuriales",
-        description: "Cette catégorie valorise les initiatives qui améliorent les compétences entrepreneuriales et managériales, en mettant un accent particulier sur l'inclusion des groupes défavorisés. Elle soutient le développement de compétences techniques et numériques essentielles, ainsi que la promotion de l'entrepreneuriat dans les écoles et universités, préparant ainsi la main-d'œuvre de demain.",
-        icon: BookOpen,
-        color: "from-blue-500 to-indigo-500",
-        textColor: "text-blue-600",
-        image: "https://img.freepik.com/free-photo/study-group-african-people_23-2149156391.jpg",
-        criteria: [
-            "Excellence pédagogique et méthodologique",
-            "Inclusion des groupes sous-représentés",
-            "Adéquation avec les besoins du marché",
-            "Innovation dans l'approche d'apprentissage"
-        ],
-        benefits: [
-            "Ressources techniques spécialisées",
-            "Accompagnement par des experts sectoriels",
-            "Bibliothèque de ressources éducatives"
-        ],
-        requirements: [
-            "Curriculum structuré et cohérent",
-            "Démarche inclusive documentée",
-            "Méthodologie pédagogique innovante"
-        ]
-    },
-    {
-        id: 3,
-        title: "Transition numérique",
-        description: "Cette catégorie soutient les solutions qui facilitent la transition numérique des entreprises, en mettant l'accent sur l'adoption des nouvelles technologies. Elle promeut l'inclusion des femmes et des personnes handicapées, et encourage l'innovation dans le développement, la commercialisation et l'utilisation des technologies de l'information et de la communication.",
-        icon: Laptop,
-        color: "from-purple-500 to-pink-500",
-        textColor: "text-purple-600",
-        image: "https://img.freepik.com/free-photo/front-view-man-looking-away_23-2148291498.jpg",
-        criteria: [
-            "Caractère novateur de la solution proposée",
-            "Contribution à la transformation digitale",
-            "Accessibilité et facilité d'adoption",
-            "Inclusion des femmes et personnes handicapées"
-        ],
-        benefits: [
-            "Accompagnement technique approfondi",
-            "Suite d'outils numériques premium",
-            "Formation spécialisée en technologies"
-        ],
-        requirements: [
-            "Solution technologique fonctionnelle",
-            "Modèle extensible et adaptable",
-            "Métriques d'impact digital claires"
-        ]
-    },
-    {
-        id: 4,
-        title: "Entrepreneuriat agricole durable",
-        description: "Cette catégorie récompense les initiatives agricoles qui intègrent des pratiques durables, assurant la pérennité des systèmes de production tout en répondant aux enjeux sociaux, économiques et écologiques. Elle valorise les projets qui préservent les ressources naturelles et apportent des solutions professionnelles aux problèmes environnementaux et climatiques.",
-        icon: Sprout,
-        color: "from-green-500 to-emerald-500",
-        textColor: "text-green-600",
-        image: "https://img.freepik.com/free-photo/medium-shot-man-holding-vegetables_23-2148761604.jpg",
-        criteria: [
-            "Empreinte environnementale positive",
-            "Innovation dans les pratiques agricoles",
-            "Bénéfices sociaux pour les communautés",
-            "Viabilité économique à long terme"
-        ],
-        benefits: [
-            "Expertise technique agricole dédiée",
-            "Accès privilégié aux ressources rurales",
-            "Intégration au réseau d'agri-entrepreneurs"
-        ],
-        requirements: [
-            "Projet agricole écologiquement viable",
-            "Impact environnemental quantifiable",
-            "Plan d'affaires réaliste et durable"
-        ]
-    },
-    {
-        id: 5,
-        title: "Grand prix du jury",
-        description: "Ce prix spécial est décerné par le jury à l'initiative la plus créative et la plus à même de promouvoir l'esprit d'entreprise, toutes catégories confondues. Il met en avant des projets qui démontrent une créativité exceptionnelle, un potentiel de transformation et un impact global sur l'entrepreneuriat.",
-        icon: Trophy,
-        color: "from-red-500 to-orange-500",
-        textColor: "text-red-600",
-        image: "https://img.freepik.com/premium-photo/close-up-trophies-against-yellow-background_1048944-14102810.jpg",
-        criteria: [
-            "Créativité exceptionnelle",
-            "Potentiel de transformation",
-            "Impact global sur l'entrepreneuriat",
-            "Innovation disruptive"
-        ],
-        benefits: [
-            "Reconnaissance nationale exceptionnelle",
-            "Prix spécial du jury",
-            "Accès à un réseau d'élite"
-        ],
-        requirements: [
-            "Projet exceptionnel toutes catégories confondues",
-            "Impact significatif démontré",
-            "Potentiel de réplication"
-        ]
-    }
-];
+const categories = FONIJ.categories;
 
 export default function Categories({ edition }: CategoriesProps) {
     // Date limite d'inscription formatée
@@ -287,7 +162,7 @@ export default function Categories({ edition }: CategoriesProps) {
                     <div className="space-y-20 md:space-y-32">
                         {categories.map((category, index) => (
                             <motion.div 
-                                id={`category-${category.id}`}
+                                id={`category-${category.slug}`}
                                 key={category.id}
                                 initial="hidden"
                                 whileInView="visible"
@@ -299,7 +174,7 @@ export default function Categories({ edition }: CategoriesProps) {
                                 className="relative"
                             >
                                 {/* Index number */}
-                                <div className="absolute -top-10 md:-top-16 left-0 md:left-10 z-10">
+                                <div id={`category-${category.slug}`} className="absolute -top-10 md:-top-16 left-0 md:left-10 z-10">
                                     <div className="bg-gradient-fonij w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-lg">
                                         {category.id}
                                     </div>
@@ -333,56 +208,16 @@ export default function Categories({ edition }: CategoriesProps) {
                                                         <span className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-fonij flex items-center justify-center">
                                                             <Check className="w-4 h-4 md:w-5 md:h-5 text-background" />
                                                         </span>
-                                                        Critères d'évaluation
+                                                        Objectif principal
                                                     </h3>
                                                     <ul className="space-y-1 md:space-y-2">
-                                                        {category.criteria.map((criterion, i) => (
+                                                        {category.crochets.map((crochet, i) => (
                                                             <li key={i} className="flex items-start">
                                                                 <span className="text-base md:text-lg text-primary mr-2">•</span>
-                                                                <span className="text-sm md:text-base text-muted-foreground">{criterion}</span>
+                                                                <span className="text-sm md:text-base text-muted-foreground">{crochet}</span>
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                </div>
-                                            </div>
-                                            
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                <div className="bg-background rounded-xl shadow-md overflow-hidden">
-                                                    <div className="p-4 md:p-6">
-                                                        <h3 className="text-base md:text-lg font-semibold text-foreground flex items-center mb-3 md:mb-4">
-                                                            <span className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-fonij flex items-center justify-center">
-                                                                <Check className="w-4 h-4 md:w-5 md:h-5 text-background" />
-                                                            </span>
-                                                            Avantages
-                                                        </h3>
-                                                        <ul className="space-y-1 md:space-y-2">
-                                                            {category.benefits.map((benefit, i) => (
-                                                                <li key={i} className="flex items-start">
-                                                                    <span className="text-base md:text-lg text-primary mr-2">•</span>
-                                                                    <span className="text-sm md:text-base text-muted-foreground">{benefit}</span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="bg-background rounded-xl shadow-md overflow-hidden">
-                                                    <div className="p-4 md:p-6">
-                                                        <h3 className="text-base md:text-lg font-semibold text-foreground flex items-center mb-3 md:mb-4">
-                                                            <span className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 md:mr-3 bg-gradient-fonij flex items-center justify-center">
-                                                                <Check className="w-4 h-4 md:w-5 md:h-5 text-background" />
-                                                            </span>
-                                                            Conditions requises
-                                                        </h3>
-                                                        <ul className="space-y-1 md:space-y-2">
-                                                            {category.requirements.map((requirement, i) => (
-                                                                <li key={i} className="flex items-start">
-                                                                    <span className="text-base md:text-lg text-primary mr-2">•</span>
-                                                                    <span className="text-sm md:text-base text-muted-foreground">{requirement}</span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
