@@ -1,6 +1,6 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, Sprout, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users } from 'lucide-react';
+import { Award, BookOpen, Laptop, PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { FONIJ } from '../utils';
@@ -38,10 +38,10 @@ export default function Home({ edition }: HomeProps) {
     });
     
     const membresJuries = [
-        { nom_complet: "Membre du juri 1", photo: "https://fonijguinee.org/wp-content/uploads/2024/12/DSC06175-500x500.jpg", post:"ADMINSTRATEUR - INCUBA", countrie:"GUINEE", description: "Accueil et enregistrement des participants" },
-        { nom_complet: "Membre du juri 2", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/FONIJ-14-500x500.jpg", post:"RESPONSABLE IT - CGUITECH", countrie:"GUINEE", description: "Accueil des participants et installation des stands" },
-        { nom_complet: "Membre du juri 3", photo: "https://fonijguinee.org/wp-content/uploads/2025/01/76ab3ee7-520f-4843-af77-5b3b510846b0-500x500.jpeg", post:"COMPTABLE - GUINEE ACCOMPTE", countrie:"GUINEE", description: "Message de bienvenue et introduction du jury" },
-        { nom_complet: "Membre du juri 4", photo: "https://fonijguinee.org/wp-content/uploads/2022/10/FONIJ-29-300x208-1.jpg", post:"DIRECTEUR GENERAl - FONIJ", countrie:"GUINEE", description: "Invitation de nos partenaires pour présenter leurs activités" },
+        { nom_complet: "Membre du juri 1", photo: "/images/avatar1.jpg", post:"ADMINSTRATEUR - INCUBA", countrie:"GUINEE", description: "Accueil et enregistrement des participants" },
+        { nom_complet: "Membre du juri 2", photo: "/images/avatar2.jpg", post:"RESPONSABLE IT - CGUITECH", countrie:"GUINEE", description: "Accueil des participants et installation des stands" },
+        { nom_complet: "Membre du juri 3", photo: "/images/avatar2.jpg", post:"COMPTABLE - GUINEE ACCOMPTE", countrie:"GUINEE", description: "Message de bienvenue et introduction du jury" },
+        { nom_complet: "Membre du juri 4", photo: "/images/avatar1.jpg", post:"DIRECTEUR GENERAl - FONIJ", countrie:"GUINEE", description: "Invitation de nos partenaires pour présenter leurs activités" },
         // { nom_complet: "Membre du juri 5", photo: "https://fonijguinee.org/wp-content/uploads/2023/05/DSC06167-500x500.jpg", post:"", countrie:"", description: "Discussion sur l'écosystème entrepreneurial en Guinée" },
     ];
 
@@ -787,30 +787,100 @@ export default function Home({ edition }: HomeProps) {
                         </h2>
                         <div className="w-16 sm:w-24 h-1 bg-primary mx-auto mb-4 sm:mb-6"></div>
                         <p className="text-sm sm:text-lg text-muted-foreground max-w-3xl mx-auto px-2">
-                            Le Grand Prix FONIJ est soutenu par des organisations prestigieuses
-                            qui partagent notre vision de l'entrepreneuriat en Guinée
+                            Ils sont déjà à nos côtés pour soutenir l’entrepreneuriat jeune en Guinée.
+                            Et si vous rejoigniez, vous aussi, cette dynamique nationale en faveur de l’innovation et de l’avenir ?
                         </p>
                     </motion.div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 items-center">
-                        {[...Array(5)].map((_, index) => (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+                        {FONIJ.partners.map((partner, index) => (
                             <motion.div
                                 key={index}
-                                className="p-4 sm:p-8 bg-white rounded-lg sm:rounded-xl shadow-sm sm:shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                className="bg-white rounded-xl shadow-2xl overflow-hidden relative group"
+                                whileHover={{ 
+                                    y: -5, 
+                                    scale: 1.03,
+                                    transition: { type: "spring", stiffness: 300 }
+                                }}
                                 initial="hidden"
                                 whileInView="visible"
                                 viewport={{ once: true }}
                                 variants={{
-                                    hidden: { opacity: 0 },
-                                    visible: { opacity: 1, transition: { delay: index * 0.1 } }
+                                    hidden: { opacity: 0, y: 15 },
+                                    visible: { 
+                                        opacity: 1, 
+                                        y: 0, 
+                                        transition: { delay: index * 0.05, duration: 0.3 } 
+                                    }
                                 }}
                             >
-                                <img src={`http://ambaguitokyo.org/wp-content/uploads/2023/07/Japan-Guinea-fond-blan-1.jpg`} alt={`Sponsor ${index + 1}`}
-                                    className="max-h-10 sm:max-h-16 transition-opacity hover:opacity-80" />
+                                {/* Accent coloré au hasard en haut */}
+                                <div className={`h-1 w-full bg-gradient-to-r from-primary-400 to-primary-500'
+                                }`}></div>
+                                
+                                <div className="p-4 flex flex-col items-center justify-center">
+                                    {/* Logo avec légère animation au survol */}
+                                    <div className="h-10 md:h-14 flex items-center justify-center mb-2 transform group-hover:scale-110 transition-transform">
+                                        <img 
+                                            src={partner.image} 
+                                            alt={partner.name}
+                                            className="max-h-full max-w-full object-contain" 
+                                        />
+                                    </div>
+                                    
+                                    {/* Nom du partenaire qui s'affiche avec transition au survol */}
+                                    <div className="text-xs sm:text-sm font-medium text-center text-primary group-hover:text-primary-dark transition-colors">
+                                        {partner.name}
+                                    </div>
+                                </div>
+                                
+                                {/* Overlay de brillance au survol */}
+                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-br from-white/60 via-transparent to-transparent transition-opacity pointer-events-none"></div>
                             </motion.div>
                         ))}
                     </div>
+                    
+                    {/* CTA pour inciter d'autres sponsors à s'associer */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0, transition: { delay: 0.3, duration: 0.5 } }
+                        }}
+                        className="mt-12 sm:mt-16 bg-gradient-to-br from-transparent to-black/50 rounded-xl p-6 sm:p-10 text-center shadow-md"
+                    >
+                        <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">
+                            Vous souhaitez vous associer au Grand Prix FONIJ 2025 ?
+                        </h3>
+                        <p className="text-sm sm:text-base text-black mb-6 max-w-2xl mx-auto">
+                            Rejoignez nos partenaires et contribuez activement à faire émerger les talents de demain.
+                        </p>
+                        <div className="flex flex-row items-center justify-center gap-4">
+                            {FONIJ.contactInfo.phones.map((phone, index) => (
+
+                                <motion.a
+                                    href={`tel:+${phone}`}
+                                    key={index}
+                                    className="flex items-center justify-center bg-primary/10 text-black font-bold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-xl"
+                                    whileHover={{ scale: 1.05, y: -3 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    <PhoneCall className="h-4 w-4" />
+                                    {phone}
+                                </motion.a>
+                            ))}
+                        </div>
+                        <motion.a
+                            href={`mailto:${FONIJ.contactInfo.email}`}
+                            className="inline-flex items-center justify-center px-5 sm:px-6 py-3 sm:py-4 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-md hover:shadow-xl"
+                            whileHover={{ scale: 1.05, y: -3 }}
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            {FONIJ.contactInfo.email}
+                            <ChevronRight className="ml-2 h-4 w-4" />
+                        </motion.a>
+                    </motion.div>
                 </div>
             </div>
 
@@ -864,16 +934,16 @@ export default function Home({ edition }: HomeProps) {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                                         <div className="p-4 sm:p-6 text-white">
                                             <h3 className="font-bold text-lg sm:text-xl mb-1">{item.nom_complet}</h3>
-                                            <p className="text-secondary font-medium text-xs sm:text-sm">{item.post}</p>
+                                            {/* <p className="text-secondary font-medium text-xs sm:text-sm">{item.post}</p> */}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-4 sm:p-6">
+                                {/* <div className="p-4 sm:p-6">
                                     <p className="text-sm sm:text-base text-muted-foreground mb-4">{item.description}</p>
                                     <div className="flex items-center justify-between">
                                         <p className="text-primary-light text-xs sm:text-sm">{item.countrie}</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </motion.div>
                         ))}
                     </div>

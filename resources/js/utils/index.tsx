@@ -68,7 +68,7 @@ export const FONIJ = {
             icon: Sprout,
             color: "from-green-500 to-emerald-500",
             textColor: "text-green-600",
-            image: "https://img.freepik.com/free-photo/medium-shot-man-holding-vegetables_23-2148761604.jpg",
+            image: "/images/categories/4.jpg",
             crochets: [
                 "Produire mieux, durablement et localement",
                 "Valoriser les ressources rurales avec innovation",
@@ -83,7 +83,7 @@ export const FONIJ = {
             icon: Trophy,
             color: "from-red-500 to-orange-500",
             textColor: "text-red-600",
-            image: "https://img.freepik.com/premium-photo/close-up-trophies-against-yellow-background_1048944-14102810.jpg",
+            image: "/images/fonij/logo-transparent.png",
             crochets: [
                 "Récompenser l’excellence hors norme",
                 "Mettre à l’honneur la créativité entrepreneuriale",
@@ -91,176 +91,38 @@ export const FONIJ = {
             ],
         }
     ],
-    contactInfo: {
-        address: "T2 Kipé Centre Emetteur, Ratoma",
-        phone: "+224 627 96 98 55",
-        unespace_phone: "+224627969855",
-        email: "info@cguitech.com",
-        hours: {
-            weekdays: "9:00 AM – 5:00 PM",
+    partners: [
+        {
+            name: "Ministère du Plan et de la Coopération Internationale",
+            image: "/images/partners/ministere-plan.jpg",
         },
+        {
+            name: "Ambassade du Japon",
+            image: "/images/partners/ambassade-japon.jpg",
+        },
+        {
+            name: "Conseil National de la transition (CNT)",
+            image: "/images/partners/cnt.jpeg",
+        },
+        {
+            name: "Ministère du Plan et de la Coopération Internationale",
+            image: "/images/partners/ministere-plan.jpg",
+        },
+        {
+            name: "Ministère du Plan et de la Coopération Internationale",
+            image: "/images/partners/ministere-plan.jpg",
+        },
+    ],
+    contactInfo: {
+        phone: "+224 626 754 150",
+        phones: ["+224 626 754 150", "+224 622 023 909", "+224 628 862 002"],
+        unespace_phones: ["+224626754150", "+224622023909", "+224628862002"],
+
+        email: "fonijguinee@gmail.com",
         social: [
             { name: "Facebook", icon: Facebook, url: "https://www.facebook.com/cguitech" },
             { name: "Twitter", icon: Twitter, url: "https://twitter.com/cguitech" },
             { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/company/cguitech" },,
         ],
-        experience_year : (new Date().getFullYear() - 1996)
     },
-    teams: [
-        {
-            name: "Abdourahmane Diallo",
-            position: "PDG",
-            image: "/images/user.jpg",
-            description: "Plus de 15 ans d'expérience dans le domaine des technologies de l'information.",
-            department: "direction",
-            experience: "15+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2010",
-            isLeadership: true,
-            skills: ["Leadership", "Stratégie digitale", "Gestion de projet"],
-            contact: {
-              email: "abdourahmane@cguitech.com",
-              phone: "+224 627 96 98 55",
-              linkedin: "https://linkedin.com/in/abdourahmane-diallo"
-            }
-        },
-        {
-            name: "Ibrahima Sory Diallo",
-            position: "Responsable IT",
-            image: "/images/user.jpg",
-            description: "Expert en infrastructure et solutions technologiques avec une solide expérience dans la mise en place et la maintenance de systèmes informatiques complexes.",
-            department: "développement",
-            experience: "10+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2012",
-            isLeadership: true,
-            skills: ["Infrastructure IT", "Cloud Computing", "Sécurité informatique"],
-            contact: {
-              email: "ibrahima@cguitech.com",
-              phone: "+224 627 96 98 56",
-              linkedin: "https://linkedin.com/in/ibrahima-diallo"
-            }
-        },
-        {
-            name: "Aboubacar Tounkara",
-            position: "Responsable Juridique",
-            image: "/images/user.jpg",
-            description: "Spécialiste en droit des technologies et contrats IT avec une expertise particulière dans les questions de conformité et de protection des données.",
-            department: "juridique",
-            experience: "8+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2015",
-            isLeadership: true,
-            skills: ["Droit numérique", "RGPD", "Propriété intellectuelle"],
-            contact: {
-              email: "aboubacar@cguitech.com",
-              phone: "+224 627 96 98 57",
-              linkedin: "https://linkedin.com/in/aboubacar-tounkara"
-            }
-        },
-        {
-            name: "Aissata Diallo",
-            position: "Comptable",
-            image: "/images/user.jpg",
-            description: "Expert-comptable spécialisée dans le secteur technologique avec une connaissance approfondie de la fiscalité des entreprises numériques.",
-            department: "finance",
-            experience: "7+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2016",
-            isLeadership: false,
-            skills: ["Comptabilité", "Fiscalité", "Analyse financière"],
-            contact: {
-              email: "aissata@cguitech.com",
-              phone: "+224 627 96 98 58",
-              linkedin: "https://linkedin.com/in/aissata-diallo"
-            }
-        },
-    ],
-    workers: [
-        {
-            name: "Jean-Marie Aristide GNIMASSOU",
-            position: "PDG",
-            image: "/images/user.jpg",
-            description: "Plus de 15 ans d'expérience dans le domaine des technologies de l'information.",
-            department: "direction",
-            experience: "15+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2010",
-            isLeadership: true,
-            skills: ["Leadership", "Stratégie digitale", "Gestion de projet"],
-            contact: {
-              email: "abdourahmane@cguitech.com",
-              phone: "+224 627 96 98 55",
-              linkedin: "https://linkedin.com/in/abdourahmane-diallo"
-            }
-        },
-        {
-            name: "Ismael Diallo",
-            position: "Responsable IT",
-            image: "/images/user.jpg",
-            description: "Expert en infrastructure et solutions technologiques avec une solide expérience dans la mise en place et la maintenance de systèmes informatiques complexes.",
-            department: "développement",
-            experience: "10+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2012",
-            isLeadership: true,
-            skills: ["Infrastructure IT", "Cloud Computing", "Sécurité informatique"],
-            contact: {
-              email: "ibrahima@cguitech.com",
-              phone: "+224 627 96 98 56",
-              linkedin: "https://linkedin.com/in/ibrahima-diallo"
-            }
-        },
-        {
-            name: "Aboubacar Fabou Camara",
-            position: "Responsable Juridique",
-            image: "/images/user.jpg",
-            description: "Spécialiste en droit des technologies et contrats IT avec une expertise particulière dans les questions de conformité et de protection des données.",
-            department: "juridique",
-            experience: "8+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2015",
-            isLeadership: true,
-            skills: ["Droit numérique", "RGPD", "Propriété intellectuelle"],
-            contact: {
-              email: "aboubacar@cguitech.com",
-              phone: "+224 627 96 98 57",
-              linkedin: "https://linkedin.com/in/aboubacar-tounkara"
-            }
-        },
-        {
-            name: "Abdoul Karim Oularé",
-            position: "Comptable",
-            image: "/images/user.jpg",
-            description: "Expert-comptable spécialisée dans le secteur technologique avec une connaissance approfondie de la fiscalité des entreprises numériques.",
-            department: "finance",
-            experience: "7+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2016",
-            isLeadership: false,
-            skills: ["Comptabilité", "Fiscalité", "Analyse financière"],
-            contact: {
-              email: "aissata@cguitech.com",
-              phone: "+224 627 96 98 58",
-              linkedin: "https://linkedin.com/in/aissata-diallo"
-            }
-        },
-        {
-            name: "Ibrahima Sory Kaba",
-            position: "Comptable",
-            image: "/images/user.jpg",
-            description: "Expert-comptable spécialisée dans le secteur technologique avec une connaissance approfondie de la fiscalité des entreprises numériques.",
-            department: "finance",
-            experience: "7+ ans d'expérience",
-            location: "Conakry, Guinée",
-            joinDate: "2016",
-            isLeadership: false,
-            skills: ["Comptabilité", "Fiscalité", "Analyse financière"],
-            contact: {
-              email: "aissata@cguitech.com",
-              phone: "+224 627 96 98 58",
-              linkedin: "https://linkedin.com/in/aissata-diallo"
-            }
-        },
-    ]
 };
