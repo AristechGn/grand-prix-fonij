@@ -7,6 +7,21 @@ import { useRef, useEffect, useState, ReactNode } from 'react';
 import { FONIJ } from '@/utils/index';
 import { Link } from '@inertiajs/react';
 
+// Interface pour les programmes
+interface ProgrammeType {
+    id: number;
+    title: string;
+    description: string;
+    date?: string;
+    icon: LucideIcon;
+    features?: string[];
+    activites?: string[];
+    color?: string;
+    textColor?: string;
+    image?: string;
+    [key: string]: any;
+}
+
 // Fonction utilitaire pour fusionner les classes CSS
 const cn = (...inputs: (string | undefined)[]) => {
     return twMerge(clsx(inputs));
@@ -205,7 +220,10 @@ export default function Programme() {
     ];
 
     // Pour simplifier je garde les phases du programme
-    const phases = FONIJ.programmes;
+    const phases = FONIJ.programmes.map((programme: any) => ({
+        ...programme,
+        activites: programme.activites || programme.features || []
+    }));
 
     // Les programmes offerts de manière ludique
     const programmes = [
@@ -487,16 +505,16 @@ export default function Programme() {
                                                         Phase {phase.id}
                                                     </span>
                                                     <h3 className="text-xl font-bold mb-2">{phase.title}</h3>
-                                                    <p className="text-sm text-muted-foreground mb-4">{phase.date}</p>
+                                                    {phase.date && <p className="text-sm text-muted-foreground mb-4">{phase.date}</p>}
                                                     
                                                     <ul className="space-y-2">
-                                                        {phase.activites.slice(0, 3).map((activite: string, i: number) => (
+                                                        {phase.activites && phase.activites.slice(0, 3).map((activite: string, i: number) => (
                                                             <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                                                                 <div className="mt-1 h-2 w-2 rounded-full flex-shrink-0 bg-primary"></div>
                                                                 <span>{activite}</span>
                                                             </li>
                                                         ))}
-                                                        {phase.activites.length > 3 && (
+                                                        {phase.activites && phase.activites.length > 3 && (
                                                             <li className="text-sm text-primary font-medium">
                                                                 + {phase.activites.length - 3} autres activités
                                                             </li>
