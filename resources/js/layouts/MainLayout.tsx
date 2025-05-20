@@ -37,13 +37,13 @@ export default function MainLayout({
             'href': '/',
             'active': 'home',
         },
-        {
-            'name': 'agenda',
-            'label': 'Agenda',
-            'icon': Calendar,
-            'href': '/#agenda',
-            'active': 'agenda',
-        },
+        // {
+        //     'name': 'agenda',
+        //     'label': 'Agenda',
+        //     'icon': Calendar,
+        //     'href': '/#agenda',
+        //     'active': 'agenda',
+        // },
         {
             'name': 'categories',
             'label': 'Catégories',
@@ -53,7 +53,7 @@ export default function MainLayout({
         },
         {
             'name': 'deroulement',
-            'label': 'Déroulement',
+            'label': 'Programme',
             'icon': GraduationCap,
             'href': route('deroulement'),
             'active': 'deroulement',

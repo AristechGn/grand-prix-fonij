@@ -28,81 +28,73 @@ export default function Categories({ edition }: CategoriesProps) {
     
     return (
         <MainLayout>
-            {/* Hero Section améliorée */}
-            <div className="w-full bg-primary relative">
-                <div className="w-full min-h-[150vh] overflow-visible relative">
-                    <div className="h-screen sticky top-0">
-                        <img 
-                            src="https://libreopinionguinee.com/wp-content/uploads/2023/11/IMG_2306.jpeg"
-                            alt="Grand Prix FONIJ"
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-transparent">
+            {/* Hero Section avec effet parallaxe */}
+            <div 
+                className="w-full min-h-[90vh] bg-fixed bg-top bg-cover bg-gradient-to-b from-black/60 via-black/50 to-black/40 relative flex items-center justify-center py-32" 
+                    style={{
+                        backgroundImage: `url('https://libreopinionguinee.com/wp-content/uploads/2023/11/IMG_2306.jpeg')`,
+                }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/40"></div>
+                
+                <div className="container mx-auto px-4 md:px-8 relative z-10">
+                    <div className="max-w-7xl w-full space-y-6 backdrop-blur-sm bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl mx-auto">
+                        <div className="space-y-3 text-center">
+                            <span className="text-white/70 font-semibold text-lg md:text-xl uppercase tracking-wider">République de Guinée</span>
+                            <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
+                                Grand Prix FONIJ {currentYear}
+                            </h1>
+                            {edition && (
+                                <div className="flex flex-col gap-2 items-center">
+                                    <div className="bg-white/20 py-1 px-3 rounded-full inline-flex">
+                                        <span className="text-white font-semibold">{edition.name}</span>
+                                    </div>
+                                    <div className="bg-yellow-500/20 py-1 px-3 rounded-full inline-flex">
+                                        <span className="text-yellow-300 font-semibold">
+                                            Date limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                            <p className="text-xl md:text-2xl text-yellow-400 font-semibold tracking-wide">
+                                <span className="text-red-500">Innovation</span> • Excellence • <span className="text-primary">Leadership</span>
+                            </p>
                         </div>
-                    </div>
-
-                    <div className="absolute inset-0 flex flex-col">
-                        <div className="h-[50vh]"></div>
-                        <div className="flex justify-center items-start mx-auto px-4 md:px-8 w-full">
-                            <div className="max-w-7xl w-full space-y-6 bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl">
-                                <div className="space-y-3 text-center">
-                                    <span className="text-white/70 font-semibold text-lg md:text-xl uppercase tracking-wider">République de Guinée</span>
-                                    <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
-                                        Grand Prix FONIJ {currentYear}
-                                    </h1>
-                                    {edition && (
-                                        <div className="flex flex-col gap-2 items-center">
-                                            <div className="bg-white/20 py-1 px-3 rounded-full inline-flex">
-                                                <span className="text-white font-semibold">{edition.name}</span>
-                                            </div>
-                                            <div className="bg-yellow-500/20 py-1 px-3 rounded-full inline-flex">
-                                                <span className="text-yellow-300 font-semibold">
-                                                    Date limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    )}
-                                    <p className="text-xl md:text-2xl text-yellow-400 font-semibold tracking-wide">
-                                        <span className="text-red-500">Innovation</span> • Excellence • <span className="text-primary">Leadership</span>
-                                    </p>
-                                </div>
-                                
-                                <div className="grid md:grid-cols-2 gap-8 text-white/90 mt-8">
-                                    <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
-                                        <h2 className="text-2xl md:text-3xl font-bold text-white">Vision Présidentielle</h2>
-                                        <p className="text-lg md:text-xl leading-relaxed">
-                                            Ce projet s'aligne sur la vision du Président de la République, le Général de Corps d'Armée Mamadi Doumbouya, 
-                                            qui a placé la jeunesse au cœur de la Refondation nationale.
-                                        </p>
-                                    </div>
-
-                                    <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
-                                        <h2 className="text-2xl md:text-3xl font-bold text-white">Simandou 2040</h2>
-                                        <p className="text-lg md:text-xl leading-relaxed">
-                                            Sous la tutelle du Ministère de la Jeunesse et des Sports, le FONIJ déploie ce 
-                                            projet structurant pour renforcer l'esprit d'entreprise chez les jeunes et favoriser 
-                                            leur contribution active à la construction d'une Guinée moderne et inclusive.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-col sm:flex-row gap-4 pt-8 justify-center">
-                                    <Link
-                                        href={route('candidater')}
-                                        className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-lg transform hover:-translate-y-1"
-                                    >
-                                        Déposer ma candidature
-                                        <ChevronRight className="ml-2 h-5 w-5" />
-                                    </Link>
-                                    <Link
-                                        href="#category-1"
-                                        className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 text-lg border border-white/20 transform hover:-translate-y-1"
-                                    >
-                                        Découvrir les catégories
-                                        <ChevronRight className="ml-2 h-5 w-5" />
-                                    </Link>
-                                </div>
+                        
+                        <div className="grid md:grid-cols-2 gap-8 text-white/90 mt-8">
+                            <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
+                                <h2 className="text-2xl md:text-3xl font-bold text-white">Vision Présidentielle</h2>
+                                <p className="text-lg md:text-xl leading-relaxed">
+                                    Ce projet s'aligne sur la vision du Président de la République, le Général de Corps d'Armée Mamadi Doumbouya, 
+                                    qui a placé la jeunesse au cœur de la Refondation nationale.
+                                </p>
                             </div>
+
+                            <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
+                                <h2 className="text-2xl md:text-3xl font-bold text-white">Simandou 2040</h2>
+                                <p className="text-lg md:text-xl leading-relaxed">
+                                    Sous la tutelle du Ministère de la Jeunesse et des Sports, le FONIJ déploie ce 
+                                    projet structurant pour renforcer l'esprit d'entreprise chez les jeunes et favoriser 
+                                    leur contribution active à la construction d'une Guinée moderne et inclusive.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-4 pt-8 justify-center">
+                            <Link
+                                href={route('candidater')}
+                                className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-lg transform hover:-translate-y-1"
+                            >
+                                Déposer ma candidature
+                                <ChevronRight className="ml-2 h-5 w-5" />
+                            </Link>
+                            <Link
+                                href="#category-1"
+                                className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 text-lg border border-white/20 transform hover:-translate-y-1"
+                            >
+                                Découvrir les catégories
+                                <ChevronRight className="ml-2 h-5 w-5" />
+                            </Link>
                         </div>
                     </div>
                 </div>

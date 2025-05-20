@@ -105,18 +105,27 @@ export const FONIJ = {
             image: "/images/partners/cnt.jpeg",
         },
         {
-            name: "Ministère du Plan et de la Coopération Internationale",
-            image: "/images/partners/ministere-plan.jpg",
-        },
-        {
-            name: "Ministère du Plan et de la Coopération Internationale",
-            image: "/images/partners/ministere-plan.jpg",
+            name: "Ministère de la Jeunesse et des Sports",
+            image: "/images/partners/mjs.jpg",
         },
     ],
     contactInfo: {
         phone: "+224 626 754 150",
         phones: ["+224 626 754 150", "+224 622 023 909", "+224 628 862 002"],
-        unespace_phones: ["+224626754150", "+224622023909", "+224628862002"],
+        unespace_phones: [
+            {
+                phone: '+224 626 754 150',
+                unespace_phone: '+224626754150'
+            },
+            {
+                phone: '+224 622 023 909',
+                unespace_phone: '+224622023909'
+            },
+            {
+                phone: '+224 628 862 002',
+                unespace_phone: '+224628862002'
+            },
+        ],
 
         email: "fonijguinee@gmail.com",
         social: [

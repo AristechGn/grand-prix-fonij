@@ -1,6 +1,6 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users } from 'lucide-react';
+import { Award, BookOpen, Laptop, PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users, Mail } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { FONIJ } from '../utils';
@@ -316,7 +316,7 @@ export default function Home({ edition }: HomeProps) {
                             </motion.div>
                             <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
                                 <Link
-                                    href="#about"
+                                    href={route('about.index')}
                                     className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-lg text-sm sm:text-base transform transition-all duration-300 block w-full sm:w-auto"
                                 >
                                     En savoir plus
@@ -791,7 +791,7 @@ export default function Home({ edition }: HomeProps) {
                             Et si vous rejoigniez, vous aussi, cette dynamique nationale en faveur de l’innovation et de l’avenir ?
                         </p>
                     </motion.div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-8">
                         {FONIJ.partners.map((partner, index) => (
                             <motion.div
                                 key={index}
@@ -814,7 +814,7 @@ export default function Home({ edition }: HomeProps) {
                                 }}
                             >
                                 {/* Accent coloré au hasard en haut */}
-                                <div className={`h-1 w-full bg-gradient-to-r from-primary-400 to-primary-500'
+                                <div className={`h-3 w-full bg-gradient-to-br from-primary-200 to-black/50 transition-all duration-300 ease-in-out'
                                 }`}></div>
                                 
                                 <div className="p-4 flex flex-col items-center justify-center">
@@ -823,7 +823,7 @@ export default function Home({ edition }: HomeProps) {
                                         <img 
                                             src={partner.image} 
                                             alt={partner.name}
-                                            className="max-h-full max-w-full object-contain" 
+                                            className="max-h-full max-w-full object-contain shadow-md" 
                                         />
                                     </div>
                                     
@@ -856,27 +856,28 @@ export default function Home({ edition }: HomeProps) {
                         <p className="text-sm sm:text-base text-black mb-6 max-w-2xl mx-auto">
                             Rejoignez nos partenaires et contribuez activement à faire émerger les talents de demain.
                         </p>
-                        <div className="flex flex-row items-center justify-center gap-4">
-                            {FONIJ.contactInfo.phones.map((phone, index) => (
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+                            {FONIJ.contactInfo.unespace_phones.map((phone, index) => (
 
                                 <motion.a
-                                    href={`tel:+${phone}`}
+                                    href={`tel:${phone.unespace_phone}`}
                                     key={index}
-                                    className="flex items-center justify-center bg-primary/10 text-black font-bold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-xl"
+                                    className="flex items-center w-full p-2 justify-center bg-primary/10 text-white font-bold text-lg rounded-lg transition-all duration-300 shadow-md hover:shadow-xl"
                                     whileHover={{ scale: 1.05, y: -3 }}
                                     whileTap={{ scale: 0.98 }}
                                 >
-                                    <PhoneCall className="h-4 w-4" />
-                                    {phone}
+                                    <PhoneCall className="h-4 w-4 mr-2 text-black" />
+                                    {phone.phone}
                                 </motion.a>
                             ))}
                         </div>
                         <motion.a
                             href={`mailto:${FONIJ.contactInfo.email}`}
-                            className="inline-flex items-center justify-center px-5 sm:px-6 py-3 sm:py-4 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-md hover:shadow-xl"
+                            className="inline-flex items-center w-full justify-center px-5 sm:px-6 py-3 sm:py-4 bg-primary text-white font-medium rounded-lg hover:bg-primary-dark transition-all duration-300 shadow-md hover:shadow-xl"
                             whileHover={{ scale: 1.05, y: -3 }}
                             whileTap={{ scale: 0.98 }}
                         >
+                            <Mail className="h-4 w-4 mr-2 text-black" />
                             {FONIJ.contactInfo.email}
                             <ChevronRight className="ml-2 h-4 w-4" />
                         </motion.a>
@@ -951,7 +952,7 @@ export default function Home({ edition }: HomeProps) {
             </div>
 
             {/* Agenda modernisé et adapté au mobile */}
-            <div id="agenda" className="py-10 sm:py-24 bg-white relative overflow-hidden">
+            {/* <div id="agenda" className="py-10 sm:py-24 bg-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/img/grid-pattern.svg')] opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <motion.div
@@ -994,7 +995,7 @@ export default function Home({ edition }: HomeProps) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Programme d'Accélération - adapté au mobile */}
             <div className="py-10 sm:py-20 bg-gray-50">
@@ -1068,35 +1069,8 @@ export default function Home({ edition }: HomeProps) {
                 </div>
             </div>
 
-            {/* Section Stats - adaptée au mobile */}
-            <div className="py-8 sm:py-16 bg-white">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8">
-                        {[
-                            { value: "164", label: "Projets en compétition", icon: User },
-                            { value: "4", label: "Catégories", icon: Award },
-                            { value: "5", label: "Prix majeurs", icon: Trophy },
-                            { value: "35", label: "Âge maximum", icon: User }
-                        ].map((stat, index) => (
-                            <motion.div
-                                key={index}
-                                className="bg-primary/10 p-3 sm:p-6 rounded-lg sm:rounded-xl text-center"
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                            >
-                                <div className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 bg-primary rounded-full flex items-center justify-center">
-                                    <stat.icon className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
-                                </div>
-                                <div className="text-2xl sm:text-4xl font-bold text-primary">{stat.value}</div>
-                                <div className="text-xs sm:text-sm text-primary-dark mt-1 sm:mt-2">{stat.label}</div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
             {/* Section CTA - adaptée au mobile */}
-            <div className="relative bg-primary py-10 sm:py-20">
+            <div className="relative bg-gradient-to-b from-primary-200 to-black py-10 sm:py-20">
                 {/* Éléments décoratifs */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-32 sm:w-64 h-32 sm:h-64 bg-white/30 rounded-full"></div>
@@ -1124,7 +1098,7 @@ export default function Home({ edition }: HomeProps) {
                             </Link>
                             <Link
                                 href="/contact"
-                                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border border-background text-base sm:text-lg font-medium rounded-lg sm:rounded-xl text-background hover:bg-background/10 transition-all duration-300 w-full sm:w-auto"
+                                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border border-background text-base sm:text-lg font-medium rounded-lg sm:rounded-xl text-white hover:bg-background/10 transition-all duration-300 w-full sm:w-auto"
                             >
                                 Nous contacter
                             </Link>
