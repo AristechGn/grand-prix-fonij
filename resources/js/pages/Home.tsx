@@ -1091,14 +1091,14 @@ export default function Home({ edition }: HomeProps) {
                         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                             <Link
                                 href="/candidater"
-                                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border border-transparent text-base sm:text-lg font-medium rounded-lg sm:rounded-xl text-primary bg-background hover:bg-primary/10 transition-all duration-300 shadow-md sm:shadow-lg hover:shadow-xl w-full sm:w-auto"
+                                className="inline-flex justify-center items-center px-6 sm:px-8 py-3 sm:py-4 border border-transparent text-base sm:text-lg font-medium rounded-lg sm:rounded-xl text-primary bg-background hover:bg-primary/10 transition-all duration-300 shadow-md sm:shadow-lg hover:shadow-xl w-full sm:w-auto"
                             >
                                 Déposer ma candidature
                                 <ChevronRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                             </Link>
                             <Link
                                 href="/contact"
-                                className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 border border-background text-base sm:text-lg font-medium rounded-lg sm:rounded-xl text-white hover:bg-background/10 transition-all duration-300 w-full sm:w-auto"
+                                className="inline-flex justify-center items-center px-6 sm:px-8 py-3 sm:py-4 border border-background text-base sm:text-lg font-medium rounded-lg sm:rounded-xl text-white hover:bg-background/10 transition-all duration-300 w-full sm:w-auto"
                             >
                                 Nous contacter
                             </Link>
