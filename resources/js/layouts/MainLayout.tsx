@@ -260,7 +260,7 @@ export default function MainLayout({
             {/* Bouton Back to Top avec animation */}
             <button
                 onClick={scrollToTop}
-                className={`fixed right-4 sm:right-6 bottom-4 sm:bottom-6 z-40 p-2 sm:p-3 rounded-full bg-primary hover:bg-primary-dark text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 ${
+                className={`fixed right-4 bottom-4 sm:bottom-6 z-40 p-4 sm:p-3 rounded-full bg-primary hover:bg-primary-dark text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 ${
                     showBackToTop 
                     ? 'opacity-100 translate-y-0' 
                     : 'opacity-0 translate-y-10 pointer-events-none'

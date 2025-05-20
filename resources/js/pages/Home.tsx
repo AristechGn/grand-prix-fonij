@@ -875,7 +875,7 @@ export default function Home({ edition }: HomeProps) {
                                     <img
                                         src={item.photo}
                                         alt={`Membre du jury ${item.nom_complet}`}
-                                        className="w-full h-full object-cover object-center transition-transform duration-500 transform hover:scale-110"
+                                        className="w-full h-full object-contain object-center transition-transform duration-500 transform hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                                         <div className="p-4 sm:p-6 text-white">
@@ -1015,7 +1015,7 @@ export default function Home({ edition }: HomeProps) {
             </div>
 
             {/* Section CTA - adaptée au mobile */}
-            <div className="relative bg-gradient-to-b from-primary-200 to-black py-10 sm:py-20">
+            <div className="relative bg-gradient-to-b from-primary-500 to-black py-10 sm:py-20">
                 {/* Éléments décoratifs */}
                 <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-10 -right-10 w-32 sm:w-64 h-32 sm:h-64 bg-white/30 rounded-full"></div>

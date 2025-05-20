@@ -14,6 +14,7 @@ import {
     Book,
     Search,
     Calendar,
+    Zap,
 } from 'lucide-react';
 
 export const FONIJ = {
@@ -100,99 +101,58 @@ export const FONIJ = {
     programmes: [
         {
             id: 1,
-            title: "Lancement de l'appel à candidatures",
-            date: "15 juin 2025",
-            icon: Calendar,
-            color: "emerald",
-            activites: [
-                "Publication officielle du concours",
-                "Ouverture du site de candidatures",
-                "Diffusion sur les réseaux sociaux, radios et médias partenaires",
-                "Sessions d'information dans les régions"
+            title: "SMART Entrepreneur",
+            description: "De l'idée au projet structuré. Ce programme aide les jeunes à clarifier leurs idées et à bâtir un projet solide dès le départ. Vous apprendrez comment transformer une idée en projet concret, définir un problème réel à résoudre dans la société, et poser les bases d'un modèle économique viable. Ce que vous gagnez : une vision claire, des bases solides, et la motivation pour aller plus loin.",
+            icon: Award,
+            features: [
+                "Transformer une idée en projet concret",
+                "Définir un problème réel à résoudre",
+                "Poser les bases d'un modèle économique",
+                "Mise au point du pitch",
+                "Stratégie digitale",
+                "Plan d'action commerciale"
             ],
-            objectif: "Informer, motiver, et orienter les jeunes pour qu'ils soumettent leur dossier."
+            duration: "3 mois",
+            color: "from-green-400 to-emerald-600",
+            textColor: "text-emerald-600",
+            bgColor: "bg-emerald-50",
+            image: "/images/programmes/homme-afro-americain-moderne-travaillant-dans-cafe.jpg"
         },
         {
             id: 2,
-            title: "Sélection des candidatures",
-            date: "16 septembre - 10 octobre 2025",
-            icon: Search,
-            color: "blue",
-            activites: [
-                "Analyse des dossiers par un comité d'experts",
-                "Évaluation selon des critères : innovation, impact, faisabilité, durabilité",
-                "Pré-sélection des meilleurs projets dans chaque catégorie"
+            title: "Youth'Incuba",
+            description: "Incuber votre projet, le faire grandir. Cette phase vous offre un accompagnement personnalisé pour développer votre solution, créer un prototype et tester votre projet dans des conditions réelles. Nous vous offrons un coaching individuel avec des experts, l'accès à un espace de travail dynamique, des formations spécialisées et un accompagnement à la création du MVP. Ce que vous gagnez : un projet structuré, testé et prêt à affronter le monde réel.",
+            icon: BookOpen,
+            features: [
+                "Coaching individuel avec des experts",
+                "Accès à un espace de travail dynamique",
+                "Formations en gestion et marketing",
+                "Développement du MVP",
+                "Tests en conditions réelles"
             ],
-            objectif: "Identifier les projets les plus prometteurs."
+            duration: "6 mois",
+            color: "from-blue-400 to-indigo-600",
+            textColor: "text-blue-600",
+            bgColor: "bg-blue-50",
+            image: "/images/programmes/heureux-homme-noir-tenant-carte-voeux.jpg"
         },
         {
             id: 3,
-            title: "Bootcamp d'accélération",
-            date: "15 - 22 octobre 2025",
-            lieu: "Conakry (hébergement pour les candidats régionaux pris en charge)",
-            icon: Book,
-            color: "indigo",
-            activites: [
-                "Formation intensive pour les finalistes",
-                "Ateliers pratiques (pitch, gestion, business model, communication, etc.)",
-                "Coaching par des mentors expérimentés",
-                "Préparation à la soutenance finale"
+            title: "Boost Entrepreneurs",
+            description: "Accélérer le lancement de votre entreprise. C'est la dernière étape pour les projets matures prêts à décoller. Vous serez préparé à présenter votre projet à des investisseurs et à intégrer les réseaux d'entrepreneurs. Nous mettons à votre disposition un accompagnement à la levée de fonds, un coaching avancé en stratégie et croissance, et une préparation au pitch. Ce que vous gagnez : une entreprise prête à se lancer sur le marché, trouver ses clients, et créer de l'emploi.",
+            icon: Zap,
+            features: [
+                "Accompagnement à la levée de fonds",
+                "Coaching avancé en stratégie",
+                "Participation à des événements de networking",
+                "Préparation au pitch pour investisseurs",
+                "Affinage du modèle économique"
             ],
-            objectif: "Renforcer les compétences des candidats pour la réussite de leur projet."
-        },
-        {
-            id: 4,
-            title: "Journée de présentation des projets (Demo Day)",
-            date: "25 octobre 2025",
-            icon: Presentation,
-            color: "purple",
-            activites: [
-                "Présentation publique des projets devant un jury",
-                "Présence des partenaires, médias et investisseurs",
-                "Sélection des lauréats (1 par catégorie)",
-                "Chaque candidat dispose de 5 minutes de pitch + 5 minutes de questions-réponses"
-            ],
-            objectif: "Valoriser les projets et permettre un retour professionnel."
-        },
-        {
-            id: 5,
-            title: "Cérémonie de remise des prix",
-            date: "26 octobre 2025",
-            icon: Award,
-            color: "amber",
-            activites: [
-                "Annonce officielle des 4 lauréats",
-                "Remise des prix (jusqu'à 500 millions GNF par projet)",
-                "Allocutions des autorités, partenaires, anciens lauréats",
-                "Spectacle culturel, animations",
-                "Prix spéciaux pour l'impact social, l'innovation féminine ou la durabilité"
-            ]
-        },
-        {
-            id: 6,
-            title: "Suivi & Accompagnement post-prix",
-            date: "Novembre 2025 - Avril 2026",
-            icon: LineChart,
-            color: "rose",
-            activites: [
-                "Intégration dans un programme d'incubation",
-                "Suivi technique et financier personnalisé",
-                "Mise en relation avec des partenaires d'affaires et investisseurs",
-                "Suivi d'impact (évaluation à 3, 6 et 12 mois)"
-            ],
-            objectif: "Garantir la réussite durable des projets primés."
-        },
-        {
-            id: 7,
-            title: "Clôture de l'édition & Lancement de la suivante",
-            date: "Mai 2026",
-            icon: Flag,
-            color: "teal",
-            activites: [
-                "Bilan de l'édition",
-                "Témoignages des lauréats",
-                "Annonce de la prochaine édition du Grand Prix FONIJ"
-            ]
+            duration: "12 mois",
+            color: "from-purple-400 to-violet-600",
+            textColor: "text-purple-600",
+            bgColor: "bg-purple-50",
+            image: "/images/programmes/portrait-femme-affaires-holding-executif-demarrage-signe.jpg"
         }
     ],
     partners: [
@@ -201,11 +161,11 @@ export const FONIJ = {
             image: "/images/partners/ministere-plan.jpg",
         },
         {
-            name: "Ambassade du Japon",
+            name: "Ambassade du Japon en Guinée",
             image: "/images/partners/ambassade-japon.jpg",
         },
         {
-            name: "Conseil National de la transition (CNT)",
+            name: "Conseil National de la Transition (CNT)",
             image: "/images/partners/cnt.jpeg",
         },
         {
