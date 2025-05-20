@@ -61,21 +61,12 @@ export default function Categories({ edition }: CategoriesProps) {
                             </p>
                         </div>
                         
-                        <div className="grid md:grid-cols-2 gap-8 text-white/90 mt-8">
+                        <div className="grid md:grid-cols-1 gap-8 text-white/90 mt-8">
                             <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
                                 <h2 className="text-2xl md:text-3xl font-bold text-white">Vision Présidentielle</h2>
                                 <p className="text-lg md:text-xl leading-relaxed">
                                     Ce projet s'aligne sur la vision du Président de la République, le Général de Corps d'Armée Mamadi Doumbouya, 
                                     qui a placé la jeunesse au cœur de la Refondation nationale.
-                                </p>
-                            </div>
-
-                            <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
-                                <h2 className="text-2xl md:text-3xl font-bold text-white">Simandou 2040</h2>
-                                <p className="text-lg md:text-xl leading-relaxed">
-                                    Sous la tutelle du Ministère de la Jeunesse et des Sports, le FONIJ déploie ce 
-                                    projet structurant pour renforcer l'esprit d'entreprise chez les jeunes et favoriser 
-                                    leur contribution active à la construction d'une Guinée moderne et inclusive.
                                 </p>
                             </div>
                         </div>
@@ -307,7 +298,7 @@ export default function Categories({ edition }: CategoriesProps) {
                                     <span>Intégration à notre réseau d'excellence</span>
                                 </div>
                                 <Link
-                                    href={route('programmes')}
+                                    href={route('accompagnement')}
                                     className="mt-6 inline-flex items-center px-6 py-4 bg-background text-primary font-medium rounded-xl hover:bg-background/90 transition-all duration-300 shadow-lg hover:shadow-xl w-full justify-center"
                                 >
                                     Découvrir les avantages des lauréats

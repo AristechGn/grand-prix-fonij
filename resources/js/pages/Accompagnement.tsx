@@ -96,7 +96,7 @@ const impactGlobal = {
     summary: "Le Grand Prix FONIJ est votre tremplin pour passer à l'action. Nos programmes sont pensés pour vous accompagner étape par étape, jusqu'à la réussite."
 };
 
-export default function Programmes() {
+export default function Accompagnement() {
     // Animation variants
     const fadeInUp = {
         hidden: { opacity: 0, y: 20 },

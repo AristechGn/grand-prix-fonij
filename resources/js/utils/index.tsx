@@ -8,6 +8,12 @@ import {
     Laptop,
     Sprout,
     Trophy,
+    Flag,
+    LineChart,
+    Presentation,
+    Book,
+    Search,
+    Calendar,
 } from 'lucide-react';
 
 export const FONIJ = {
@@ -91,6 +97,104 @@ export const FONIJ = {
             ],
         }
     ],
+    programmes: [
+        {
+            id: 1,
+            title: "Lancement de l'appel à candidatures",
+            date: "15 juin 2025",
+            icon: Calendar,
+            color: "emerald",
+            activites: [
+                "Publication officielle du concours",
+                "Ouverture du site de candidatures",
+                "Diffusion sur les réseaux sociaux, radios et médias partenaires",
+                "Sessions d'information dans les régions"
+            ],
+            objectif: "Informer, motiver, et orienter les jeunes pour qu'ils soumettent leur dossier."
+        },
+        {
+            id: 2,
+            title: "Sélection des candidatures",
+            date: "16 septembre - 10 octobre 2025",
+            icon: Search,
+            color: "blue",
+            activites: [
+                "Analyse des dossiers par un comité d'experts",
+                "Évaluation selon des critères : innovation, impact, faisabilité, durabilité",
+                "Pré-sélection des meilleurs projets dans chaque catégorie"
+            ],
+            objectif: "Identifier les projets les plus prometteurs."
+        },
+        {
+            id: 3,
+            title: "Bootcamp d'accélération",
+            date: "15 - 22 octobre 2025",
+            lieu: "Conakry (hébergement pour les candidats régionaux pris en charge)",
+            icon: Book,
+            color: "indigo",
+            activites: [
+                "Formation intensive pour les finalistes",
+                "Ateliers pratiques (pitch, gestion, business model, communication, etc.)",
+                "Coaching par des mentors expérimentés",
+                "Préparation à la soutenance finale"
+            ],
+            objectif: "Renforcer les compétences des candidats pour la réussite de leur projet."
+        },
+        {
+            id: 4,
+            title: "Journée de présentation des projets (Demo Day)",
+            date: "25 octobre 2025",
+            icon: Presentation,
+            color: "purple",
+            activites: [
+                "Présentation publique des projets devant un jury",
+                "Présence des partenaires, médias et investisseurs",
+                "Sélection des lauréats (1 par catégorie)",
+                "Chaque candidat dispose de 5 minutes de pitch + 5 minutes de questions-réponses"
+            ],
+            objectif: "Valoriser les projets et permettre un retour professionnel."
+        },
+        {
+            id: 5,
+            title: "Cérémonie de remise des prix",
+            date: "26 octobre 2025",
+            icon: Award,
+            color: "amber",
+            activites: [
+                "Annonce officielle des 4 lauréats",
+                "Remise des prix (jusqu'à 500 millions GNF par projet)",
+                "Allocutions des autorités, partenaires, anciens lauréats",
+                "Spectacle culturel, animations",
+                "Prix spéciaux pour l'impact social, l'innovation féminine ou la durabilité"
+            ]
+        },
+        {
+            id: 6,
+            title: "Suivi & Accompagnement post-prix",
+            date: "Novembre 2025 - Avril 2026",
+            icon: LineChart,
+            color: "rose",
+            activites: [
+                "Intégration dans un programme d'incubation",
+                "Suivi technique et financier personnalisé",
+                "Mise en relation avec des partenaires d'affaires et investisseurs",
+                "Suivi d'impact (évaluation à 3, 6 et 12 mois)"
+            ],
+            objectif: "Garantir la réussite durable des projets primés."
+        },
+        {
+            id: 7,
+            title: "Clôture de l'édition & Lancement de la suivante",
+            date: "Mai 2026",
+            icon: Flag,
+            color: "teal",
+            activites: [
+                "Bilan de l'édition",
+                "Témoignages des lauréats",
+                "Annonce de la prochaine édition du Grand Prix FONIJ"
+            ]
+        }
+    ],
     partners: [
         {
             name: "Ministère du Plan et de la Coopération Internationale",
@@ -126,6 +230,15 @@ export const FONIJ = {
                 unespace_phone: '+224628862002'
             },
         ],
+        address: "Kaloum",
+        quartier: "Kaloum",
+        repere: "Rond-point de la Gare",
+        repere_map: "https://maps.app.goo.gl/1234567890",
+        hours: {
+            weekdays: "08:00 - 17:00",
+            saturday: "08:00 - 12:00",
+            sunday: "Fermé",
+        },
 
         email: "fonijguinee@gmail.com",
         social: [

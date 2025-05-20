@@ -286,7 +286,7 @@ export default function APropos() {
                                     <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                                 </Link>
                                 <Link
-                                    href={route('deroulement')}
+                                    href={route('programme')}
                                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-fonij-gold border border-white px-6 py-3 font-medium text-white backdrop-blur-xl transition-all duration-300 hover:bg-yellow-500"
                                 >
                                     Voir le déroulement

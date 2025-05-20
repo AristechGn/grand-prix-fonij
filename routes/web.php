@@ -30,17 +30,19 @@ Route::get('/init', [RegisteredUserController::class, 'init'])->name('app.init')
 
 Route::get('/', [WelcomeController::class, 'home'])->name('home');
 
-Route::get('/categories', [WelcomeController::class, 'categories'])->name('categories');
+Route::get('/categories-de-prix', [WelcomeController::class, 'categories'])->name('categories');
 
-Route::get('/accompagnement', [WelcomeController::class, 'accompagnement'])->name('programmes');
+Route::get('/accompagnement', [WelcomeController::class, 'accompagnement'])->name('accompagnement');
 
-Route::get('/deroulement', [WelcomeController::class, 'deroulement'])->name('deroulement');
+Route::get('/programme', [WelcomeController::class, 'programme'])->name('programme');
 
 Route::get('/actualites', [WelcomeController::class, 'actualites'])->name('actualites');
 
 Route::get('/candidater', [WelcomeController::class, 'candidater'])->name('candidater');
 
 Route::get('/a-propos', [WelcomeController::class, 'about'])->name('about.index');
+
+Route::get('/contact', [WelcomeController::class, 'contact'])->name('contact');
 
 
 

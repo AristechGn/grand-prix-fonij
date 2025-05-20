@@ -337,56 +337,6 @@ export default function Home({ edition }: HomeProps) {
                     </svg>
                 </div>
             </motion.div>
-         
-            {/* Animations et autres styles CSS */}
-            <style>{`
-            @keyframes fadeIn {
-                0% { opacity: 0; transform: translateY(10px); }
-                100% { opacity: 1; transform: translateY(0); }
-            }
-            
-            .animate-fadeIn {
-                animation: fadeIn 1.2s ease-out forwards;
-            }
-            
-            .animation-delay-300 {
-                animation-delay: 300ms;
-            }
-            
-            .text-shadow-sm {
-                text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-            }
-            
-            .text-shadow-lg {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-            }
-            
-            .particle {
-                position: absolute;
-                background: white;
-                border-radius: 50%;
-                pointer-events: none;
-                opacity: 0;
-                animation: floatParticle 5s ease-in-out forwards;
-            }
-            
-            @keyframes floatParticle {
-                0% {
-                    opacity: 0;
-                    transform: translateY(0) translateX(0) rotate(0deg);
-                }
-                20% {
-                    opacity: 0.3;
-                }
-                80% {
-                    opacity: 0.2;
-                }
-                100% {
-                    opacity: 0;
-                    transform: translateY(-100px) translateX(20px) rotate(360deg);
-                }
-            }
-            `}</style>
 
             {/* Bande d'infos adaptée au mobile avec animations */}
             <motion.div 
@@ -425,8 +375,9 @@ export default function Home({ edition }: HomeProps) {
             </motion.div>
 
             {/* Section Compteur et Présentation - adaptée au mobile avec animations */}
-            <div id="about" className="py-12 sm:py-24 bg-white relative overflow-hidden border-b">
+            <div className="py-12 sm:py-24 bg-white relative overflow-hidden border-b">
                 <div className="absolute inset-0 bg-[url('/images/covers/perspective-grid-pattern_1409-1826.avif')] bg-cover bg-no-repeat opacity-10"></div>
+                <div className="absolute inset-0 bg-[url('/images/fonij/cover_3.png')] bg-contain bg-left bg-no-repeat opacity-10"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
                         {/* À propos amélioré avec animations */}
@@ -574,21 +525,13 @@ export default function Home({ edition }: HomeProps) {
                                         </motion.div>
                                     ))}
                                 </motion.div>
-                                <motion.div 
-                                    className="mt-6 sm:mt-10 flex justify-center"
-                                    variants={fadeInUp}
-                                >
-                                    <motion.a
-                                        href={route('candidater')}
-                                        className="inline-flex items-center justify-center px-4 sm:px-6 py-3 sm:py-4 bg-primary text-background font-medium rounded-lg sm:rounded-xl hover:bg-primary/90 transition-all duration-300 shadow-md sm:shadow-lg hover:shadow-xl w-full text-sm sm:text-base"
-                                        whileHover={{ 
-                                            scale: 1.03,
-                                            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)",
-                                        }}
-                                        whileTap={{ scale: 0.98 }}
+                                <motion.div variants={fadeInUp}>
+                                    <Link
+                                        href="/candidater"
+                                        className="mt-6 sm:mt-10 flex justify-center w-full px-6 sm:px-8 py-4 sm:py-5 bg-primary hover:bg-primary-dark text-white font-bold text-center rounded-lg shadow-lg focus:outline-none transition-all duration-300"
                                     >
                                         S'inscrire maintenant
-                                    </motion.a>
+                                    </Link>
                                 </motion.div>
                                 <motion.div 
                                     className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-muted-foreground"
@@ -645,6 +588,7 @@ export default function Home({ edition }: HomeProps) {
             {/* Section Catégories du Concours - design modernisé et adapté au mobile */}
             <div className="py-8 sm:py-16 bg-gradient-to-b from-white to-primary/10 relative overflow-hidden">
                 <div className="absolute top-20 inset-x-0 h-90 bg-[url('https://img.freepik.com/free-vector/hand-drawn-abstract-outline-background_23-2150715642.jpg?t=st=1742300857~exp=1742304457~hmac=bccdd6664f4e76a1cda416c6cd11ee5497723564fc2afe1818ac23ff1ddd305a&w=1380')] bg-repeat-x opacity-5"></div>
+                <div className="absolute bottom-0 inset-x-0 h-90 bg-[url('https://img.freepik.com/free-vector/hand-drawn-abstract-outline-background_23-2150715642.jpg?t=st=1742300857~exp=1742304457~hmac=bccdd6664f4e76a1cda416c6cd11ee5497723564fc2afe1818ac23ff1ddd305a&w=1380')] bg-repeat-x opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <motion.div
                         initial="hidden"
@@ -666,7 +610,7 @@ export default function Home({ edition }: HomeProps) {
                     </motion.div>
                     
                     {/* Version tablette/desktop avec carrousel horizontal */}
-                    <div className="hidden md:block overflow-x-auto pb-4 -mx-4 px-4">
+                    <div className="hidden md:block pb-4 -mx-4 px-4">
                         <div className="flex space-x-4 min-w-max md:grid md:grid-cols-4 md:gap-4 md:min-w-0">
                             {FONIJ.categories.map((category, index) => (
                                 <motion.div
@@ -694,7 +638,7 @@ export default function Home({ edition }: HomeProps) {
                                             <h3 className="text-base font-bold text-foreground">{category.title}</h3>
                                         </div>
                                         <p className="text-xs sm:text-sm text-muted-foreground mb-3 line-clamp-2">{category.description}</p>
-                                        <Link href={`/categories#${category.slug}`} className="inline-flex items-center text-xs sm:text-sm text-primary hover:underline font-medium mt-1">
+                                        <Link href={`/categories/${category.slug}`} className="inline-flex items-center text-xs sm:text-sm text-primary hover:underline font-medium mt-1">
                                             En savoir plus
                                             <ChevronRight className="h-3 w-3 ml-1" />
                                         </Link>
@@ -743,7 +687,7 @@ export default function Home({ edition }: HomeProps) {
                                 <div id={`category-content-${index}`} className="hidden px-3 pb-3 pt-0">
                                     <div className="pl-10">
                                         <p className="text-xs text-muted-foreground mb-2">{category.description}</p>
-                                        <Link href={`/categories/${index + 1}`} className="inline-flex items-center text-xs text-primary hover:underline font-medium mt-1">
+                                        <Link href={`/categories/${category.slug}`} className="inline-flex items-center text-xs text-primary hover:underline font-medium mt-1">
                                             En savoir plus
                                             <ChevronRight className="h-3 w-3 ml-1" />
                                         </Link>
@@ -770,7 +714,8 @@ export default function Home({ edition }: HomeProps) {
 
             {/* Sponsors avec design amélioré pour mobile */}
             <div className="py-10 sm:py-24 bg-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/flat-black-white-halftone-background_23-2150550147.jpg?t=st=1742300094~exp=1742303694~hmac=a69654010f82a68b4035be03bb84816dfb54215fdc3f172dd5deb10cf750258b&w=1380')] opacity-5"></div>
+                <div className="absolute inset-0 bg-[url('/images/covers/flat-black-white-halftone-background_23-2150550147.avif')] opacity-5"></div>
+                <div className="absolute inset-0 top-0 bg-[url('/images/covers/flat-black-white-halftone-background_23-2150550147-2.png')] bg-top opacity-5"></div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <motion.div
                         initial="hidden"
@@ -787,8 +732,8 @@ export default function Home({ edition }: HomeProps) {
                         </h2>
                         <div className="w-16 sm:w-24 h-1 bg-primary mx-auto mb-4 sm:mb-6"></div>
                         <p className="text-sm sm:text-lg text-muted-foreground max-w-3xl mx-auto px-2">
-                            Ils sont déjà à nos côtés pour soutenir l’entrepreneuriat jeune en Guinée.
-                            Et si vous rejoigniez, vous aussi, cette dynamique nationale en faveur de l’innovation et de l’avenir ?
+                            Ils sont déjà à nos côtés pour soutenir l'entrepreneuriat jeune en Guinée.
+                            Et si vous rejoigniez, vous aussi, cette dynamique nationale en faveur de l'innovation et de l'avenir ?
                         </p>
                     </motion.div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-8">
@@ -1109,3 +1054,56 @@ export default function Home({ edition }: HomeProps) {
         </MainLayout>
     );
 }
+
+         
+{/* Animations et autres styles CSS */}
+<style>
+    {`
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(10px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 1.2s ease-out forwards;
+    }
+
+    .animation-delay-300 {
+        animation-delay: 300ms;
+    }
+
+    .text-shadow-sm {
+        text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    .text-shadow-lg {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+
+    .particle {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+        animation: floatParticle 5s ease-in-out forwards;
+    }
+
+    @keyframes floatParticle {
+        0% {
+            opacity: 0;
+            transform: translateY(0) translateX(0) rotate(0deg);
+        }
+        20% {
+            opacity: 0.3;
+        }
+        80% {
+            opacity: 0.2;
+        }
+        100% {
+            opacity: 0;
+            transform: translateY(-100px) translateX(20px) rotate(360deg);
+        }
+    }
+    `}
+</style>

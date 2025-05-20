@@ -1,504 +1,410 @@
 @import 'tailwindcss';
-
 @plugin 'tailwindcss-animate';
 
-@source "../views";
+@source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
-    /* Couleurs principales */
-    --color-primary: 2 191 26;     /* #02BF1A - Nouveau Vert */
-    --color-primary-light: 76 178 111;   /* #4CB26F */
-    --color-primary-dark: 0 88 42;      /* #00582A */
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary-50: var(--primary-50);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+    --color-primary-800: var(--primary-800);
+    --color-primary-900: var(--primary-900);
+    --color-primary-950: var(--primary-950);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary-50: var(--secondary-50);
+    --color-secondary-100: var(--secondary-100);
+    --color-secondary-200: var(--secondary-200);
+    --color-secondary-300: var(--secondary-300);
+    --color-secondary-400: var(--secondary-400);
+    --color-secondary-500: var(--secondary-500);
+    --color-secondary-600: var(--secondary-600);
+    --color-secondary-700: var(--secondary-700);
+    --color-secondary-800: var(--secondary-800);
+    --color-secondary-900: var(--secondary-900);
+    --color-secondary-950: var(--secondary-950);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    /* Couleurs de base pour le texte et les fonds */
+    --color-white: #ffffff;
+    --color-black: #000000;
+}
+
+/*
+  Pour assurer la compatibilité avec les versions précédentes de Tailwind
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-border, currentColor);
+    }
+}
+
+:root {
+    /* Couleurs principales FONIJ: Vert #02BF1A et Or #D4AF37 */
+    --background: #ffffff;
+    --foreground: #1f1f1f;
+    --card: #ffffff;
+    --card-foreground: #1f1f1f;
+    --popover: #ffffff;
+    --popover-foreground: #1f1f1f;
     
-    /* Couleurs secondaires */
-    --color-secondary: 212 175 55; /* #D4AF37 - Or FONIJ */
-    --color-secondary-dark: 191 155 50; /* #BF9B32 */
+    /* Vert FONIJ comme couleur primaire avec variantes */
+    --primary-50: #e6fae8;
+    --primary-100: #c2f2c8;
+    --primary-200: #99e9a2;
+    --primary-300: #63dd70;
+    --primary-400: #36cf48;
+    --primary-500: #02BF1A; /* Vert principal FONIJ */
+    --primary-600: #01a317;
+    --primary-700: #018a14;
+    --primary-800: #016f10;
+    --primary-900: #00582A; /* Vert foncé FONIJ */
+    --primary-950: #003719;
+    --primary: var(--primary-500);
+    --primary-foreground: #ffffff;
     
-    /* Couleurs système */
-    --color-background: 255 255 255;    /* #FFFFFF */
-    --color-foreground: 31 31 31;       /* #1F1F1F */
-    --color-muted: 247 247 247;         /* #F7F7F7 */
-    --color-muted-foreground: 118 118 118; /* #767676 */
-    --color-accent: 0 168 80;           /* #00A850 */
-    --color-destructive: 225 29 72;     /* #E11D48 */
+    /* Or FONIJ comme couleur secondaire */
+    --secondary-50: #fcf9e9;
+    --secondary-100: #f9f1c7;
+    --secondary-200: #f2e49f;
+    --secondary-300: #e9d470;
+    --secondary-400: #e1c44e;
+    --secondary-500: #D4AF37; /* Or FONIJ */
+    --secondary-600: #BF9B32; /* Or foncé FONIJ */
+    --secondary-700: #9c7d29;
+    --secondary-800: #7d6421;
+    --secondary-900: #655019;
+    --secondary-950: #3a2d0f;
+    --secondary: var(--secondary-500);
+    --secondary-foreground: #000000;
     
-    /* Couleurs de composants */
-    --color-card: 255 255 255;          /* #FFFFFF */
-    --color-card-foreground: 31 31 31;  /* #1F1F1F */
-    --color-popover: 255 255 255;       /* #FFFFFF */
-    --color-popover-foreground: 31 31 31; /* #1F1F1F */
+    /* Accent basé sur le vert FONIJ */
+    --accent-50: #e6f9ef;
+    --accent-100: #c1f0d7;
+    --accent-200: #8fe4b8;
+    --accent-300: #4cd496;
+    --accent-400: #1fc07f;
+    --accent-500: #00A850; /* Vert accent */
+    --accent-600: #008e46;
+    --accent-700: #00753a;
+    --accent-800: #005c30;
+    --accent-900: #004b29;
+    --accent-950: #002918;
+    --accent: var(--accent-500);
+    --accent-foreground: #ffffff;
     
-    /* Bordures et contrôles */
-    --color-border: 229 229 229;        /* #E5E5E5 */
-    --color-input: 229 229 229;         /* #E5E5E5 */
-    --color-ring: 209 209 209;          /* #D1D1D1 */
+    --muted: #f7f7f7;
+    --muted-foreground: #767676;
     
-    /* Typographie */
-    --font-sans: 'Instrument Sans', system-ui, sans-serif;
+    --destructive: #E11D48;
+    --destructive-foreground: #ffffff;
     
-    /* Rayons de bordure */
+    --border: #e5e5e5;
+    --input: #e5e5e5;
+    --ring: #d1d1d1;
+    
     --radius: 0.625rem;
+}
+
+.dark {
+    /* Mode sombre avec le vert foncé comme fond */
+    --background: #041810;
+    --foreground: #f8fafc;
+    --card: #052e1d;
+    --card-foreground: #f8fafc;
+    --popover: #052e1d;
+    --popover-foreground: #f8fafc;
+    
+    /* Vert FONIJ plus vif pour le primaire en mode sombre */
+    --primary-50: #e6fae8;
+    --primary-100: #c2f2c8;
+    --primary-200: #99e9a2;
+    --primary-300: #63dd70;
+    --primary-400: #36cf48;
+    --primary-500: #02BF1A; /* Vert principal FONIJ */
+    --primary-600: #01a317;
+    --primary-700: #018a14;
+    --primary-800: #016f10;
+    --primary-900: #00582A; /* Vert foncé FONIJ */
+    --primary-950: #003719;
+    --primary: var(--primary-400);
+    --primary-foreground: #000000;
+    
+    /* Or FONIJ comme couleur secondaire en mode sombre */
+    --secondary-50: #fcf9e9;
+    --secondary-100: #f9f1c7;
+    --secondary-200: #f2e49f;
+    --secondary-300: #e9d470;
+    --secondary-400: #e1c44e;
+    --secondary-500: #D4AF37; /* Or FONIJ */
+    --secondary-600: #BF9B32; /* Or foncé FONIJ */
+    --secondary-700: #9c7d29;
+    --secondary-800: #7d6421;
+    --secondary-900: #655019;
+    --secondary-950: #3a2d0f;
+    --secondary: var(--secondary-400);
+    --secondary-foreground: #000000;
+    
+    --muted: #1a3c2b;
+    --muted-foreground: #a3d2bc;
+    
+    --accent: #00A850;
+    --accent-foreground: #ffffff;
+    
+    --destructive: #ff6b6b;
+    --destructive-foreground: #ffffff;
+    
+    --border: #1a4730;
+    --input: #1a4730;
+    --ring: #00bf1a;
 }
 
 @layer base {
     * {
-        border-color: rgb(var(--color-border));
+        border-color: var(--border);
     }
 
     body {
-        background-color: rgb(var(--color-background));
-        color: rgb(var(--color-foreground));
+        background-color: var(--background);
+        color: var(--foreground);
         font-feature-settings: "rlig" 1, "calt" 1;
     }
 }
 
-/* Définition explicite des classes au lieu d'utiliser @utility */
-/* Classes couleur primaire */
-.bg-primary {
-    background-color: rgb(var(--color-primary));
+/* Animations personnalisées */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-.bg-primary-50 {
-    background-color: rgb(var(--color-primary) / 0.5);
+.animate-fadeIn {
+    animation: fadeIn 1.2s ease-out forwards;
 }
-.bg-primary-100 {
-    background-color: rgb(var(--color-primary) / 1);
-}
-.bg-primary-200 {
-    background-color: rgb(var(--color-primary) / 0.2);
-}
-.bg-primary-300 {
-    background-color: rgb(var(--color-primary) / 0.3);
-}
-.bg-primary-400 {
-    background-color: rgb(var(--color-primary) / 0.4);
-}
-.bg-primary-500 {
-    background-color: rgb(var(--color-primary) / 0.5);
-}
-.bg-primary-600 {
-    background-color: rgb(var(--color-primary) / 0.6);
-}
-.bg-primary-700 {
-    background-color: rgb(var(--color-primary) / 0.7);
-}
-.bg-primary-800 {
-    background-color: rgb(var(--color-primary) / 0.8);
-}
-.bg-primary-900 {
-    background-color: rgb(var(--color-primary) / 0.9);
-}
-
-.from-primary-50 {
-    background-color: rgb(var(--color-primary)5);
-}
-
-.from-primary-100 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-200 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-300 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-400 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-500 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-600 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-700 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-800 {
-    background-color: rgb(var(--color-primary));
-}
-
-.from-primary-900 {
-    background-color: rgb(var(--color-primary));
-}
-
-.to-primary-50 {
-    background-color: rgb(var(--color-primary)5);
-}
-.to-primary-100 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-200 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-300 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-400 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-500 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-600 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-700 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-800 {
-    background-color: rgb(var(--color-primary));
-}
-.to-primary-900 {
-    background-color: rgb(var(--color-primary));
-}
-
-.bg-primary-light {
-    background-color: rgb(var(--color-primary-light));
-}
-
-.bg-primary-dark {
-    background-color: rgb(var(--color-primary-dark));
-}
-
-.text-primary {
-    color: rgb(var(--color-primary));
-}
-
-.text-primary-50 {
-    color: rgb(var(--color-primary) / 0.5);
-}
-.text-primary-100 {
-    color: rgb(var(--color-primary) / 1);
-}
-.text-primary-200 {
-    color: rgb(var(--color-primary) / 0.2);
-}
-.text-primary-300 {
-    color: rgb(var(--color-primary) / 0.3);
-}
-.text-primary-400 {
-    color: rgb(var(--color-primary) / 0.4);
-}
-.text-primary-500 {
-    color: rgb(var(--color-primary) / 0.5);
-}
-.text-primary-600 {
-    color: rgb(var(--color-primary) / 0.6);
-}
-.text-primary-700 {
-    color: rgb(var(--color-primary) / 0.7);
-}
-.text-primary-800 {
-    color: rgb(var(--color-primary) / 0.8);
-}
-.text-primary-900 {
-    color: rgb(var(--color-primary) / 0.9);
-}
-
-.text-primary {
-    color: rgb(var(--color-primary));
-}
-.text-primary-50 {
-    color: rgb(var(--color-primary) / 0.1);
-}
-.text-primary-100 {
-    color: rgb(var(--color-primary) / 1);
-}
-.text-primary-200 {
-    color: rgb(var(--color-primary) / 0.2);
-}
-
-.text-primary-light {
-    color: rgb(var(--color-primary-light));
-}
-
-.text-primary-dark {
-    color: rgb(var(--color-primary-dark));
-}
-
-/* Classes d'opacité pour couleur primaire */
-.bg-primary\/10 {
-    background-color: rgb(var(--color-primary) / 0.1);
-}
-.bg-primary\/20 {
-    background-color: rgb(var(--color-primary) / 0.2);
-}
-.bg-primary\/30 {
-    background-color: rgb(var(--color-primary) / 0.3);
-}
-.bg-primary\/40 {
-    background-color: rgb(var(--color-primary) / 0.4);
-}
-.bg-primary\/50 {
-    background-color: rgb(var(--color-primary) / 0.5);
-}
-.bg-primary\/60 {
-    background-color: rgb(var(--color-primary) / 0.6);
-}
-.bg-primary\/70 {
-    background-color: rgb(var(--color-primary) / 0.7);
-}
-.bg-primary\/80 {
-    background-color: rgb(var(--color-primary) / 0.8);
-}
-.bg-primary\/90 {
-    background-color: rgb(var(--color-primary) / 0.9);
-}
-
-.text-primary\/10 {
-    color: rgb(var(--color-primary) / 0.1);
-}
-.text-primary\/20 {
-    color: rgb(var(--color-primary) / 0.2);
-}
-.text-primary\/30 {
-    color: rgb(var(--color-primary) / 0.3);
-}
-.text-primary\/40 {
-    color: rgb(var(--color-primary) / 0.4);
-}
-.text-primary\/50 {
-    color: rgb(var(--color-primary) / 0.5);
-}
-.text-primary\/60 {
-    color: rgb(var(--color-primary) / 0.6);
-}
-.text-primary\/70 {
-    color: rgb(var(--color-primary) / 0.7);
-}
-.text-primary\/80 {
-    color: rgb(var(--color-primary) / 0.8);
-}
-.text-primary\/90 {
-    color: rgb(var(--color-primary) / 0.9);
-}
-
-/* Couleur secondaire */
-.bg-secondary {
-    background-color: rgb(var(--color-secondary));
-}
-
-.bg-secondary-dark {
-    background-color: rgb(var(--color-secondary-dark));
-}
-
-.text-secondary {
-    color: rgb(var(--color-secondary));
-}
-
-.text-secondary-dark {
-    color: rgb(var(--color-secondary-dark));
-}
-
-/* Classes d'opacité pour couleur secondaire */
-.bg-secondary\/10 {
-    background-color: rgb(var(--color-secondary) / 0.1);
-}
-
-.bg-secondary\/20 {
-    background-color: rgb(var(--color-secondary) / 0.2);
-}
-
-.bg-secondary\/30 {
-    background-color: rgb(var(--color-secondary) / 0.3);
-}
-
-.bg-secondary\/40 {
-    background-color: rgb(var(--color-secondary) / 0.4);
-}
-
-.bg-secondary\/50 {
-    background-color: rgb(var(--color-secondary) / 0.5);
-}
-
-.text-secondary\/10 {
-    color: rgb(var(--color-secondary) / 0.1);
-}
-
-.text-secondary\/20 {
-    color: rgb(var(--color-secondary) / 0.2);
-}
-
-.text-secondary\/30 {
-    color: rgb(var(--color-secondary) / 0.3);
-}
-
-.text-secondary\/50 {
-    color: rgb(var(--color-secondary) / 0.5);
-}
-
-/* Classes thème pour fond et texte */
-.bg-background {
-    background-color: rgb(var(--color-background));
-}
-
-.text-foreground {
-    color: rgb(var(--color-foreground));
-}
-
-.bg-muted {
-    background-color: rgb(var(--color-muted));
-}
-
-.text-muted {
-    color: rgb(var(--color-muted));
-}
-
-.text-muted-foreground {
-    color: rgb(var(--color-muted-foreground));
-}
-
-.bg-accent {
-    background-color: rgb(var(--color-accent));
-}
-
-.text-accent {
-    color: rgb(var(--color-accent));
-}
-
-.bg-destructive {
-    background-color: rgb(var(--color-destructive));
-}
-
-.text-destructive {
-    color: rgb(var(--color-destructive));
-}
-
-.border-border {
-    border-color: rgb(var(--color-border));
-}
-
-.border-primary {
-    border-color: rgb(var(--color-primary));
-}
-
-.border-primary\/10 {
-    border-color: rgb(var(--color-primary) / 0.1);
-}
-
-.border-primary\/20 {
-    border-color: rgb(var(--color-primary) / 0.2);
-}
-
-.border-primary\/30 {
-    border-color: rgb(var(--color-primary) / 0.3);
-}
-
-.border-secondary {
-    border-color: rgb(var(--color-secondary));
-}
-
-.border-destructive {
-    border-color: rgb(var(--color-destructive));
-}
-
-/* Classes pour les composants */
-.bg-card {
-    background-color: rgb(var(--color-card));
-}
-
-.text-card-foreground {
-    color: rgb(var(--color-card-foreground));
-}
-
-.bg-popover {
-    background-color: rgb(var(--color-popover));
-}
-
-.text-popover-foreground {
-    color: rgb(var(--color-popover-foreground));
-}
-
-/* Gradients */
-.bg-gradient-fonij {
-    background: linear-gradient(135deg, 
-        rgb(var(--color-primary)) 0%, 
-        rgb(var(--color-primary-dark)) 100%);
-}
-
-.bg-gradient-fonij-gold {
-    background: linear-gradient(135deg, 
-        rgb(var(--color-secondary)) 0%, 
-        rgb(var(--color-secondary-dark)) 100%);
-}
-
-.hover\:bg-gradient-fonij:hover {
-    background: linear-gradient(135deg, 
-        rgb(var(--color-primary)) 0%, 
-        rgb(var(--color-primary-dark)) 100%);
-}
-
-.hover\:bg-gradient-fonij-gold:hover {
-    background: linear-gradient(135deg, 
-        rgb(var(--color-secondary)) 0%, 
-        rgb(var(--color-secondary-dark)) 100%);
-}
-
-/* États interactifs */
-.hover\:bg-primary:hover {
-    background-color: rgb(var(--color-primary));
-}
-
-.hover\:bg-primary\/10:hover {
-    background-color: rgb(var(--color-primary) / 0.1);
-}
-
-.hover\:bg-primary\/20:hover {
-    background-color: rgb(var(--color-primary) / 0.2);
-}
-
-.hover\:bg-primary\/90:hover {
-    background-color: rgb(var(--color-primary) / 0.9);
-}
-
-.hover\:text-primary:hover {
-    color: rgb(var(--color-primary));
-}
-
-.hover\:border-primary:hover {
-    border-color: rgb(var(--color-primary));
-}
-
-.hover\:bg-secondary:hover {
-    background-color: rgb(var(--color-secondary));
-}
 
-.hover\:text-secondary:hover {
-    color: rgb(var(--color-secondary));
+.animation-delay-300 {
+    animation-delay: 300ms;
 }
 
-.hover\:bg-muted:hover {
-    background-color: rgb(var(--color-muted));
+.text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 
-.focus\:border-primary:focus {
-    border-color: rgb(var(--color-primary));
+.text-shadow-lg {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
-.focus\:ring-primary:focus {
-    --tw-ring-color: rgb(var(--color-primary));
+.particle {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: floatParticle 5s ease-in-out forwards;
 }
 
-.focus-visible\:ring-primary:focus-visible {
-    --tw-ring-color: rgb(var(--color-primary));
+@keyframes floatParticle {
+    0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    20% {
+        opacity: 0.3;
+    }
+    80% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) translateX(20px) rotate(360deg);
+    }
 }
 
-/* États actifs */
+/* Support des attributs data */
 [data-active="true"] {
-    background-color: rgb(var(--color-primary) / 0.1);
-    color: rgb(var(--color-primary));
-    border-color: rgb(var(--color-primary));
+    @apply bg-primary/10 text-primary border-primary;
 }
 
 [data-active="true"]:hover {
-    background-color: rgb(var(--color-primary) / 0.15);
+    @apply bg-primary/15;
+}
+
+/* Gradients spécifiques */
+.bg-gradient-fonij {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-900) 100%);
+}
+
+.bg-gradient-fonij-gold {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-600) 100%);
+}
+
+@layer utilities {
+    /* Dégradés pour différentes sections */
+    .gradient-primary {
+        background-image: linear-gradient(to right, rgb(2, 191, 26), rgb(0, 88, 42));
+    }
+    
+    .gradient-secondary {
+        background-image: linear-gradient(to right, rgb(212, 175, 55), rgb(191, 155, 50));
+    }
+    
+    /* Classes utilitaires pour les variantes de couleurs */
+    .text-primary-50 { color: var(--primary-50); }
+    .text-primary-100 { color: var(--primary-100); }
+    .text-primary-200 { color: var(--primary-200); }
+    .text-primary-300 { color: var(--primary-300); }
+    .text-primary-400 { color: var(--primary-400); }
+    .text-primary-500 { color: var(--primary-500); }
+    .text-primary-600 { color: var(--primary-600); }
+    .text-primary-700 { color: var(--primary-700); }
+    .text-primary-800 { color: var(--primary-800); }
+    .text-primary-900 { color: var(--primary-900); }
+    .text-primary-950 { color: var(--primary-950); }
+
+    .text-secondary-50 { color: var(--secondary-50); }
+    .text-secondary-100 { color: var(--secondary-100); }
+    .text-secondary-200 { color: var(--secondary-200); }
+    .text-secondary-300 { color: var(--secondary-300); }
+    .text-secondary-400 { color: var(--secondary-400); }
+    .text-secondary-500 { color: var(--secondary-500); }
+    .text-secondary-600 { color: var(--secondary-600); }
+    .text-secondary-700 { color: var(--secondary-700); }
+    .text-secondary-800 { color: var(--secondary-800); }
+    .text-secondary-900 { color: var(--secondary-900); }
+    .text-secondary-950 { color: var(--secondary-950); }
+
+    .bg-primary-50 { background-color: var(--primary-50); }
+    .bg-primary-100 { background-color: var(--primary-100); }
+    .bg-primary-200 { background-color: var(--primary-200); }
+    .bg-primary-300 { background-color: var(--primary-300); }
+    .bg-primary-400 { background-color: var(--primary-400); }
+    .bg-primary-500 { background-color: var(--primary-500); }
+    .bg-primary-600 { background-color: var(--primary-600); }
+    .bg-primary-700 { background-color: var(--primary-700); }
+    .bg-primary-800 { background-color: var(--primary-800); }
+    .bg-primary-900 { background-color: var(--primary-900); }
+    .bg-primary-950 { background-color: var(--primary-950); }
+
+    .bg-secondary-50 { background-color: var(--secondary-50); }
+    .bg-secondary-100 { background-color: var(--secondary-100); }
+    .bg-secondary-200 { background-color: var(--secondary-200); }
+    .bg-secondary-300 { background-color: var(--secondary-300); }
+    .bg-secondary-400 { background-color: var(--secondary-400); }
+    .bg-secondary-500 { background-color: var(--secondary-500); }
+    .bg-secondary-600 { background-color: var(--secondary-600); }
+    .bg-secondary-700 { background-color: var(--secondary-700); }
+    .bg-secondary-800 { background-color: var(--secondary-800); }
+    .bg-secondary-900 { background-color: var(--secondary-900); }
+    .bg-secondary-950 { background-color: var(--secondary-950); }
+    
+    /* Classes hover pour le background */
+    .hover\:bg-primary:hover { background-color: var(--primary); }
+    .hover\:bg-primary-50:hover { background-color: var(--primary-50); }
+    .hover\:bg-primary-100:hover { background-color: var(--primary-100); }
+    .hover\:bg-primary-200:hover { background-color: var(--primary-200); }
+    .hover\:bg-primary-300:hover { background-color: var(--primary-300); }
+    .hover\:bg-primary-400:hover { background-color: var(--primary-400); }
+    .hover\:bg-primary-500:hover { background-color: var(--primary-500); }
+    .hover\:bg-primary-600:hover { background-color: var(--primary-600); }
+    .hover\:bg-primary-700:hover { background-color: var(--primary-700); }
+    .hover\:bg-primary-800:hover { background-color: var(--primary-800); }
+    .hover\:bg-primary-900:hover { background-color: var(--primary-900); }
+    .hover\:bg-primary-950:hover { background-color: var(--primary-950); }
+    
+    .hover\:bg-secondary:hover { background-color: var(--secondary); }
+    .hover\:bg-secondary-50:hover { background-color: var(--secondary-50); }
+    .hover\:bg-secondary-100:hover { background-color: var(--secondary-100); }
+    .hover\:bg-secondary-200:hover { background-color: var(--secondary-200); }
+    .hover\:bg-secondary-300:hover { background-color: var(--secondary-300); }
+    .hover\:bg-secondary-400:hover { background-color: var(--secondary-400); }
+    .hover\:bg-secondary-500:hover { background-color: var(--secondary-500); }
+    .hover\:bg-secondary-600:hover { background-color: var(--secondary-600); }
+    .hover\:bg-secondary-700:hover { background-color: var(--secondary-700); }
+    .hover\:bg-secondary-800:hover { background-color: var(--secondary-800); }
+    .hover\:bg-secondary-900:hover { background-color: var(--secondary-900); }
+    .hover\:bg-secondary-950:hover { background-color: var(--secondary-950); }
+    
+    /* Classes hover pour le texte */
+    .hover\:text-primary:hover { color: var(--primary); }
+    .hover\:text-primary-50:hover { color: var(--primary-50); }
+    .hover\:text-primary-100:hover { color: var(--primary-100); }
+    .hover\:text-primary-200:hover { color: var(--primary-200); }
+    .hover\:text-primary-300:hover { color: var(--primary-300); }
+    .hover\:text-primary-400:hover { color: var(--primary-400); }
+    .hover\:text-primary-500:hover { color: var(--primary-500); }
+    .hover\:text-primary-600:hover { color: var(--primary-600); }
+    .hover\:text-primary-700:hover { color: var(--primary-700); }
+    .hover\:text-primary-800:hover { color: var(--primary-800); }
+    .hover\:text-primary-900:hover { color: var(--primary-900); }
+    .hover\:text-primary-950:hover { color: var(--primary-950); }
+    
+    .hover\:text-secondary:hover { color: var(--secondary); }
+    .hover\:text-secondary-50:hover { color: var(--secondary-50); }
+    .hover\:text-secondary-100:hover { color: var(--secondary-100); }
+    .hover\:text-secondary-200:hover { color: var(--secondary-200); }
+    .hover\:text-secondary-300:hover { color: var(--secondary-300); }
+    .hover\:text-secondary-400:hover { color: var(--secondary-400); }
+    .hover\:text-secondary-500:hover { color: var(--secondary-500); }
+    .hover\:text-secondary-600:hover { color: var(--secondary-600); }
+    .hover\:text-secondary-700:hover { color: var(--secondary-700); }
+    .hover\:text-secondary-800:hover { color: var(--secondary-800); }
+    .hover\:text-secondary-900:hover { color: var(--secondary-900); }
+    .hover\:text-secondary-950:hover { color: var(--secondary-950); }
+    
+    /* Classes hover pour les bordures */
+    .hover\:border-primary:hover { border-color: var(--primary); }
+    .hover\:border-secondary:hover { border-color: var(--secondary); }
+    
+    /* Variantes d'opacité pour hover */
+    .hover\:bg-primary\/10:hover { background-color: rgb(var(--primary) / 0.1); }
+    .hover\:bg-primary\/20:hover { background-color: rgb(var(--primary) / 0.2); }
+    .hover\:bg-primary\/30:hover { background-color: rgb(var(--primary) / 0.3); }
+    .hover\:bg-primary\/40:hover { background-color: rgb(var(--primary) / 0.4); }
+    .hover\:bg-primary\/50:hover { background-color: rgb(var(--primary) / 0.5); }
+    .hover\:bg-primary\/60:hover { background-color: rgb(var(--primary) / 0.6); }
+    .hover\:bg-primary\/70:hover { background-color: rgb(var(--primary) / 0.7); }
+    .hover\:bg-primary\/80:hover { background-color: rgb(var(--primary) / 0.8); }
+    .hover\:bg-primary\/90:hover { background-color: rgb(var(--primary) / 0.9); }
 }

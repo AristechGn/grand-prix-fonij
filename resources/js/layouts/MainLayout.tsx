@@ -1,9 +1,13 @@
 import { Link } from '@inertiajs/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { 
     Menu, X, Home, Award, GraduationCap, Send, 
     Mail, Phone, MapPin, Facebook, Twitter, 
-    Instagram, Linkedin, Calendar, ChevronRight 
+    Instagram, Linkedin, Calendar, ChevronRight,
+    ArrowUp, Sparkles,
+    PhoneCall,
+    CalendarDays,
+    HandHelping
 } from 'lucide-react';
 
 interface MainLayoutProps {
@@ -27,6 +31,8 @@ export default function MainLayout({
 }: MainLayoutProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [showBackToTop, setShowBackToTop] = useState(false);
+    const mainContentRef = useRef<HTMLElement>(null);
     
     // Routes configuration
     const route_list: RouteItem[] = [
@@ -46,24 +52,24 @@ export default function MainLayout({
         // },
         {
             'name': 'categories',
-            'label': 'Catégories',
+            'label': 'Catégories de prix',
             'icon': Award,
-            'href': '/categories',
+            'href': route('categories'),
             'active': 'categories',
         },
         {
-            'name': 'deroulement',
+            'name': 'programme',
             'label': 'Programme',
-            'icon': GraduationCap,
-            'href': route('deroulement'),
-            'active': 'deroulement',
+            'icon': CalendarDays,
+            'href': route('programme'),
+            'active': 'programme',
         },
         {
             'name': 'accompagnement',
             'label': 'Accompagnement',
-            'icon': GraduationCap,
-            'href': route('programmes'),
-            'active': 'programmes',
+            'icon': HandHelping,
+            'href': route('accompagnement'),
+            'active': 'accompagnement',
         },
         {
             'name': 'A Propos',
@@ -72,6 +78,13 @@ export default function MainLayout({
             'href': route('about.index'),
             'active': 'about.index',
         },
+        {
+            'name': 'Contact',
+            'label': 'Contact',
+            'icon': PhoneCall,
+            'href': route('contact'),
+            'active': 'contact',
+        },
     ];
 
     const isActiveRoute = (routeName: string) => route().current(routeName);
@@ -79,7 +92,16 @@ export default function MainLayout({
     // Memoize scroll handler for better performance
     const handleScroll = useCallback(() => {
         setScrolled(window.scrollY > 10);
+        setShowBackToTop(window.scrollY > 300);
     }, []);
+    
+    // Fonction pour remonter en haut de la page
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     // Close mobile menu on resize to prevent UI issues
     const handleResize = useCallback(() => {
@@ -151,7 +173,7 @@ export default function MainLayout({
                                     className={`inline-flex items-center px-3 lg:px-4 py-2 text-xs lg:text-sm font-medium transition-all duration-200 rounded-lg relative ${
                                         isActiveRoute(route.active) 
                                             ? 'bg-primary text-white shadow-sm border-b-4 border-yellow-400' 
-                                            : 'text-black hover:text-white hover:bg-primary-900'
+                                            : 'text-black hover:text-white hover:bg-primary'
                                     }`}
                                     aria-current={isActiveRoute(route.active) ? 'page' : undefined}
                                 >
@@ -195,7 +217,7 @@ export default function MainLayout({
                 {isMenuOpen && (
                     <div 
                         id="mobile-menu"
-                        className="md:hidden bg-background/95 backdrop-blur-md shadow-xl rounded-b-2xl mt-1 sm:mt-2 border-t border-border animate-slideDown max-h-[80vh] overflow-y-auto"
+                        className="md:hidden bg-white/5 backdrop-blur-md shadow-xl rounded-b-2xl mt-1 sm:mt-2 border-t border-border animate-slideDown max-h-[80vh] overflow-y-auto"
                     >
                         <div className="pt-2 pb-3 space-y-1 px-3 sm:px-4">
                             {route_list.map((route) => (
@@ -233,7 +255,21 @@ export default function MainLayout({
             </nav>
 
             {/* Main Content - moins de padding sur mobile */}
-            <main className="flex-grow pt-16 sm:pt-20 md:pt-24">{children}</main>
+            <main ref={mainContentRef} className="flex-grow pt-16 sm:pt-20 md:pt-24">{children}</main>
+            
+            {/* Bouton Back to Top avec animation */}
+            <button
+                onClick={scrollToTop}
+                className={`fixed right-4 sm:right-6 bottom-4 sm:bottom-6 z-40 p-2 sm:p-3 rounded-full bg-primary hover:bg-primary-dark text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 ${
+                    showBackToTop 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-10 pointer-events-none'
+                }`}
+                aria-label="Retour en haut de page"
+            >
+                <ArrowUp className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-20"></span>
+            </button>
 
             {/* Footer - adapter pour mobile */}
             <footer className="bg-gradient-to-b from-primary-800 to-black mt-8 sm:mt-12 text-gray-200">
@@ -378,7 +414,7 @@ export default function MainLayout({
                 </div>
             </footer>
             
-            {/* Styles pour l'animation du menu mobile */}
+            {/* Styles pour les animations */}
             <style>{`
                 @keyframes slideDown {
                     from { opacity: 0; transform: translateY(-10px); }
@@ -387,6 +423,35 @@ export default function MainLayout({
                 
                 .animate-slideDown {
                     animation: slideDown 0.2s ease-out forwards;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                .animate-fadeIn {
+                    animation: fadeIn 0.5s ease-in-out forwards;
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+                
+                .animate-pulse-slow {
+                    animation: pulse 2s infinite;
+                }
+                
+                @keyframes float {
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-10px); }
+                    100% { transform: translateY(0px); }
+                }
+                
+                .animate-float {
+                    animation: float 3s ease-in-out infinite;
                 }
             `}</style>
         </div>
