@@ -229,9 +229,9 @@ export default function Programme() {
     return (
         <MainLayout>
             {/* Hero Section moderne et ludique */}
-            <div className="relative overflow-hidden bg-gradient-fonij min-h-[90vh]">
+            <div className="relative overflow-hidden bg-[url('/images/covers/groupe-afro-americains-travaillant-ensemble.jpg')] bg-cover bg-center min-h-[90vh]">
                 {/* Overlay d'effets visuels */}
-                <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-5"></div>
+                <div className="absolute inset-0 bg-black opacity-40"></div>
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/50 rounded-full mix-blend-multiply filter blur-[10px] opacity-5 animate-blob"></div>
                     <div className="absolute top-60 -left-20 w-72 h-72 bg-primary-light/50 rounded-full mix-blend-multiply filter blur-[80px] opacity-5 animate-blob animation-delay-2000"></div>
@@ -245,7 +245,7 @@ export default function Programme() {
                     <FloatingElement className="opacity-5 top-[15%] left-[10%]" delay={0.3}>
                         <div className="w-20 h-20 rounded-full bg-primary/30 backdrop-blur-sm"></div>
                     </FloatingElement>
-                    <FloatingElement className="opacity-5 top-[35%] right-[15%]" delay={0.8}>
+                    <FloatingElement className="opacity-5 top-[35%] right-[5%]" delay={0.8}>
                         <div className="w-32 h-32 rounded-full bg-primary-light/20 backdrop-blur-sm"></div>
                     </FloatingElement>
                     <FloatingElement className="opacity-5 bottom-[20%] left-[20%]" delay={1.2}>
