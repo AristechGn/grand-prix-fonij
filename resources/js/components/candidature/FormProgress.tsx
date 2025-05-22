@@ -37,7 +37,7 @@ export default function FormProgress({ currentStep, totalSteps, steps }: FormPro
   };
 
   return (
-    <div className="mb-6 md:mb-12">
+    <div id="form-progress" className="mb-6 md:mb-12">
       <motion.div 
         className="relative"
         initial={{ opacity: 0, y: -20 }}

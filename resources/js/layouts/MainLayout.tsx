@@ -364,6 +364,7 @@ export default function MainLayout({
                             <div className="mt-4 sm:mt-6 flex space-x-3 sm:space-x-4">
                                 { FONIJ.contactInfo.social.map((item, index) => (
                                     <a 
+                                        key={index}
                                         href={item.url} 
                                         className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
                                         aria-label={item.name}

@@ -160,7 +160,7 @@ export default function ContactSection() {
             
             <motion.p 
               variants={itemVariants}
-              className="text-base md:text-lg text-background/80 mb-8 border-l-2 border-secondary/30 pl-4"
+              className="text-base md:text-lg text-background/80 mb-8 border-l-12 border-secondary/80 pl-4"
             >
               Notre équipe est là pour vous accompagner dans votre candidature au Grand Prix FONIJ.
             </motion.p>
@@ -364,7 +364,7 @@ export default function ContactSection() {
                     whileHover={{ scale: 1.15, y: -3, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Icon className="w-5 h-5 text-background" />
+                    <Icon className={`w-5 h-5 text-${platform.color}`} />
                   </motion.a>
                 );
               })}
@@ -372,10 +372,10 @@ export default function ContactSection() {
             
             {/* Bouton de contact supplémentaire */}
             <motion.a
-              href="https://fonijguinee.org/contact"
+              href="https://fonijguinee.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center justify-center px-6 py-3 bg-gradient-fonij-gold text-primary font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-base transform"
+              className="mt-8 inline-flex items-center text-black justify-center px-6 py-3 bg-gradient-fonij-gold  bg-clip-text text-5xl font-extrabold rounded-xl hover:shadow-lg transition-all duration-300 text-base transform"
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -5, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
               whileTap={{ scale: 0.95 }}

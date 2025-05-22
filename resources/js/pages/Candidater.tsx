@@ -409,13 +409,13 @@ export default function Candidater({ edition }: CandidaterProps) {
             <form onSubmit={handleSubmit} className="min-h-screen bg-gradient-to-b from-muted/50 via-background to-muted/50 pt-8 md:pt-16">
                 <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Indicateur de progression */}
-                    <div id="form-progress" className="form-progress">
+                    <div className="form-progress">
                         <FormProgress 
                             currentStep={currentStep} 
                             totalSteps={totalSteps} 
                             steps={formSteps} 
                         />
-                                        </div>
+                    </div>
 
                     {/* Contenu de l'étape actuelle */}
                     <motion.div

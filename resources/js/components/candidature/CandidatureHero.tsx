@@ -1,7 +1,7 @@
-import { CheckCircle, ChevronRight, ArrowDown, Sparkles, Clock } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { CheckCircle, ChevronRight, ArrowDown, Sparkles, Clock, Star, Zap, Rocket, Trophy } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, px, animate, delay } from 'framer-motion';
 import { Link } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Edition {
   name: string;
@@ -13,14 +13,22 @@ interface CandidatureHeroProps {
   edition: Edition | null;
 }
 
-// Composant de particules flottantes
+// Composant de particules flottantes amélioré
 const FloatingParticles = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
     const createParticle = () => {
       const particles = document.getElementById('hero-particles');
       if (!particles) return;
       
-      const size = Math.random() * 4 + 2;
+      const size = Math.random() * 6 + 2;
       const particle = document.createElement('div');
       
       particle.className = "particle";
@@ -28,41 +36,71 @@ const FloatingParticles = () => {
       particle.style.height = `${size}px`;
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
-      particle.style.opacity = `${Math.random() * 0.5}`;
-      particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.3})`;
+      particle.style.opacity = `${Math.random() * 0.8}`;
+      
+      // Couleurs variées pour les particules
+      const colors = ['rgba(255, 255, 255, 0.6)', 'rgba(255, 215, 0, 0.5)', 'rgba(255, 105, 180, 0.4)', 'rgba(0, 255, 255, 0.4)'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.boxShadow = `0 0 ${size * 2}px ${particle.style.background}`;
       
       particles.appendChild(particle);
       
       setTimeout(() => {
         particle.remove();
-      }, 5000);
+      }, 8000);
     };
     
-    const particleInterval = setInterval(createParticle, 800);
+    const particleInterval = setInterval(createParticle, 600);
     
-    return () => clearInterval(particleInterval);
+    return () => {
+      clearInterval(particleInterval);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
-  return <div id="hero-particles" className="absolute inset-0 z-10 overflow-hidden pointer-events-none"></div>;
+  return (
+    <div id="hero-particles" className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+      {/* Particule suivant la souris */}
+      <motion.div
+        className="absolute w-4 h-4 bg-gradient-to-r from-yellow-400 to-pink-400 rounded-full opacity-60 blur-sm"
+        animate={{
+          x: mousePosition.x - 8,
+          y: mousePosition.y - 8,
+        }}
+        transition={{ type: "spring", damping: 30, stiffness: 200 }}
+      />
+    </div>
+  );
 };
 
-// Éléments flottants décoratifs
-const FloatingElement = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => {
+// Éléments flottants décoratifs améliorés
+const FloatingElement = ({ 
+  children, 
+  delay = 0, 
+  className = "", 
+  intensity = 1 
+}: { 
+  children: React.ReactNode, 
+  delay?: number, 
+  className?: string,
+  intensity?: number 
+}) => {
   return (
     <motion.div
       className={`absolute ${className}`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5 }}
+      initial={{ opacity: 0, y: 50, scale: 0.8 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay, duration: 0.8, type: "spring" }}
       style={{ zIndex: 5 }}
     >
       <motion.div
         animate={{
-          y: [0, -10, 0],
-          rotate: [0, 3, 0, -3, 0],
+          y: [0, -15 * intensity, 0],
+          rotate: [0, 5 * intensity, 0, -5 * intensity, 0],
+          scale: [1, 1.1, 1],
         }}
         transition={{
-          duration: 5,
+          duration: 4 + Math.random() * 2,
           repeat: Infinity,
           repeatType: "reverse",
           ease: "easeInOut",
@@ -74,245 +112,480 @@ const FloatingElement = ({ children, delay = 0, className = "" }: { children: Re
   );
 };
 
+// Nouveau composant pour les formes géométriques animées
+const GeometricShape = ({ type, className, delay = 0 }: { type: 'circle' | 'triangle' | 'square', className: string, delay?: number }) => {
+  const shapeVariants = {
+    circle: "rounded-full",
+    triangle: "clip-triangle",
+    square: "rounded-lg rotate-45"
+  };
+
+  return (
+    <motion.div
+      className={`absolute ${className} ${shapeVariants[type]} backdrop-blur-sm`}
+      initial={{ opacity: 0, scale: 0, rotate: 0 }}
+      animate={{ 
+        opacity: [0.3, 0.6, 0.3], 
+        scale: [1, 1.2, 1],
+        rotate: [0, 180, 360]
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay
+      }}
+    />
+  );
+};
+
 export default function CandidatureHero({ edition }: CandidatureHeroProps) {
-  // Utiliser la date limite d'inscription de l'édition actuelle ou une date par défaut
-  const dateFinInscriptions = edition ? new Date(edition.registrationDeadline) : new Date('2025-04-23T00:00:00');
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
   
-  // Calculer l'année de l'édition actuelle ou utiliser l'année en cours
+  // Hook de scroll pour l'effet parallaxe renforcé
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  // Transformations parallaxe plus prononcées
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const logoY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const particlesY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  
+  // Effet de rotation pour le logo
+  const logoRotate = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  
+  // Springs pour des animations plus fluides
+  const springConfig = { damping: 25, stiffness: 120 };
+  const bgYSpring = useSpring(bgY, springConfig);
+  const logoYSpring = useSpring(logoY, springConfig);
+  const contentYSpring = useSpring(contentY, springConfig);
+  
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+  
+  const dateFinInscriptions = edition ? new Date(edition.registrationDeadline) : new Date('2025-04-23T00:00:00');
   const currentYear = edition ? edition.year : new Date().getFullYear();
 
-  // Variants d'animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 30, opacity: 0, scale: 0.95 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 },
+      scale: 1,
+      transition: { duration: 0.6, type: "spring", bounce: 0.3 },
     },
   };
 
   return (
-    <div className="relative overflow-hidden bg-primary">
-      {/* Image d'arrière-plan avec effet parallaxe */}
-      <div 
-        className="relative flex min-h-[60vh] md:min-h-[80vh] w-full items-center justify-center bg-cover bg-fixed bg-center"
+    <div ref={containerRef} className="relative overflow-hidden bg-gradient-to-br from-primary via-primary-600 to-primary-800 min-h-screen">
+      {/* Arrière-plan avec effet parallaxe renforcé */}
+      <motion.div 
+        className="absolute inset-0 z-0"
         style={{ 
-          backgroundImage: `url('/images/fonij/logo-transparent.png')`,
+          y: bgYSpring,
+          backgroundImage: `url(/images/fonij/cover.png)`,
           backgroundSize: 'contain',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          width: '100%',
+          height: '150%',
+          opacity: 0.4
+        }}
+      />
+
+      {/* Couche d'arrière-plan supplémentaire avec motif en mouvement */}
+      <motion.div
+        className="absolute inset-0 z-1"
+        animate={{
+          backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(255,215,0,0.1) 0%, transparent 50%)
+          `,
+          backgroundSize: '400px 400px'
+        }}
+      />
+
+      {/* Logo avec effet parallaxe et rotation */}
+      <motion.div 
+        className="absolute inset-0 z-2 flex items-center justify-center"
+        style={{ 
+          y: logoYSpring,
+          rotate: logoRotate,
+          width: '100%',
+          height: '150%',
         }}
       >
-        {/* Overlay avec gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/10"></div>
+        <motion.div 
+          className="w-full h-full opacity-20"
+          animate={{
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{ 
+            backgroundImage: `url(/images/fonij/logo-transparent.png)`,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+      </motion.div>
 
-        {/* Effets visuels avancés */}
-        <motion.div
-          className="absolute inset-0 opacity-20"
+      {/* Formes géométriques animées */}
+      <div className="absolute inset-0 z-3">
+        <GeometricShape type="circle" className="top-20 left-10 w-32 h-32 bg-gradient-to-r from-yellow-400/30 to-pink-400/30" delay={0} />
+        <GeometricShape type="triangle" className="top-40 right-20 w-24 h-24 bg-gradient-to-r from-blue-400/30 to-purple-400/30" delay={1} />
+        <GeometricShape type="square" className="bottom-32 left-20 w-20 h-20 bg-gradient-to-r from-green-400/30 to-teal-400/30" delay={2} />
+        <GeometricShape type="circle" className="bottom-20 right-10 w-28 h-28 bg-gradient-to-r from-orange-400/30 to-red-400/30" delay={1.5} />
+      </div>
+
+      {/* Contenu principal */}
+      <div className="relative flex min-h-screen w-full items-center justify-center">
+        {/* Overlay dynamique */}
+        <motion.div 
+          className="absolute inset-0 z-4"
           animate={{
             background: [
-              'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-              'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-              'radial-gradient(circle at 50% 20%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-              'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+              'linear-gradient(45deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%)',
+              'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
+              'linear-gradient(45deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%)',
             ]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Formes décoratives animées */}
+        {/* Effets de lumière en mouvement */}
         <motion.div
-          className="bg-primary absolute top-20 left-10 h-72 w-72 rounded-full opacity-20 blur-3xl"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        ></motion.div>
-        <motion.div
-          className="absolute right-10 bottom-10 h-96 w-96 rounded-full bg-yellow-500 opacity-15 blur-3xl"
-          animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        ></motion.div>
+          className="absolute inset-0 z-5"
+          animate={{
+            background: [
+              'radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 70%)',
+              'radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15) 0%, transparent 70%)',
+              'radial-gradient(circle at 50% 30%, rgba(255,255,255,0.15) 0%, transparent 70%)',
+              'radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 70%)',
+            ]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
 
-        {/* Particules flottantes */}
-        <FloatingParticles />
+        {/* Particules avec parallaxe */}
+        <motion.div style={{ y: particlesY }}>
+          <FloatingParticles />
+        </motion.div>
 
-        {/* Éléments flottants décoratifs - uniquement visibles sur desktop */}
+        {/* Éléments flottants améliorés */}
         <div className="hidden md:block">
-          <FloatingElement className="opacity-15 top-[15%] left-[10%]" delay={0.3}>
-            <div className="w-20 h-20 rounded-full bg-primary/30 backdrop-blur-sm"></div>
+          <FloatingElement className="opacity-20 top-[10%] left-[5%]" delay={0.2} intensity={1.2}>
+            <div className="w-24 h-24 rounded-full bg-gradient-to-r from-yellow-400/40 to-orange-400/40 backdrop-blur-sm shadow-lg">
+              <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center">
+                <Star className="w-8 h-8 text-yellow-300" />
+              </div>
+            </div>
           </FloatingElement>
-          <FloatingElement className="opacity-15 top-[35%] right-[5%]" delay={0.8}>
-            <div className="w-32 h-32 rounded-full bg-secondary/20 backdrop-blur-sm"></div>
+          
+          <FloatingElement className="opacity-20 top-[25%] right-[8%]" delay={0.6} intensity={0.8}>
+            <div className="w-32 h-32 rounded-2xl bg-gradient-to-r from-purple-400/30 to-pink-400/30 backdrop-blur-sm shadow-lg rotate-12">
+              <div className="w-full h-full rounded-2xl bg-white/10 flex items-center justify-center">
+                <Rocket className="w-10 h-10 text-purple-300" />
+              </div>
+            </div>
           </FloatingElement>
-          <FloatingElement className="opacity-15 bottom-[20%] left-[20%]" delay={1.2}>
-            <div className="w-24 h-24 rounded-full bg-primary/20 backdrop-blur-sm"></div>
+          
+          <FloatingElement className="opacity-20 bottom-[25%] left-[15%]" delay={1.0} intensity={1.5}>
+            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-teal-400/40 to-blue-400/40 backdrop-blur-sm shadow-lg">
+              <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center">
+                <Zap className="w-6 h-6 text-teal-300" />
+              </div>
+            </div>
           </FloatingElement>
-          <FloatingElement className="opacity-15 bottom-[30%] right-[25%]" delay={1.5}>
-            <Clock className="w-10 h-10 text-white/30" />
+          
+          <FloatingElement className="opacity-20 bottom-[35%] right-[20%]" delay={1.4} intensity={1.1}>
+            <div className="w-28 h-28 rounded-xl bg-gradient-to-r from-green-400/30 to-emerald-400/30 backdrop-blur-sm shadow-lg -rotate-12">
+              <div className="w-full h-full rounded-xl bg-white/10 flex items-center justify-center">
+                <Trophy className="w-8 h-8 text-green-300" />
+              </div>
+            </div>
           </FloatingElement>
-          <FloatingElement className="opacity-15 top-[25%] left-[30%]" delay={1.8}>
-            <CheckCircle className="w-12 h-12 text-white/30" />
+          
+          <FloatingElement className="opacity-15 top-[35%] left-[25%]" delay={1.8} intensity={0.9}>
+            <Clock className="w-12 h-12 text-blue-300/70" />
           </FloatingElement>
-          <FloatingElement className="opacity-15 top-[40%] right-[30%]" delay={2.0}>
-            <Sparkles className="w-8 h-8 text-secondary/50" />
+          
+          <FloatingElement className="opacity-15 top-[50%] right-[35%]" delay={2.2} intensity={1.3}>
+            <Sparkles className="w-10 h-10 text-yellow-300/70" />
           </FloatingElement>
         </div>
 
-        {/* Contenu principal */}
-        <div className="relative container mx-auto px-4 z-10">
+        {/* Contenu principal avec parallaxe */}
+        <motion.div 
+          className="relative container mx-auto px-4 z-10"
+          style={{ y: contentYSpring }}
+        >
           <motion.div 
-            className="max-w-3xl mx-auto space-y-3 md:space-y-6 text-center backdrop-blur-sm bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl"
+            className="max-w-4xl mx-auto space-y-4 md:space-y-8 text-center"
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            animate={isVisible ? "visible" : "hidden"}
           >
-            <motion.span 
-              className="text-white/70 font-semibold text-sm md:text-lg uppercase tracking-wider block"
+            {/* Card principale avec effet glassmorphism */}
+            <motion.div 
+              className="backdrop-blur-xl bg-white/10 p-8 md:p-16 rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden"
               variants={itemVariants}
+              whileHover={{ scale: 1.02, y: -5 }}
+              transition={{ type: "spring", bounce: 0.3 }}
             >
-              Fonds National pour l'Insertion des Jeunes
-            </motion.span>
-
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold leading-tight text-white"
-              variants={itemVariants}
-            >
-              Grand Prix FONIJ
-              <motion.span 
-                className="absolute -top-1 -right-1"
-                animate={{ 
-                  rotate: [0, 360],
-                  scale: [0.8, 1.2, 0.8]
+              {/* Effet de brillance qui traverse la card */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                animate={{
+                  x: ['-100%', '100%'],
                 }}
-                transition={{ 
-                  duration: 2, 
+                transition={{
+                  duration: 3,
                   repeat: Infinity,
+                  repeatDelay: 5,
                   ease: "easeInOut"
                 }}
-              >
-                <Sparkles className="w-6 h-6 text-secondary" />
-              </motion.span>
-            </motion.h1>
-
-            {edition && (
-              <motion.div 
-                className="flex justify-center gap-3 mt-2"
+                style={{ transform: 'skewX(-20deg)' }}
+              />
+              
+              <motion.span 
+                className="text-white/80 font-bold text-sm md:text-xl uppercase tracking-wider block mb-4"
                 variants={itemVariants}
               >
-                <div className="bg-white/20 backdrop-blur-sm py-1 px-3 rounded-full inline-flex">
-                  <span className="text-white font-semibold text-sm md:text-base">{edition.name}</span>
-                </div>
-                <div className="bg-secondary/20 backdrop-blur-sm py-1 px-3 rounded-full inline-flex">
-                  <span className="text-secondary font-semibold text-sm md:text-base">Édition {currentYear}</span>
-                </div>
+                🚀 Fonds National pour l'Insertion des Jeunes
+              </motion.span>
+
+              <motion.h1 
+                className="text-5xl md:text-7xl font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-white relative"
+                variants={itemVariants}
+              >
+                Grand Prix FONIJ
+                <motion.div 
+                  className="absolute -top-2 -right-2"
+                  animate={{ 
+                    rotate: [0, 360],
+                    scale: [1, 1.3, 1]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <Sparkles className="w-8 h-8 text-yellow-400 drop-shadow-lg" />
+                </motion.div>
+              </motion.h1>
+
+              {edition && (
+                <motion.div 
+                  className="flex flex-wrap justify-center gap-4 mt-6"
+                  variants={itemVariants}
+                >
+                  <motion.div 
+                    className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm py-2 px-6 rounded-full border border-white/30"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.25)" }}
+                  >
+                    <span className="text-white font-bold text-sm md:text-lg">{edition.name}</span>
+                  </motion.div>
+                  <motion.div 
+                    className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 backdrop-blur-sm py-2 px-6 rounded-full border border-yellow-400/50"
+                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255,215,0,0.4)" }}
+                  >
+                    <span className="text-yellow-100 font-bold text-sm md:text-lg">Édition {currentYear}</span>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              <motion.div
+                className="w-32 h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 mx-auto my-6 rounded-full"
+                variants={itemVariants}
+                animate={{ scaleX: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
+
+              <motion.p 
+                className="text-2xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 font-black"
+                variants={itemVariants}
+              >
+                ✨ Déposez votre candidature ✨
+              </motion.p>
+
+              <motion.p 
+                className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto border-t border-white/30 pt-6 mt-6 font-medium"
+                variants={itemVariants}
+              >
+                Transformez votre idée révolutionnaire en entreprise à succès et participez à l'édition {currentYear}
+              </motion.p>
+
+              <motion.div 
+                className="mt-8 flex flex-wrap justify-center items-center gap-4 text-sm md:text-base text-white/95"
+                variants={itemVariants}
+              >
+                <motion.div 
+                  className="flex items-center bg-gradient-to-r from-green-400/20 to-emerald-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-green-400/50"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                >
+                  <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
+                  <span className="font-semibold">15-35 ans</span>
+                </motion.div>
+                <motion.div 
+                  className="flex items-center bg-gradient-to-r from-blue-400/20 to-purple-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-400/50"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                >
+                  <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-blue-400 mr-2" />
+                  <span className="font-semibold">Projet innovant</span>
+                </motion.div>
+                <motion.div 
+                  className="flex items-center bg-gradient-to-r from-red-400/20 to-pink-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-red-400/50"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                >
+                  <Clock className="h-5 w-5 md:h-6 md:w-6 text-red-400 mr-2" />
+                  <span className="font-semibold">
+                    Limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                </motion.div>
               </motion.div>
-            )}
 
-            <motion.div
-              className="w-20 h-1 bg-gradient-fonij mx-auto my-2"
-              variants={itemVariants}
-            />
-
-            <motion.p 
-              className="text-xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-secondary-300 via-secondary to-primary-300 font-bold"
-              variants={itemVariants}
-            >
-              Déposez votre candidature
-            </motion.p>
-
-            <motion.p 
-              className="text-sm md:text-lg text-white/90 max-w-xl mx-auto border-t border-white/20 pt-3 mt-3"
-              variants={itemVariants}
-            >
-              Transformez votre idée en entreprise et participez à l'édition {currentYear}
-            </motion.p>
-
-            <motion.div 
-              className="mt-6 md:mt-8 flex flex-wrap justify-center items-center gap-3 text-xs md:text-sm text-white/90"
-              variants={itemVariants}
-            >
-              <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
-                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-secondary mr-2" />
-                <span>15-35 ans</span>
-              </div>
-              <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
-                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-secondary mr-2" />
-                <span>Projet innovant</span>
-              </div>
-              <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
-                <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-secondary mr-2" />
-                <span className="text-xs md:text-sm">Date limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="mt-8 flex flex-col sm:flex-row justify-center gap-4"
-              variants={itemVariants}
-            >
-              <a
-                href="#form-progress"
-                className="inline-flex items-center justify-center px-6 py-3 bg-gradient-fonij text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 text-base transform hover:-translate-y-1"
+              <motion.div 
+                className="mt-10 flex flex-col sm:flex-row justify-center gap-6"
+                variants={itemVariants}
               >
-                Commencer ma candidature
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </a>
-              <a
-                href="#contact-section"
-                className="inline-flex items-center justify-center px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 text-base transform hover:-translate-y-1 border border-white/20"
-              >
-                Besoin d'aide ?
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </a>
+                <motion.button
+                  onClick={() => {
+                    const formProgressElement = document.getElementById('form-progress');
+                    if (formProgressElement) {
+                      formProgressElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="group inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold rounded-2xl shadow-2xl text-lg relative overflow-hidden cursor-pointer"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.5 }}
+                  />
+                  <span className="relative z-10">🚀 Commencer ma candidature</span>
+                  <ChevronRight className="ml-2 h-6 w-6 relative z-10 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+                
+                <motion.button
+                  onClick={() => {
+                    const contactElement = document.getElementById('contact-section');
+                    if (contactElement) {
+                      contactElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="group inline-flex items-center justify-center px-8 py-4 bg-white/15 backdrop-blur-sm text-white font-bold rounded-2xl border-2 border-white/30 text-lg relative overflow-hidden cursor-pointer"
+                  whileHover={{ scale: 1.05, y: -3, backgroundColor: "rgba(255,255,255,0.25)" }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span>💬 Besoin d'aide ?</span>
+                  <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </motion.div>
             </motion.div>
           </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Indicateur de scroll animé */}
+      <motion.button 
+        onClick={() => {
+          const formProgressElement = document.getElementById('form-progress');
+          if (formProgressElement) {
+            formProgressElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 border border-white/30">
+          <ArrowDown className="w-6 h-6 text-white" />
         </div>
+      </motion.button>
+
+      {/* Vague décorative animée */}
+      <div className="absolute bottom-0 left-0 right-0 h-16 md:h-24 z-20">
+        <motion.svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 1440 320" 
+          className="absolute bottom-0 w-full h-auto"
+          animate={{ 
+            d: [
+              "M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,101.3C960,117,1056,171,1152,170.7C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,128L48,138.7C96,149,192,171,288,186.7C384,203,480,213,576,208C672,203,768,181,864,170.7C960,160,1056,160,1152,165.3C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z",
+              "M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,101.3C960,117,1056,171,1152,170.7C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            ]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <path fill="#ffffff" fillOpacity="1" />
+        </motion.svg>
       </div>
 
-      {/* Vague décorative en bas */}
-      <div className="absolute bottom-0 left-0 right-0 h-8 md:h-16">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="absolute bottom-0 w-full h-auto">
-          <path fill="#ffffff" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,128C672,107,768,85,864,101.3C960,117,1056,171,1152,170.7C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
-      </div>
-
-      {/* Styles pour les animations des particules */}
+      {/* Styles améliorés pour les animations */}
       <style>{`
         .particle {
           position: absolute;
-          background: white;
           border-radius: 50%;
           pointer-events: none;
           opacity: 0;
-          animation: floatParticle 5s ease-in-out forwards;
+          animation: floatParticle 8s ease-in-out forwards;
         }
         
         @keyframes floatParticle {
           0% {
             opacity: 0;
-            transform: translateY(0) translateX(0) rotate(0deg);
+            transform: translateY(0) translateX(0) rotate(0deg) scale(0.5);
           }
-          20% {
+          10% {
+            opacity: 0.8;
+          }
+          90% {
             opacity: 0.3;
-          }
-          80% {
-            opacity: 0.2;
           }
           100% {
             opacity: 0;
-            transform: translateY(-100px) translateX(20px) rotate(360deg);
+            transform: translateY(-150px) translateX(50px) rotate(720deg) scale(1.5);
           }
+        }
+        
+        .clip-triangle {
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
       `}</style>
     </div>
   );
-} 
+}
