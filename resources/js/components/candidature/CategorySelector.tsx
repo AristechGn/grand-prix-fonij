@@ -199,6 +199,7 @@ export default function CategorySelector({
 
                   <div className="mt-3 sm:mt-4 md:hidden">
                     <Button 
+                      type='button'
                       variant="ghost" 
                       size="sm"
                       className={`

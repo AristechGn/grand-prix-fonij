@@ -219,7 +219,7 @@ export default function MainLayout({
                 {isMenuOpen && (
                     <div 
                         id="mobile-menu"
-                        className="md:hidden bg-white/5 backdrop-blur-md shadow-xl rounded-b-2xl mt-1 sm:mt-2 border-t border-border animate-slideDown max-h-[80vh] overflow-y-auto"
+                        className="md:hidden bg-white/30 backdrop-blur-md shadow-xl rounded-b-2xl mt-1 sm:mt-2 border-t border-border animate-slideDown max-h-[80vh] overflow-y-auto"
                     >
                         <div className="pt-2 pb-3 space-y-1 px-3 sm:px-4">
                             {route_list.map((route) => (

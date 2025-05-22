@@ -1,7 +1,7 @@
 import { Mail, Phone, User, Users, Map, GraduationCap, Briefcase, Calendar } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 interface PersonalInfoFormProps {
@@ -224,58 +224,6 @@ export default function PersonalInfoForm({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      {/* Header avec progression */}
-      <div className="bg-gradient-fonij p-6 text-white relative overflow-hidden">
-        <motion.div
-          className="absolute inset-0 opacity-20"
-          animate={{
-            background: [
-              'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-              'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-              'radial-gradient(circle at 50% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-              'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
-            ]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        <div className="relative z-10">
-          <motion.h2 
-            className="text-2xl font-bold mb-2 flex items-center"
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            <User className="w-6 h-6 mr-2" />
-            Informations personnelles
-          </motion.h2>
-          
-          <motion.p 
-            className="text-white/90 mb-4"
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            Ces informations nous aideront à mieux connaître votre profil
-          </motion.p>
-
-          {/* Barre de progression */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Progression</span>
-              <span>{completedFields}/{totalFields} champs</span>
-            </div>
-            <div className="w-full bg-white/20 rounded-full h-2">
-              <motion.div 
-                className="bg-white h-2 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercentage}%` }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="p-6 sm:p-8 lg:p-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">

@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, File, Image, Video, CheckCircle, X, FileText, Camera, Play } from 'lucide-react';
+import { Upload, File, Video, CheckCircle, X, FileText, Camera, Play, HelpCircle, Shield, AlertCircle } from 'lucide-react';
 import { useState, useRef } from 'react';
 
 interface DocumentsFormData {
@@ -395,30 +395,80 @@ export default function DocumentsForm({ formData, handleChange, handleFileChange
                         </motion.div>
                     </div>
 
-                    {/* Progress indicator */}
+                    {/* Helpful message section */}
                     <motion.div 
-                        className="mt-8 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl"
+                        className="mt-8"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.9 }}
                     >
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Progression
-                            </span>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                                {[formData.pieceIdentite, formData.businessPlan, formData.photoProjet].filter(Boolean).length}/3 requis
-                            </span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <motion.div 
-                                className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full"
-                                initial={{ width: 0 }}
-                                animate={{ 
-                                    width: `${([formData.pieceIdentite, formData.businessPlan, formData.photoProjet].filter(Boolean).length / 3) * 100}%` 
-                                }}
-                                transition={{ duration: 0.5, ease: "easeOut" }}
-                            />
+                        <div className="p-6 rounded-2xl bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/20 dark:to-secondary-900/20 border border-primary-200 dark:border-primary-700">
+                            <div className="flex items-start space-x-4">
+                                <motion.div
+                                    className="mt-1 flex-shrink-0"
+                                    animate={{ 
+                                        rotate: [0, 10, -10, 0],
+                                        scale: [1, 1.1, 1]
+                                    }}
+                                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                                >
+                                    <HelpCircle className="w-6 h-6 text-primary" />
+                                </motion.div>
+                                
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                        Conseils pour vos documents
+                                    </h3>
+                                    
+                                    <div className="space-y-3 text-gray-600 dark:text-gray-400">
+                                        <div className="flex items-start space-x-2">
+                                            <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                            <p className="text-sm">
+                                                <span className="font-medium">Pièce d'identité :</span> Assurez-vous que votre document est lisible et valide.
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="flex items-start space-x-2">
+                                            <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                            <p className="text-sm">
+                                                <span className="font-medium">Business Plan :</span> Incluez une description claire de votre projet, ses objectifs, son modèle économique et son impact attendu.
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="flex items-start space-x-2">
+                                            <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                            <p className="text-sm">
+                                                <span className="font-medium">Photo du projet :</span> Choisissez une image de haute qualité qui illustre clairement votre projet ou prototype.
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="flex items-start space-x-2">
+                                            <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                                            <p className="text-sm">
+                                                <span className="font-medium">Vidéo :</span> Une courte présentation (2-3 minutes) peut augmenter significativement vos chances de sélection.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center p-3 bg-white/70 dark:bg-gray-800/70 rounded-xl">
+                                        <div className="mr-3">
+                                            <Shield className="w-5 h-5 text-primary" />
+                                        </div>
+                                        <p className="text-xs text-gray-700 dark:text-gray-300">
+                                            <span className="font-medium">Sécurité garantie :</span> Tous vos documents sont traités de manière confidentielle et sécurisée conformément à notre politique de confidentialité.
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="flex items-center p-3 bg-amber-50/70 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800/30">
+                                        <div className="mr-3">
+                                            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                                        </div>
+                                        <p className="text-xs text-amber-800 dark:text-amber-300">
+                                            Des documents incomplets ou illisibles peuvent retarder le traitement de votre candidature. Assurez-vous de télécharger tous les documents requis dans un format de bonne qualité.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 </motion.div>
