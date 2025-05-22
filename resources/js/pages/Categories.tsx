@@ -34,7 +34,7 @@ export default function Categories({ edition }: CategoriesProps) {
                     style={{
                         backgroundImage: `url('https://libreopinionguinee.com/wp-content/uploads/2023/11/IMG_2306.jpeg')`,
                 }}
-            >
+             >
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/40"></div>
                 
                 <div className="container mx-auto px-4 md:px-8 relative z-10">
@@ -108,7 +108,7 @@ export default function Categories({ edition }: CategoriesProps) {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-sm md:max-w-2xl mx-auto justify-center items-center">
                             {categories.slice(0, 4).map((cat, index) => (
                                 <motion.a
-                                    href={`#category-${cat.id}`}
+                                    href={`#${cat.slug}`}
                                     key={cat.id}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
@@ -145,7 +145,7 @@ export default function Categories({ edition }: CategoriesProps) {
                     <div className="space-y-20 md:space-y-32">
                         {categories.map((category, index) => (
                             <motion.div 
-                                id={`category-${category.slug}`}
+                                id={`${category.slug}`}
                                 key={category.id}
                                 initial="hidden"
                                 whileInView="visible"

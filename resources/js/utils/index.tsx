@@ -1,4 +1,3 @@
-import { link } from 'fs';
 import {
     Linkedin,
     Twitter,
@@ -8,13 +7,8 @@ import {
     Laptop,
     Sprout,
     Trophy,
-    Flag,
-    LineChart,
-    Presentation,
-    Book,
-    Search,
-    Calendar,
     Zap,
+    Youtube,
 } from 'lucide-react';
 
 export const FONIJ = {
@@ -102,6 +96,7 @@ export const FONIJ = {
         {
             id: 1,
             title: "SMART Entrepreneur",
+            slug: "smart-entrepreneur",
             description: "De l'idée au projet structuré. Ce programme aide les jeunes à clarifier leurs idées et à bâtir un projet solide dès le départ. Vous apprendrez comment transformer une idée en projet concret, définir un problème réel à résoudre dans la société, et poser les bases d'un modèle économique viable. Ce que vous gagnez : une vision claire, des bases solides, et la motivation pour aller plus loin.",
             icon: Award,
             features: [
@@ -121,6 +116,7 @@ export const FONIJ = {
         {
             id: 2,
             title: "Youth'Incuba",
+            slug: "youth-incuba",
             description: "Incuber votre projet, le faire grandir. Cette phase vous offre un accompagnement personnalisé pour développer votre solution, créer un prototype et tester votre projet dans des conditions réelles. Nous vous offrons un coaching individuel avec des experts, l'accès à un espace de travail dynamique, des formations spécialisées et un accompagnement à la création du MVP. Ce que vous gagnez : un projet structuré, testé et prêt à affronter le monde réel.",
             icon: BookOpen,
             features: [
@@ -139,6 +135,7 @@ export const FONIJ = {
         {
             id: 3,
             title: "Boost Entrepreneurs",
+            slug: "boost-entrepreneurs",
             description: "Accélérer le lancement de votre entreprise. C'est la dernière étape pour les projets matures prêts à décoller. Vous serez préparé à présenter votre projet à des investisseurs et à intégrer les réseaux d'entrepreneurs. Nous mettons à votre disposition un accompagnement à la levée de fonds, un coaching avancé en stratégie et croissance, et une préparation au pitch. Ce que vous gagnez : une entreprise prête à se lancer sur le marché, trouver ses clients, et créer de l'emploi.",
             icon: Zap,
             features: [
@@ -175,6 +172,7 @@ export const FONIJ = {
     ],
     contactInfo: {
         phone: "+224 626 754 150",
+        unespace_phone: "+224626754150",
         phones: ["+224 626 754 150", "+224 622 023 909", "+224 628 862 002"],
         unespace_phones: [
             {
@@ -190,10 +188,10 @@ export const FONIJ = {
                 unespace_phone: '+224628862002'
             },
         ],
-        address: "Kaloum",
+        address: "102-316 Av. de la République, Conakry, Guinée",
         quartier: "Kaloum",
-        repere: "Rond-point de la Gare",
-        repere_map: "https://maps.app.goo.gl/1234567890",
+        repere: "Kaloum, Ancien ENIPRA, Conakry, Guinée",
+        repere_map: "https://maps.app.goo.gl/f1WjwZaZrjXzN7ii7",
         hours: {
             weekdays: "08:00 - 17:00",
             saturday: "08:00 - 12:00",
@@ -202,9 +200,10 @@ export const FONIJ = {
 
         email: "fonijguinee@gmail.com",
         social: [
-            { name: "Facebook", icon: Facebook, url: "https://www.facebook.com/cguitech" },
-            { name: "Twitter", icon: Twitter, url: "https://twitter.com/cguitech" },
-            { name: "LinkedIn", icon: Linkedin, url: "https://www.linkedin.com/company/cguitech" },,
+            { name: "Facebook", icon: Facebook, url: "https://www.facebook.com/fonijguinee/", color: "blue-600" },
+            { name: "Youtube", icon: Youtube, url: "https://www.youtube.com/@fonijguinee3261", color: "red-600" },
+            { name: "Twitter", icon: Twitter, url: "https://x.com/FONIJGUINEE", color: "blue-600" },
+            { name: "LinkedIn", icon: Linkedin, url: "https://gn.linkedin.com/company/fonij-guin%C3%A9e", color: "blue-600" },
         ],
     },
 };

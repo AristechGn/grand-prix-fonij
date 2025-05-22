@@ -638,7 +638,7 @@ export default function Home({ edition }: HomeProps) {
                                             <h3 className="text-base font-bold text-foreground">{category.title}</h3>
                                         </div>
                                         <p className="text-xs sm:text-sm text-muted-foreground mb-3 line-clamp-2">{category.description}</p>
-                                        <Link href={`/categories/${category.slug}`} className="inline-flex items-center text-xs sm:text-sm text-primary hover:underline font-medium mt-1">
+                                        <Link href={`${route('categories')}#${category.slug}`} className="inline-flex items-center text-xs sm:text-sm text-primary hover:underline font-medium mt-1">
                                             En savoir plus
                                             <ChevronRight className="h-3 w-3 ml-1" />
                                         </Link>
@@ -958,26 +958,7 @@ export default function Home({ edition }: HomeProps) {
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
-                        {[
-                            {
-                                title: "SMART Entrepreneur",
-                                description: "Destiné aux porteurs de projet pour les aider à structurer leur idée et sécuriser le lancement de leur activité.",
-                                duration: "3 mois",
-                                steps: ["Élaboration du business plan", "Identification du potentiel", "Construction du pitch"]
-                            },
-                            {
-                                title: "Youth'Incuba",
-                                description: "Pour les entrepreneurs avancés qui souhaitent prototyper et obtenir rapidement une preuve de concept.",
-                                duration: "6 mois",
-                                steps: ["Validation de l'idée", "Découverte des réseaux", "Développement du MVP"]
-                            },
-                            {
-                                title: "Boost Entrepreneur",
-                                description: "Un accélérateur dédié aux jeunes dirigeants pour développer et booster leurs activités.",
-                                duration: "12 mois",
-                                steps: ["Restructuration du plan d'action", "Optimisation de la gestion", "Affinement de la stratégie commerciale"]
-                            }
-                        ].map((phase, index) => (
+                        {FONIJ.programmes.map((phase, index) => (
                             <motion.div
                                 key={index}
                                 className="bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg p-5 sm:p-8 relative"
@@ -995,7 +976,7 @@ export default function Home({ edition }: HomeProps) {
                                 </div>
                                 <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">{phase.description}</p>
                                 <ul className="space-y-2 mb-4 sm:mb-6">
-                                    {phase.steps.map((step, i) => (
+                                    {phase.features.map((step, i) => (
                                         <li key={i} className="flex items-start">
                                             <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                                             <span className="text-foreground text-sm sm:text-base">{step}</span>
@@ -1003,7 +984,7 @@ export default function Home({ edition }: HomeProps) {
                                     ))}
                                 </ul>
                                 <div className="pt-3 sm:pt-4 border-t border-gray-100">
-                                    <Link href={`/acceleration/${index + 1}`} className="inline-flex items-center text-primary hover:text-primary-dark text-sm sm:text-base">
+                                    <Link href={`${route('accompagnement')}#${phase.slug}`} className="inline-flex items-center text-primary hover:text-primary-dark text-sm sm:text-base">
                                         Détails du programme
                                         <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
                                     </Link>

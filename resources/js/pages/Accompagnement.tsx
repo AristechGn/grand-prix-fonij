@@ -381,7 +381,7 @@ export default function Accompagnement() {
                         }}
                     />
                     <motion.div 
-                        className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-br from-secondary-100 to-secondary-200 rounded-full opacity-10"
+                        className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-br from-secondary-300 to-secondary-500 rounded-full opacity-10"
                         animate={{ 
                             x: [0, 20, 0],
                             scale: [1, 1.1, 1],
@@ -455,7 +455,7 @@ export default function Accompagnement() {
                                         icon: Sparkles, 
                                         title: "Bénéfice", 
                                         description: "Taux de réussite de 87%",
-                                        color: "bg-gradient-to-r from-secondary-500 to-secondary-600"
+                                        color: "bg-gradient-to-br from-secondary-500 to-secondary-200"
                                     }
                                 ].map((item, index) => (
                                     <motion.div 
@@ -485,7 +485,7 @@ export default function Accompagnement() {
                             className="relative"
                         >
                             {/* Élément décoratif arrière-plan */}
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 -translate-x-4 -translate-y-4 translate-z-0 transform rotate-6 scale-105"></div>
+                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-500 to-secondary-300 -translate-x-4 -translate-y-4 translate-z-0 transform rotate-6 scale-105"></div>
                             
                             <motion.div 
                                 className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-8 md:p-10 relative z-10"
@@ -550,9 +550,9 @@ export default function Accompagnement() {
                                     className="text-center mb-10"
                                     variants={popIn}
                                 >
-                                    <div className="inline-flex items-center bg-gradient-to-r from-primary/10 to-secondary/10 px-8 py-5 rounded-xl">
+                                    <div className="inline-flex items-center bg-gradient-to-r from-primary/20 to-secondary/20 px-8 py-5 rounded-xl">
                                         <div>
-                                            <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">{participants.count}</div>
+                                            <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary-200">{participants.count}</div>
                                             <p className="text-gray-600 font-medium">Entrepreneurs déjà inscrits pour 2025</p>
                                         </div>
                                     </div>
@@ -689,7 +689,7 @@ export default function Accompagnement() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
                         {FONIJ.programmes.map((programme, index) => (
                             <motion.div
-                                key={programme.id}
+                                key={programme.slug}
                                 className="relative group"
                                 initial="hidden"
                                 whileInView="visible"
@@ -758,19 +758,6 @@ export default function Accompagnement() {
                                                 </div>
                                             ))}
                                         </div>
-                                        
-                                        <Link 
-                                            href={`/programmes/${programme.id}`} 
-                                            className={`mt-auto inline-flex w-full items-center justify-center px-5 py-3 bg-gradient-to-r ${programme.color} text-white rounded-lg transition-all duration-300 shadow hover:shadow-lg hover:shadow-${programme.textColor}/20 font-medium`}
-                                        >
-                                            <span className="relative group-hover:mr-2">En savoir plus</span>
-                                            <motion.span
-                                                className="absolute opacity-0 group-hover:opacity-100 group-hover:translate-x-1"
-                                                transition={{ duration: 0.2 }}
-                                            >
-                                                <ChevronRight className="w-5 h-5" />
-                                            </motion.span>
-                                        </Link>
                                     </div>
                                 </div>
                             </motion.div>

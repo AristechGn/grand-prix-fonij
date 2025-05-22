@@ -10,6 +10,8 @@ import {
     HandHelping
 } from 'lucide-react';
 
+import { FONIJ } from '@/utils';
+
 interface MainLayoutProps {
     children: React.ReactNode;
     title?: string;
@@ -342,52 +344,34 @@ export default function MainLayout({
                             <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-background/90">
                                 <li className="flex items-center group hover:translate-x-1 transition-transform duration-200">
                                     <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-secondary" />
-                                    <a href="mailto:contact@fonij.org" className="hover:text-background transition-colors">
-                                        contact@fonij.org
+                                    <a href={`mailto:${FONIJ.contactInfo.email}`} className="hover:text-background transition-colors">
+                                        {FONIJ.contactInfo.email}
                                     </a>
                                 </li>
                                 <li className="flex items-center group hover:translate-x-1 transition-transform duration-200">
                                     <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-secondary" />
-                                    <a href="tel:+224123456789" className="hover:text-background transition-colors">
-                                        +224 123 456 789
+                                    <a href={FONIJ.contactInfo.unespace_phone} className="hover:text-background transition-colors">
+                                        {FONIJ.contactInfo.phone}
                                     </a>
                                 </li>
                                 <li className="flex items-start group hover:translate-x-1 transition-transform duration-200">
                                     <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-secondary flex-shrink-0 mt-0.5" />
-                                    <span>Conakry, Guinée</span>
+                                    <span>{FONIJ.contactInfo.repere}</span>
                                 </li>
                             </ul>
                             
                             {/* Social Media Icons */}
                             <div className="mt-4 sm:mt-6 flex space-x-3 sm:space-x-4">
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="Facebook"
-                                >
-                                    <Facebook className="h-4 w-4 sm:h-5 sm:w-5" />
+                                { FONIJ.contactInfo.social.map((item, index) => (
+                                    <a 
+                                        href={item.url} 
+                                        className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
+                                        aria-label={item.name}
+                                        target="_blank"
+                                    >
+                                    <item.icon className={`sm:h-5 sm:w-5 md:h-6 md:w-6 font-bold text-${item.color}`} />
                                 </a>
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="Twitter"
-                                >
-                                    <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
-                                </a>
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="Instagram"
-                                >
-                                    <Instagram className="h-4 w-4 sm:h-5 sm:w-5" />
-                                </a>
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="LinkedIn"
-                                >
-                                    <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
-                                </a>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -395,8 +379,8 @@ export default function MainLayout({
                     {/* Copyright and Legal Links */}
                     <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-background/20">
                         <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
-                            <p className="text-background/90 text-xs sm:text-sm">
-                                &copy; {new Date().getFullYear()} FONIJ. Tous droits réservés.
+                            <p className="text-primary-300/90 text-xs sm:text-sm">
+                                &copy; {new Date().getFullYear()} <span className="font-bold text-white">GRAND PRIX FONIJ</span>. Tous droits réservés.
                             </p>
                             <div className="flex flex-wrap justify-center space-x-4 sm:space-x-6 text-xs sm:text-sm">
                                 <Link href="/mentions-legales" className="text-background/90 hover:text-background transition-colors">

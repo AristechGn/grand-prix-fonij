@@ -380,7 +380,7 @@ export default function contact() {
                                         <motion.a
                                             key={idx}
                                             href={platform?.url || '#'}
-                                            className="rounded-full bg-white/10 p-3 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:shadow-md"
+                                            className={`rounded-full bg-white/10 p-3 shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-white/20 hover:shadow-md hover:scale-110 transform transition-all duration-200 text-${platform.color}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             whileHover={{ scale: 1.2, rotate: 10, y: -5 }}
@@ -441,7 +441,8 @@ export default function contact() {
                                     <div className="from-primary/20 dark:from-primary/30 pointer-events-none absolute inset-0 z-10 bg-gradient-to-tr to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100"></div>
 
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d983.4745300420633!2d-13.64765413105491!3d9.604040511577853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf1cd67291a2ca73%3A0xbd6887e5f4a4dc82!2sConakry%2C%20Guin%C3%A9e!5e0!3m2!1sfr!2s!4v1746447724810!5m2!1sfr!2s"
+                                        src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d3934.990943108946!2d-13.712450281370472!3d9.509515630122673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e6!4m3!3m2!1d9.6305152!2d-13.611827199999999!4m3!3m2!1d9.50917!2d-13.7122!5e0!3m2!1sfr!2s!4v1747821316719!5m2!1sfr!2s"
+                                        // referrerpolicy="no-referrer-when-downgrade"
                                         width="100%"
                                         height="100%"
                                         style={{ border: 0 }}

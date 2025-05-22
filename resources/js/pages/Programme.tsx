@@ -433,8 +433,9 @@ export default function Programme() {
             </div>
 
             {/* Section Programme visualisée comme timeline ludique */}
-            <div id="timeline" className="py-20 bg-background relative overflow-hidden">
+            <div id="timeline" className="py-20 bg-primary-50/50 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/images/covers/flat-black-white-halftone-background_23-2150550147.avif')] opacity-5"></div>
+                <div className="absolute inset-0 top-0 bg-[url('/images/covers/flat-black-white-halftone-background_23-2150550147-2.png')] bg-top opacity-5"></div>
                 
                 <div className="container mx-auto px-4">
                     <motion.div
