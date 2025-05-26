@@ -211,7 +211,7 @@ export default function Programme() {
         },
         { 
             icon: Trophy, 
-            label: "500M GNF par projet",
+            label: "300M GNF par projet",
             animation: {
                 y: [0, -5, 0],
                 scale: [1, 1.3, 1],
@@ -327,7 +327,7 @@ export default function Programme() {
                             variants={fadeInUp}
                             className="text-base sm:text-lg md:text-xl text-white/80 mb-8 sm:mb-10 max-w-2xl mx-auto"
                         >
-                            Découvrez les 7 étapes palpitantes de notre programme d'innovation qui transformera votre idée en entreprise florissante !
+                            Découvrez les 3 étapes palpitantes de notre programme d'innovation qui transformera votre idée en entreprise florissante !
                         </motion.p>
                         
                         <motion.div 
@@ -451,7 +451,7 @@ export default function Programme() {
                         <h2 className="text-4xl font-bold mb-6">L'aventure en 7 étapes</h2>
                         <div className="h-1 w-24 bg-gradient-fonij mx-auto mb-6"></div>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            Suivez votre parcours entrepreneurial à travers ces 7 phases excitantes, 
+                            Suivez votre parcours entrepreneurial à travers ces 3 phases excitantes, 
                             de l'appel à candidatures jusqu'à la victoire finale !
                         </p>
                     </motion.div>

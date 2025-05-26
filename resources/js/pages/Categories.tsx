@@ -41,34 +41,40 @@ export default function Categories({ edition }: CategoriesProps) {
                     <div className="max-w-7xl w-full space-y-6 backdrop-blur-sm bg-black/40 p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl mx-auto">
                         <div className="space-y-3 text-center">
                             <span className="text-white/70 font-semibold text-lg md:text-xl uppercase tracking-wider">République de Guinée</span>
-                            <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
+                            {/* <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white">
                                 Grand Prix FONIJ {currentYear}
-                            </h1>
+                            </h1> */}
                             {edition && (
                                 <div className="flex flex-col gap-2 items-center">
-                                    <div className="bg-white/20 py-1 px-3 rounded-full inline-flex">
+                                    {/* <div className="bg-white/20 py-1 px-3 rounded-full inline-flex">
                                         <span className="text-white font-semibold">{edition.name}</span>
-                                    </div>
+                                    </div> */}
                                     <div className="bg-yellow-500/20 py-1 px-3 rounded-full inline-flex">
-                                        <span className="text-yellow-300 font-semibold">
+                                        <span className="text-white font-semibold">
                                             Date limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                                         </span>
                                     </div>
                                 </div>
                             )}
                             <p className="text-xl md:text-2xl text-yellow-400 font-semibold tracking-wide">
-                                <span className="text-red-500">Innovation</span> • Excellence • <span className="text-primary">Leadership</span>
+                                <span className="text-red-500">Innover</span> • <span className="text-yellow-500">Entreprendre</span> • <span className="text-green-500">Transformer</span>
                             </p>
                         </div>
                         
                         <div className="grid md:grid-cols-1 gap-8 text-white/90 mt-8">
                             <div className="space-y-3 border-l-4 border-yellow-400 pl-6">
-                                <h2 className="text-2xl md:text-3xl font-bold text-white">Vision Présidentielle</h2>
+                                <h2 className="text-2xl md:text-3xl font-bold text-white">{edition?.name || "Le Grand Prix FONIJ"} {currentYear}</h2>
                                 <p className="text-lg md:text-xl leading-relaxed">
-                                    Ce projet s'aligne sur la vision du Président de la République, le Général de Corps d'Armée Mamadi Doumbouya, 
-                                    qui a placé la jeunesse au cœur de la Refondation nationale.
+                                    S'inscrit dans la dynamique de transformation nationale impulsée par Son Excellence le Général d'Armée Mamadi Doumbouya, Président de la République de Guinée.
+                                </p>
+
+                                <p className="text-lg md:text-xl leading-relaxed">
                                 </p>
                             </div>
+
+                            <p className="text-sm md:text-md leading-relaxed font-semibold">
+                                Dans ses prises de parole, le Chef de l'État ne cesse de rappeler que la jeunesse est la première richesse du pays, et que son avenir repose sur la capacité collective à créer des opportunités concrètes d'insertion, d'innovation et de leadership.
+                            </p>
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-8 justify-center">
@@ -103,7 +109,8 @@ export default function Categories({ edition }: CategoriesProps) {
                     >
                         <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">Catégories du Grand Prix</h2>
                         <p className="text-base md:text-xl text-white/80 mb-6 md:mb-8">
-                            Explorez nos quatre catégories d'excellence et trouvez celle qui correspond le mieux à votre projet innovant pour transformer la Guinée.
+                        Ton idée mérite d'aller plus loin.
+                        Explore les catégories du Grand Prix FONIJ {currentYear} et choisis celle qui incarne le mieux ton projet pour innover, entreprendre et transformer la Guinée.
                         </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-sm md:max-w-2xl mx-auto justify-center items-center">
                             {categories.slice(0, 4).map((cat, index) => (

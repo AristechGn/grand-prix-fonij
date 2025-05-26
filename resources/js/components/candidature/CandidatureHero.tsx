@@ -380,7 +380,7 @@ export default function CandidatureHero({ edition }: CandidatureHeroProps) {
                 className="text-white/80 font-bold text-sm md:text-xl uppercase tracking-wider block mb-4"
                 variants={itemVariants}
               >
-                🚀 Fonds National pour l'Insertion des Jeunes
+                Fonds National pour l'Insertion des Jeunes
               </motion.span>
 
               <motion.h1 
@@ -435,7 +435,7 @@ export default function CandidatureHero({ edition }: CandidatureHeroProps) {
                 className="text-2xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 font-black"
                 variants={itemVariants}
               >
-                ✨ Déposez votre candidature ✨
+                Déposez votre candidature
               </motion.p>
 
               <motion.p 
@@ -467,7 +467,6 @@ export default function CandidatureHero({ edition }: CandidatureHeroProps) {
                   className="flex items-center bg-gradient-to-r from-red-400/20 to-pink-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-red-400/50"
                   whileHover={{ scale: 1.05, y: -2 }}
                 >
-                  <Clock className="h-5 w-5 md:h-6 md:w-6 text-red-400 mr-2" />
                   <span className="font-semibold">
                     Limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </span>
@@ -495,25 +494,11 @@ export default function CandidatureHero({ edition }: CandidatureHeroProps) {
                     whileHover={{ x: '100%' }}
                     transition={{ duration: 0.5 }}
                   />
-                  <span className="relative z-10">🚀 Commencer ma candidature</span>
+                  <span className="relative z-10">Commencer ma candidature</span>
                   <ChevronRight className="ml-2 h-6 w-6 relative z-10 group-hover:translate-x-1 transition-transform" />
                 </motion.button>
-                
-                <motion.button
-                  onClick={() => {
-                    const contactElement = document.getElementById('contact-section');
-                    if (contactElement) {
-                      contactElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="group inline-flex items-center justify-center px-8 py-4 bg-white/15 backdrop-blur-sm text-white font-bold rounded-2xl border-2 border-white/30 text-lg relative overflow-hidden cursor-pointer"
-                  whileHover={{ scale: 1.05, y: -3, backgroundColor: "rgba(255,255,255,0.25)" }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <span>💬 Besoin d'aide ?</span>
-                  <ChevronRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
               </motion.div>
+
             </motion.div>
           </motion.div>
         </motion.div>

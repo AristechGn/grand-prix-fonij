@@ -38,10 +38,10 @@ export default function Home({ edition }: HomeProps) {
     });
     
     const membresJuries = [
-        { nom_complet: "Membre du juri 1", photo: "/images/avatar1.jpg", post:"ADMINSTRATEUR - INCUBA", countrie:"GUINEE", description: "Accueil et enregistrement des participants" },
-        { nom_complet: "Membre du juri 2", photo: "/images/avatar2.jpg", post:"RESPONSABLE IT - CGUITECH", countrie:"GUINEE", description: "Accueil des participants et installation des stands" },
-        { nom_complet: "Membre du juri 3", photo: "/images/avatar2.jpg", post:"COMPTABLE - GUINEE ACCOMPTE", countrie:"GUINEE", description: "Message de bienvenue et introduction du jury" },
-        { nom_complet: "Membre du juri 4", photo: "/images/avatar1.jpg", post:"DIRECTEUR GENERAl - FONIJ", countrie:"GUINEE", description: "Invitation de nos partenaires pour présenter leurs activités" },
+        { nom_complet: "?", photo: "/images/avatar1.jpg", post:"ADMINSTRATEUR - INCUBA", countrie:"GUINEE", description: "Accueil et enregistrement des participants" },
+        { nom_complet: "?", photo: "/images/avatar2.jpg", post:"RESPONSABLE IT - CGUITECH", countrie:"GUINEE", description: "Accueil des participants et installation des stands" },
+        { nom_complet: "?", photo: "/images/avatar2.jpg", post:"COMPTABLE - GUINEE ACCOMPTE", countrie:"GUINEE", description: "Message de bienvenue et introduction du jury" },
+        { nom_complet: "?", photo: "/images/avatar1.jpg", post:"DIRECTEUR GENERAl - FONIJ", countrie:"GUINEE", description: "Invitation de nos partenaires pour présenter leurs activités" },
         // { nom_complet: "Membre du juri 5", photo: "https://fonijguinee.org/wp-content/uploads/2023/05/DSC06167-500x500.jpg", post:"", countrie:"", description: "Discussion sur l'écosystème entrepreneurial en Guinée" },
     ];
 
@@ -849,8 +849,7 @@ export default function Home({ edition }: HomeProps) {
                         </h2>
                         <div className="w-16 sm:w-24 h-1 bg-primary mx-auto mb-4 sm:mb-6"></div>
                         <p className="text-sm sm:text-lg text-muted-foreground max-w-3xl mx-auto px-2">
-                            Un panel d'experts reconnus pour évaluer les projets entrepreneuriaux
-                            et sélectionner les plus innovants
+                            Le jury sera composé de personnalités reconnues pour leur expertise, leur rigueur et leur engagement envers la jeunesse.
                         </p>
                     </motion.div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
@@ -878,8 +877,8 @@ export default function Home({ edition }: HomeProps) {
                                         className="w-full h-full object-contain object-center transition-transform duration-500 transform hover:scale-110"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                                        <div className="p-4 sm:p-6 text-white">
-                                            <h3 className="font-bold text-lg sm:text-xl mb-1">{item.nom_complet}</h3>
+                                        <div className="p-4 sm:p-6 text-white flex flex-col items-center justify-center w-full">
+                                            <h3 className="font-bold text-2xl sm:text-xl mb-1 text-center">{item.nom_complet}</h3>
                                             {/* <p className="text-secondary font-medium text-xs sm:text-sm">{item.post}</p> */}
                                         </div>
                                     </div>

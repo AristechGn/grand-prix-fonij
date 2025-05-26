@@ -154,43 +154,43 @@ export const FONIJ = {
     ],
     partners: [
         {
-            name: "Ministère du Plan et de la Coopération Internationale",
-            image: "/images/partners/ministere-plan.jpg",
+            name: "Ministère de la Jeunesse et des Sports",
+            image: "/images/partners/mjs.jpg",
         },
         {
-            name: "Ambassade du Japon en Guinée",
-            image: "/images/partners/ambassade-japon.jpg",
+            name: "Ministère du Plan et de la Coopération Internationale",
+            image: "/images/partners/ministere-plan.jpg",
         },
         {
             name: "Conseil National de la Transition (CNT)",
             image: "/images/partners/cnt.jpeg",
         },
         {
-            name: "Ministère de la Jeunesse et des Sports",
-            image: "/images/partners/mjs.jpg",
+            name: "Ambassade du Japon en Guinée",
+            image: "/images/partners/ambassade-japon.jpg",
         },
     ],
     contactInfo: {
-        phone: "+224 626 754 150",
-        unespace_phone: "+224626754150",
-        phones: ["+224 626 754 150", "+224 622 023 909", "+224 628 862 002"],
+        phone: "+224 612 96 96 96",
+        unespace_phone: "+224612969696",
+        phones: ["+224 612 96 96 96", "+224 622 02 39 09", "+224 628 86 20 02"],
         unespace_phones: [
             {
-                phone: '+224 626 754 150',
-                unespace_phone: '+224626754150'
+                phone: '+224 612 96 96 96',
+                unespace_phone: '+224612969696'
             },
             {
-                phone: '+224 622 023 909',
+                phone: '+224 622 02 39 09',
                 unespace_phone: '+224622023909'
             },
             {
-                phone: '+224 628 862 002',
+                phone: '+224 628 86 20 02',
                 unespace_phone: '+224628862002'
             },
         ],
         address: "102-316 Av. de la République, Conakry, Guinée",
         quartier: "Kaloum",
-        repere: "Kaloum, Ancien ENIPRA, Conakry, Guinée",
+        repere: "Kaloum, en face du Ministère de l'Agriculture et l'élevage",
         repere_map: "https://maps.app.goo.gl/f1WjwZaZrjXzN7ii7",
         hours: {
             weekdays: "08:00 - 17:00",
