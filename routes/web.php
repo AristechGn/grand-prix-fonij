@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/init', [RegisteredUserController::class, 'init'])->name('app.init');
@@ -38,13 +39,16 @@ Route::get('/programme', [WelcomeController::class, 'programme'])->name('program
 
 Route::get('/actualites', [WelcomeController::class, 'actualites'])->name('actualites');
 
-Route::get('/candidater', [WelcomeController::class, 'candidater'])->name('candidater');
+// Routes pour les candidatures
+Route::get('/candidater', [ApplicationController::class, 'create'])->name('candidater');
+Route::post('/candidater', [ApplicationController::class, 'store'])->name('candidater.store');
+Route::get('/candidature/confirmation/{reference}', [ApplicationController::class, 'confirmation'])
+    ->name('candidature.confirmation');
+Route::get('/candidature/{applicationNumber}', [ApplicationController::class, 'show'])->name('candidater.show');
 
 Route::get('/a-propos', [WelcomeController::class, 'about'])->name('about.index');
 
 Route::get('/contact', [WelcomeController::class, 'contact'])->name('contact');
-
-
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

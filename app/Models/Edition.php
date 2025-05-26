@@ -75,4 +75,12 @@ class Edition extends Model
     {
         return $this->hasMany(Phase::class);
     }
+
+    /**
+     * Get the applications for this edition.
+     */
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
 } 

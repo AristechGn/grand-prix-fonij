@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -107,4 +108,42 @@ class User extends Authenticatable
         return $this->role === 'jury';
     }
     
+    /**
+     * Check if the user has a specific role or one of the roles.
+     *
+     * @param string|array $roles
+     * @return bool
+     */
+    public function hasRole($roles): bool
+    {
+        if (is_array($roles)) {
+            return in_array($this->role, $roles);
+        }
+        
+        return $this->role === $roles;
+    }
+    
+    /**
+     * Get the applications submitted by this user.
+     */
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
+    
+    /**
+     * Get the applications reviewed by this user.
+     */
+    public function reviewedApplications(): HasMany
+    {
+        return $this->hasMany(Application::class, 'reviewed_by');
+    }
+    
+    /**
+     * Get the comments made by this user.
+     */
+    public function applicationComments(): HasMany
+    {
+        return $this->hasMany(ApplicationComment::class);
+    }
 }

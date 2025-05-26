@@ -7,6 +7,9 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\PrizeController;
 use App\Http\Controllers\EditionController;
+use App\Http\Controllers\Admin\ApplicationController;
+use App\Http\Controllers\Admin\ApplicationCommentController;
+use App\Http\Controllers\Admin\ApplicationRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +44,32 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class.':admin'])->prefix
 
     // Gestion des prix par édition
     Route::resource('editions.prizes', PrizeController::class)->shallow();
+    
+    // Gestion des candidatures
+    Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
+    Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
+    Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
+    Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
+    Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
+    Route::get('/applications/export', [ApplicationController::class, 'export'])->name('applications.export');
+    Route::get('/applications/{application}/download/{document}', [ApplicationController::class, 'downloadDocument'])
+        ->name('applications.download-document');
+    
+    // Gestion des commentaires sur les candidatures
+    Route::get('/applications/{application}/comments', [ApplicationCommentController::class, 'index'])
+        ->name('applications.comments.index');
+    Route::post('/applications/{application}/comments', [ApplicationCommentController::class, 'store'])
+        ->name('applications.comments.store');
+    Route::put('/comments/{comment}', [ApplicationCommentController::class, 'update'])
+        ->name('applications.comments.update');
+    Route::delete('/comments/{comment}', [ApplicationCommentController::class, 'destroy'])
+        ->name('applications.comments.destroy');
+    
+    // Gestion des évaluations des candidatures
+    Route::post('/applications/{application}/rate', [ApplicationRatingController::class, 'rate'])
+        ->name('applications.rate');
+    Route::get('/applications/{application}/rating', [ApplicationRatingController::class, 'getUserRating'])
+        ->name('applications.rating');
+    Route::get('/applications/{application}/ratings', [ApplicationRatingController::class, 'getAllRatings'])
+        ->name('applications.ratings');
 }); 

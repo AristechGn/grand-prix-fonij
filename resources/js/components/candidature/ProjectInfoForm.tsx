@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,7 +15,7 @@ import {
     Heart,
     Globe
 } from 'lucide-react';
-import { useState } from 'react';
+import InputError from '@/components/input-error';
 
 interface ProjectFormData {
     nomProjet: string;
@@ -30,6 +31,7 @@ interface ProjectFormData {
 interface ProjectInfoFormProps {
     formData: ProjectFormData;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+    errors: Record<string, string[]>;
 }
 
 interface FormFieldProps {
@@ -160,10 +162,16 @@ interface ModernTextareaProps {
     required?: boolean;
     maxLength?: number;
     rows?: number;
+    minLength?: number;
 }
 
-function ModernTextarea({ name, value, onChange, placeholder, required, maxLength, rows = 4 }: ModernTextareaProps) {
+function ModernTextarea({ name, value, onChange, placeholder, required, maxLength, rows = 4, minLength = 0 }: ModernTextareaProps) {
     const [isFocused, setIsFocused] = useState(false);
+    const isMinLengthReached = minLength > 0 ? value.length >= minLength : true;
+    
+    // Vérifier si maxLength est défini pour les conditions
+    const isNearMaxLength = maxLength ? value.length > maxLength * 0.8 : false;
+    const isAtMaxLength = maxLength ? value.length >= maxLength : false;
     
     return (
         <motion.div className="relative">
@@ -187,7 +195,9 @@ function ModernTextarea({ name, value, onChange, placeholder, required, maxLengt
                     ${isFocused 
                         ? 'border-primary shadow-lg shadow-primary/25 scale-[1.01]' 
                         : value 
+                            ? isMinLengthReached 
                             ? 'border-primary-300 dark:border-primary-600' 
+                                : 'border-orange-300 dark:border-orange-600'
                             : 'border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-400'
                     }
                     hover:shadow-md focus:ring-0 focus:outline-none
@@ -195,21 +205,50 @@ function ModernTextarea({ name, value, onChange, placeholder, required, maxLengt
             />
             
             {/* Character count */}
-            {maxLength && (
                 <motion.div 
                     className={`
                         absolute bottom-3 right-3 text-xs font-medium
-                        ${value.length > maxLength * 0.8 
-                            ? value.length >= maxLength 
+                    ${minLength > 0
+                        ? value.length < minLength
+                            ? 'text-orange-500'
+                            : isNearMaxLength 
+                                ? isAtMaxLength 
+                                    ? 'text-red-500' 
+                                    : 'text-orange-500'
+                                : 'text-green-500'
+                        : isNearMaxLength 
+                            ? isAtMaxLength 
                                 ? 'text-red-500' 
                                 : 'text-orange-500'
                             : 'text-gray-400'
                         }
                     `}
-                    animate={value.length >= maxLength ? { scale: [1, 1.1, 1] } : {}}
-                    transition={{ duration: 0.3, repeat: value.length >= maxLength ? Infinity : 0 }}
+                animate={isAtMaxLength ? { scale: [1, 1.1, 1] } : {}}
+                transition={{ duration: 0.3, repeat: isAtMaxLength ? Infinity : 0 }}
+            >
+                {value.length}{minLength > 0 ? `/${minLength} min` : ''}{maxLength ? `/${maxLength} max` : ''}
+            </motion.div>
+            
+            {/* Min length indicator */}
+            {minLength > 0 && value.length > 0 && (
+                <motion.div 
+                    className="absolute bottom-3 left-3 text-xs flex items-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                 >
-                    {value.length}/{maxLength}
+                    {value.length < minLength ? (
+                        <span className="text-orange-500 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            Minimum {minLength} caractères
+                        </span>
+                    ) : (
+                        <span className="text-green-500 flex items-center">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Longueur suffisante
+                        </span>
+                    )}
                 </motion.div>
             )}
 
@@ -318,7 +357,7 @@ function RadioGroup({ name, value, onChange, options }: RadioGroupProps) {
     );
 }
 
-export default function ProjectInfoForm({ formData, handleChange }: ProjectInfoFormProps) {
+export default function ProjectInfoForm({ formData, handleChange, errors }: ProjectInfoFormProps) {
     const completedFields = Object.values(formData).filter(value => 
         value !== '' && value !== undefined && value !== null
     ).length;
@@ -347,13 +386,14 @@ export default function ProjectInfoForm({ formData, handleChange }: ProjectInfoF
                             placeholder="Donnez un nom accrocheur à votre projet..."
                             required
                         />
+                        {errors['project_name'] && <InputError message={errors['project_name'][0]} />}
                     </FormField>
 
                     <FormField 
                         label="Résumé du projet" 
                         required 
                         icon={<Target className="w-5 h-5" />}
-                        description="Décrivez votre projet en quelques phrases percutantes"
+                        description="Décrivez votre projet en quelques phrases percutantes (min. 100 caractères)"
                         delay={0.2}
                     >
                         <ModernTextarea
@@ -362,16 +402,18 @@ export default function ProjectInfoForm({ formData, handleChange }: ProjectInfoF
                             onChange={handleChange}
                             placeholder="Votre projet en quelques mots..."
                             required
-                            maxLength={200}
+                            maxLength={5000}
+                            minLength={100}
                             rows={4}
                         />
+                        {errors['project_summary'] && <InputError message={errors['project_summary'][0]} />}
                     </FormField>
 
                     <FormField 
                         label="Quel problème votre projet résout-il ?" 
                         required 
                         icon={<TrendingUp className="w-5 h-5" />}
-                        description="Identifiez clairement le défi que vous relevez"
+                        description="Identifiez clairement le défi que vous relevez (min. 100 caractères)"
                         delay={0.3}
                     >
                         <ModernTextarea
@@ -380,15 +422,18 @@ export default function ProjectInfoForm({ formData, handleChange }: ProjectInfoF
                             onChange={handleChange}
                             placeholder="Décrivez le problème que vous résolvez..."
                             required
+                            minLength={100}
+                            maxLength={5000}
                             rows={4}
                         />
+                        {errors['problem_solved'] && <InputError message={errors['problem_solved'][0]} />}
                     </FormField>
 
                     <FormField 
                         label="Quel est l'impact attendu ?" 
                         required 
                         icon={<Heart className="w-5 h-5" />}
-                        description="Impact social, économique, environnemental..."
+                        description="Impact social, économique, environnemental... (min. 100 caractères)"
                         delay={0.4}
                     >
                         <ModernTextarea
@@ -397,24 +442,31 @@ export default function ProjectInfoForm({ formData, handleChange }: ProjectInfoF
                             onChange={handleChange}
                             placeholder="Décrivez l'impact positif de votre projet..."
                             required
+                            minLength={100}
+                            maxLength={5000}
                             rows={4}
                         />
+                        {errors['expected_impact'] && <InputError message={errors['expected_impact'][0]} />}
                     </FormField>
 
                     <FormField 
                         label="Public ciblé" 
                         required 
                         icon={<Users className="w-5 h-5" />}
-                        description="Qui sont vos utilisateurs/bénéficiaires ?"
+                        description="Qui sont vos utilisateurs/bénéficiaires ? (min. 50 caractères)"
                         delay={0.5}
                     >
-                        <ModernInput
+                        <ModernTextarea
                             name="publicCible"
                             value={formData.publicCible}
                             onChange={handleChange}
                             placeholder="Jeunes entrepreneurs, agriculteurs, étudiants..."
                             required
+                            minLength={50}
+                            maxLength={2000}
+                            rows={3}
                         />
+                        {errors['target_audience'] && <InputError message={errors['target_audience'][0]} />}
                     </FormField>
 
                     <FormField 

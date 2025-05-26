@@ -2,6 +2,10 @@ import { Input } from '@/components/ui/input';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, File, Video, CheckCircle, X, FileText, Camera, Play, HelpCircle, Shield, AlertCircle } from 'lucide-react';
 import { useState, useRef } from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import InputError from '@/components/input-error';
 
 interface DocumentsFormData {
     pieceIdentite: File | null;
@@ -14,6 +18,7 @@ interface DocumentsFormProps {
     formData: DocumentsFormData;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    errors: Record<string, string[]>;
 }
 
 interface FileUploadZoneProps {
@@ -245,7 +250,7 @@ function FileUploadZone({
     );
 }
 
-export default function DocumentsForm({ formData, handleChange, handleFileChange }: DocumentsFormProps) {
+export default function DocumentsForm({ formData, handleChange, handleFileChange, errors }: DocumentsFormProps) {
     return (
         <motion.div 
             className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50"
@@ -297,6 +302,7 @@ export default function DocumentsForm({ formData, handleChange, handleFileChange
                                 maxSize="10MB"
                                 required
                             />
+                            {errors['pieceIdentite'] && <InputError message={errors['pieceIdentite'][0]} />}
                         </motion.div>
 
                         <motion.div
@@ -315,6 +321,7 @@ export default function DocumentsForm({ formData, handleChange, handleFileChange
                                 maxSize="10MB"
                                 required
                             />
+                            {errors['businessPlan'] && <InputError message={errors['businessPlan'][0]} />}
                         </motion.div>
 
                         <motion.div
@@ -333,6 +340,7 @@ export default function DocumentsForm({ formData, handleChange, handleFileChange
                                 maxSize="5MB"
                                 required
                             />
+                            {errors['photoProjet'] && <InputError message={errors['photoProjet'][0]} />}
                         </motion.div>
 
                         <motion.div
@@ -392,6 +400,7 @@ export default function DocumentsForm({ formData, handleChange, handleFileChange
                                 <Video className="w-3 h-3 mr-1" />
                                 Lien YouTube, Vimeo ou autre plateforme
                             </p>
+                            {errors['videoPresentation'] && <InputError message={errors['videoPresentation'][0]} />}
                         </motion.div>
                     </div>
 

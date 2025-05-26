@@ -1,8 +1,16 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import { PageProps } from '@/types';
 
 export interface Auth {
     user: User;
+}
+
+export interface PageProps {
+    auth: Auth;
+    errors: Record<string, string>;
+    flash: Record<string, string>;
+    [key: string]: unknown;
 }
 
 export interface BreadcrumbItem {
@@ -21,6 +29,7 @@ export interface NavItem {
     active?: string
     icon?: LucideIcon | null;
     isActive?: boolean;
+    children?: NavItem[];
 }
 
 export interface SharedData {

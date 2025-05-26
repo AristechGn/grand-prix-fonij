@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { FONIJ } from '@/utils';
+import axios from 'axios';
+import { toast } from 'sonner';
+import InputError from '@/components/input-error';
 
 // Composants
 import CandidatureHero from '@/components/candidature/CandidatureHero';
@@ -56,6 +59,16 @@ interface Edition {
 
 interface CandidaterProps {
     edition: Edition | null;
+}
+
+interface NavigationButtonsProps {
+    currentStep: number;
+    totalSteps: number;
+    onNext: () => void;
+    onPrevious: () => void;
+    isSubmit?: boolean;
+    isNextDisabled?: boolean;
+    submitting?: boolean;
 }
 
 export default function Candidater({ edition }: CandidaterProps) {
@@ -152,26 +165,195 @@ export default function Candidater({ edition }: CandidaterProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         
-        // Préparer les données à envoyer
-        const submitData = {
-            ...formData,
-            edition_id: edition?.id || null, // Inclure l'ID de l'édition si disponible
-            edition_name: edition?.name || '',
-            year: currentYear
-        };
+        // Créer un FormData pour envoyer les fichiers
+        const formDataObj = new FormData();
         
-        // Logique de soumission du formulaire
-        console.log(submitData);
+        // Ajouter les données du formulaire
+        formDataObj.append('edition_id', edition?.id?.toString() || '');
+        formDataObj.append('first_name', formData.nom);
+        formDataObj.append('last_name', formData.prenom);
+        formDataObj.append('birth_date', formData.dateNaissance);
+        formDataObj.append('gender', formData.genre);
+        formDataObj.append('email', formData.email);
+        formDataObj.append('phone', formData.telephone);
+        formDataObj.append('city', formData.ville);
+        formDataObj.append('region', formData.region);
+        formDataObj.append('education_level', formData.niveauEtudes);
+        formDataObj.append('profession', formData.profession);
+        formDataObj.append('category', formData.categorie);
+        formDataObj.append('program', formData.programme);
+        formDataObj.append('project_name', formData.nomProjet);
+        formDataObj.append('project_summary', formData.resumeProjet);
+        formDataObj.append('problem_solved', formData.problemeResolu);
+        formDataObj.append('expected_impact', formData.impactAttendu);
+        formDataObj.append('target_audience', formData.publicCible);
+        formDataObj.append('project_launched', formData.projetLance);
         
-        // Ici, vous pouvez ajouter le code pour envoyer les données au serveur
-        // par exemple avec fetch ou axios
+        if (formData.dateDebutProjet) {
+            formDataObj.append('project_start_date', formData.dateDebutProjet);
+        }
         
-        alert("Votre candidature a été soumise avec succès !");
+        formDataObj.append('prototype_exists', formData.prototypeExistant);
+        formDataObj.append('availability_morning', formData.disponibiliteMatin.toString());
+        formDataObj.append('availability_afternoon', formData.disponibiliteApresMidi.toString());
+        formDataObj.append('availability_evening', formData.disponibiliteSoir.toString());
+        
+        if (formData.videoPresentation) {
+            formDataObj.append('videoPresentation', formData.videoPresentation);
+        }
+        
+        formDataObj.append('certification_accuracy', formData.certificationExactitude.toString());
+        formDataObj.append('free_participation', formData.participationGratuite.toString());
+        formDataObj.append('communication_authorization', formData.autorisationCommunication.toString());
+        
+        // Ajouter les fichiers si présents
+        if (formData.pieceIdentite) {
+            formDataObj.append('pieceIdentite', formData.pieceIdentite);
+        }
+        
+        if (formData.businessPlan) {
+            formDataObj.append('businessPlan', formData.businessPlan);
+        }
+        
+        if (formData.photoProjet) {
+            formDataObj.append('photoProjet', formData.photoProjet);
+        }
+        
+        // Réinitialiser les erreurs
+        setErrors({});
+        setSubmitting(true);
+        
+        // Soumettre le formulaire
+        axios.post(route('candidater.store'), formDataObj, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            }
+        })
+        .then(response => {
+            // Rediriger vers la page de confirmation
+            if (response.data.redirect_url) {
+                window.location.href = response.data.redirect_url;
+            } else {
+                toast.success('Votre candidature a été soumise avec succès!');
+                // Réinitialiser le formulaire
+                reset();
+            }
+        })
+        .catch(error => {
+            setSubmitting(false);
+            
+            if (error.response) {
+                // Erreurs de validation
+                if (error.response.status === 422) {
+                    setErrors(error.response.data.errors || {});
+                    
+                    // Afficher le message d'erreur général
+                    toast.error(error.response.data.message || 'Veuillez corriger les erreurs dans le formulaire.');
+                    
+                    // Revenir à la première étape avec une erreur
+                    const firstErrorStep = getFirstErrorStep(error.response.data.errors);
+                    if (firstErrorStep) {
+                        setCurrentStep(firstErrorStep);
+                    }
+                } else {
+                    // Autres erreurs
+                    toast.error(error.response.data.message || 'Une erreur est survenue lors de la soumission de votre candidature.');
+                }
+            } else {
+                toast.error('Une erreur de connexion est survenue. Veuillez réessayer plus tard.');
+            }
+        });
     };
     
+    // Fonction wrapper pour utiliser dans les boutons de navigation
     const handleSubmitWrapper = () => {
-        // Créer un événement synthétique pour handleSubmit
         handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+    };
+
+    // Déterminer la première étape contenant une erreur
+    const getFirstErrorStep = (errors: Record<string, string[]>) => {
+        const errorFields = Object.keys(errors);
+        
+        if (errorFields.some(field => ['category'].includes(field))) {
+            return 1; // Étape Catégorie
+        }
+        
+        if (errorFields.some(field => ['first_name', 'last_name', 'birth_date', 'gender', 'email', 'phone', 'city', 'region', 'education_level', 'profession'].includes(field))) {
+            return 2; // Étape Informations personnelles
+        }
+        
+        if (errorFields.some(field => ['project_name', 'project_summary', 'problem_solved', 'expected_impact', 'target_audience', 'project_launched', 'project_start_date', 'prototype_exists'].includes(field))) {
+            return 3; // Étape Projet
+        }
+        
+        if (errorFields.some(field => ['program'].includes(field))) {
+            return 4; // Étape Programme
+        }
+        
+        if (errorFields.some(field => ['pieceIdentite', 'businessPlan', 'photoProjet', 'videoPresentation'].includes(field))) {
+            return 5; // Étape Documents
+        }
+        
+        if (errorFields.some(field => ['certification_accuracy', 'free_participation', 'communication_authorization'].includes(field))) {
+            return 6; // Étape Finalisation
+        }
+        
+        return 1; // Par défaut, revenir à la première étape
+    };
+
+    // État pour les erreurs et la soumission
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+    const [submitting, setSubmitting] = useState(false);
+    
+    // Réinitialiser le formulaire
+    const reset = () => {
+        setFormData({
+            // Réinitialiser toutes les valeurs du formulaire
+            nom: '',
+            prenom: '',
+            dateNaissance: '',
+            age: '',
+            genre: '',
+            email: '',
+            telephone: '',
+            ville: '',
+            region: '',
+            niveauEtudes: '',
+            profession: '',
+            categorie: '',
+            programme: '',
+            nomProjet: '',
+            resumeProjet: '',
+            problemeResolu: '',
+            impactAttendu: '',
+            publicCible: '',
+            projetLance: 'non',
+            dateDebutProjet: '',
+            prototypeExistant: 'non',
+            disponibiliteMatin: false,
+            disponibiliteApresMidi: false,
+            disponibiliteSoir: false,
+            certificationExactitude: false,
+            participationGratuite: false,
+            autorisationCommunication: false,
+            pieceIdentite: null,
+            businessPlan: null,
+            photoProjet: null,
+            videoPresentation: ''
+        });
+        setCurrentStep(1);
+        setErrors({});
+    };
+    
+    // Fonction pour vérifier si un champ a une erreur
+    const hasError = (field: string): boolean => {
+        return !!errors[field];
+    };
+    
+    // Fonction pour obtenir le message d'erreur d'un champ
+    const getError = (field: string): string => {
+        return errors[field] ? errors[field][0] : '';
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -218,49 +400,143 @@ export default function Candidater({ edition }: CandidaterProps) {
     };
 
     const goToNextStep = () => {
-        // Validation pour chaque étape
-        if (currentStep === 1) {
-            // Validation de la catégorie
-            if (!formData.categorie) {
-                alert("Veuillez sélectionner une catégorie");
-                return;
-            }
-        } else if (currentStep === 2) {
-            // Validation des informations personnelles
-            if (!formData.nom || !formData.prenom || !formData.dateNaissance || !formData.email || !formData.telephone || !formData.region) {
-                alert("Veuillez remplir tous les champs obligatoires");
+        // Déterminer quels champs valider en fonction de l'étape actuelle
+        let fieldsToValidate = {};
+        let endpoint = route('api.validate-step');
+        
+        setSubmitting(true);
+        
+        // Préparer les données à valider selon l'étape
+        switch (currentStep) {
+            case 1: // Catégorie
+                fieldsToValidate = {
+                    category: formData.categorie,
+                    edition_id: edition?.id || ''
+                };
+                break;
+            case 2: // Informations personnelles
+                fieldsToValidate = {
+                    first_name: formData.nom,
+                    last_name: formData.prenom,
+                    birth_date: formData.dateNaissance,
+                    gender: formData.genre,
+                    email: formData.email,
+                    phone: formData.telephone,
+                    city: formData.ville,
+                    region: formData.region,
+                    education_level: formData.niveauEtudes,
+                    profession: formData.profession
+                };
+                break;
+            case 3: // Projet
+                fieldsToValidate = {
+                    project_name: formData.nomProjet,
+                    project_summary: formData.resumeProjet,
+                    problem_solved: formData.problemeResolu,
+                    expected_impact: formData.impactAttendu,
+                    target_audience: formData.publicCible,
+                    project_launched: formData.projetLance,
+                    project_start_date: formData.dateDebutProjet,
+                    prototype_exists: formData.prototypeExistant
+                };
+                break;
+            case 4: // Programme
+                fieldsToValidate = {
+                    program: formData.programme
+                };
+                break;
+            case 5: // Documents - validation locale uniquement car on ne peut pas envoyer les fichiers facilement
+                let hasErrors = false;
+                let newErrors: Record<string, string[]> = {};
+                
+                if (!formData.pieceIdentite) {
+                    newErrors.pieceIdentite = ['Une pièce d\'identité est requise'];
+                    hasErrors = true;
+                }
+                
+                if (!formData.businessPlan) {
+                    newErrors.businessPlan = ['Un business plan est requis'];
+                    hasErrors = true;
+                }
+                
+                if (!formData.photoProjet) {
+                    newErrors.photoProjet = ['Une photo du projet est requise'];
+                    hasErrors = true;
+                }
+                
+                if (formData.videoPresentation && !formData.videoPresentation.startsWith('http')) {
+                    newErrors.videoPresentation = ['L\'URL de la vidéo doit commencer par http:// ou https://'];
+                    hasErrors = true;
+                }
+                
+                if (hasErrors) {
+                    setErrors(newErrors);
+                    setSubmitting(false);
                 return;
             }
             
-            // Vérifier que l'âge est entre 15 et 35 ans
-            const age = parseInt(formData.age);
-            if (isNaN(age) || age < 15 || age > 35) {
-                alert("Vous devez avoir entre 15 et 35 ans pour participer");
+                // Si pas d'erreurs, passer à l'étape suivante
+                setCurrentStep(current => Math.min(current + 1, totalSteps));
+                setSubmitting(false);
+                scrollToTop();
                 return;
             }
-        } else if (currentStep === 3) {
-            // Validation des informations du projet
-            if (!formData.nomProjet || !formData.resumeProjet || !formData.problemeResolu || !formData.impactAttendu) {
-                alert("Veuillez remplir tous les champs obligatoires concernant votre projet");
-                return;
-            }
-        } else if (currentStep === 4) {
-            // Validation du programme
-            if (!formData.programme) {
-                alert("Veuillez sélectionner un programme d'accélération");
-                return;
-            }
-        } else if (currentStep === 5) {
-            // Validation des documents
-            if (!formData.pieceIdentite || !formData.businessPlan || !formData.photoProjet) {
-                alert("Veuillez joindre tous les documents requis");
-                return;
-            }
-        }
         
+        // Validation côté client avant d'envoyer à l'API
+        let hasClientErrors = false;
+        let clientErrors: Record<string, string[]> = {};
+        
+        // Vérification des champs requis selon l'étape
+        Object.entries(fieldsToValidate).forEach(([key, value]) => {
+            if (!value && key !== 'project_start_date' && key !== 'profession') {
+                clientErrors[key] = ['Ce champ est requis'];
+                hasClientErrors = true;
+            }
+        });
+        
+        // Si on a des erreurs côté client, on les affiche sans aller plus loin
+        if (hasClientErrors) {
+            setErrors(clientErrors);
+            setSubmitting(false);
+                return;
+            }
+        
+        // Validation côté serveur (si implémentée)
+        // Si l'API de validation n'est pas encore implémentée, on peut commenter ce bloc et décommenter le bloc ci-dessous
+        axios.post(endpoint, {
+            step: currentStep,
+            ...fieldsToValidate
+        })
+        .then(response => {
+            // Validation réussie, passer à l'étape suivante
+            setErrors({});
+            setCurrentStep(current => Math.min(current + 1, totalSteps));
+            scrollToTop();
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 422) {
+                // Erreurs de validation
+                setErrors(error.response.data.errors || {});
+            } else {
+                // Autres erreurs
+                toast.error('Une erreur est survenue lors de la validation');
+            }
+        })
+        .finally(() => {
+            setSubmitting(false);
+        });
+        
+        /* Si l'API n'est pas implémentée, utiliser ce code à la place:
+        // Validation locale uniquement en attendant l'API
+        setErrors({});
         setCurrentStep(current => Math.min(current + 1, totalSteps));
+        setSubmitting(false);
+        scrollToTop();
+        */
+    };
         
-            // Faire défiler jusqu'à la position des étapes du formulaire (juste après le héros)
+    // Fonction pour faire défiler jusqu'en haut du formulaire
+    const scrollToTop = () => {
         setTimeout(() => {
             const stepsElement = document.querySelector('.form-progress');
             if (stepsElement) {
@@ -300,6 +576,16 @@ export default function Candidater({ edition }: CandidaterProps) {
                             onSelectCategory={(categoryId) => setFormData({...formData, categorie: categoryId})}
                             defaultCategory="1"
                         />
+                        {hasError('category') && (
+                            <div className="mt-2 text-center">
+                                <InputError message={getError('category')} />
+                            </div>
+                        )}
+                        {hasError('edition_id') && (
+                            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-center">
+                                <InputError message={getError('edition_id')} className="text-base font-medium" />
+                            </div>
+                        )}
                         </div>
                 );
             case 2:
@@ -316,6 +602,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                             handleSelectChange={handleSelectChange}
                             regions={regions}
                             niveauxEtudes={niveauxEtudes}
+                            errors={errors}
                         />
                                     </div>
                 );
@@ -335,6 +622,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                         <ProjectInfoForm
                             formData={formData}
                             handleChange={handleChange}
+                            errors={errors}
                         />
                     </motion.div>
                 );
@@ -355,6 +643,11 @@ export default function Candidater({ edition }: CandidaterProps) {
                             selectedProgram={formData.programme}
                             onSelectProgram={(programId) => handleSelectChange('programme', programId)}
                         />
+                        {hasError('program') && (
+                            <div className="mt-2 text-center">
+                                <InputError message={getError('program')} />
+                            </div>
+                        )}
                     </motion.div>
                 );
             case 5:
@@ -374,6 +667,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                             formData={formData}
                             handleChange={handleChange}
                             handleFileChange={handleFileChange}
+                            errors={errors}
                         />
                     </motion.div>
                 );
@@ -393,6 +687,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                         <FinalizationForm
                             formData={formData}
                             handleCheckboxChange={handleCheckboxChange}
+                            errors={errors}
                         />
                     </motion.div>
                 );
@@ -404,7 +699,7 @@ export default function Candidater({ edition }: CandidaterProps) {
     return (
         <MainLayout>
             {/* Hero Section */}
-            <CandidatureHero edition={edition} />
+            <CandidatureHero edition={edition} errors={errors} />
 
             <form onSubmit={handleSubmit} className="min-h-screen bg-gradient-to-b from-muted/50 via-background to-muted/50 pt-8 md:pt-16">
                 <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -416,6 +711,29 @@ export default function Candidater({ edition }: CandidaterProps) {
                             steps={formSteps} 
                         />
                     </div>
+
+                    {/* Message d'erreur général */}
+                    {Object.keys(errors).length > 0 && (
+                        <motion.div 
+                            className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                        >
+                            <div className="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                                <p className="font-medium">Veuillez corriger les erreurs suivantes avant de continuer</p>
+                            </div>
+                            
+                            {/* Afficher spécifiquement l'erreur d'édition si elle existe */}
+                            {hasError('edition_id') && (
+                                <div className="mt-3 p-3 bg-red-100 rounded-lg text-center">
+                                    <p className="text-red-700 font-semibold">{getError('edition_id')}</p>
+                                </div>
+                            )}
+                        </motion.div>
+                    )}
 
                     {/* Contenu de l'étape actuelle */}
                     <motion.div
@@ -435,6 +753,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                             totalSteps={totalSteps} 
                             onNext={goToNextStep} 
                             onPrevious={goToPreviousStep} 
+                            submitting={submitting}
                         />
                     ) : (
                         <NavigationButtons 
@@ -444,6 +763,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                             onPrevious={goToPreviousStep} 
                             isSubmit={true}
                             isNextDisabled={!formData.certificationExactitude || !formData.participationGratuite || !formData.autorisationCommunication}
+                            submitting={submitting}
                         />
                     )}
 

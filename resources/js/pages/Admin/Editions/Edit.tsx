@@ -222,7 +222,7 @@ export default function EditEdition({ edition }: EditEditionProps) {
                         />
                         <InputError message={errors.registration_deadline} />
                       </div>
-                    </div>
+                      </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">

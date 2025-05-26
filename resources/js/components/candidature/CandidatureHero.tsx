@@ -2,6 +2,7 @@ import { CheckCircle, ChevronRight, ArrowDown, Sparkles, Clock, Star, Zap, Rocke
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, px, animate, delay } from 'framer-motion';
 import { Link } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
+import InputError from '@/components/input-error';
 
 interface Edition {
   name: string;
@@ -11,6 +12,7 @@ interface Edition {
 
 interface CandidatureHeroProps {
   edition: Edition | null;
+  errors?: Record<string, string[]>;
 }
 
 // Composant de particules flottantes amélioré
@@ -139,7 +141,7 @@ const GeometricShape = ({ type, className, delay = 0 }: { type: 'circle' | 'tria
   );
 };
 
-export default function CandidatureHero({ edition }: CandidatureHeroProps) {
+export default function CandidatureHero({ edition, errors }: CandidatureHeroProps) {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   
@@ -267,239 +269,187 @@ export default function CandidatureHero({ edition }: CandidatureHeroProps) {
       </div>
 
       {/* Contenu principal */}
-      <div className="relative flex min-h-screen w-full items-center justify-center">
-        {/* Overlay dynamique */}
-        <motion.div 
-          className="absolute inset-0 z-4"
-          animate={{
-            background: [
-              'linear-gradient(45deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%)',
-              'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
-              'linear-gradient(45deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 100%)',
-            ]
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Effets de lumière en mouvement */}
+      <div className="relative z-40 container mx-auto px-4 pt-28 pb-16 md:pt-40 md:pb-24 text-center">
         <motion.div
-          className="absolute inset-0 z-5"
-          animate={{
-            background: [
-              'radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 70%)',
-              'radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15) 0%, transparent 70%)',
-              'radial-gradient(circle at 50% 30%, rgba(255,255,255,0.15) 0%, transparent 70%)',
-              'radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 0%, transparent 70%)',
-            ]
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Particules avec parallaxe */}
-        <motion.div style={{ y: particlesY }}>
-          <FloatingParticles />
-        </motion.div>
-
-        {/* Éléments flottants améliorés */}
-        <div className="hidden md:block">
-          <FloatingElement className="opacity-20 top-[10%] left-[5%]" delay={0.2} intensity={1.2}>
-            <div className="w-24 h-24 rounded-full bg-gradient-to-r from-yellow-400/40 to-orange-400/40 backdrop-blur-sm shadow-lg">
-              <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center">
-                <Star className="w-8 h-8 text-yellow-300" />
-              </div>
-            </div>
-          </FloatingElement>
-          
-          <FloatingElement className="opacity-20 top-[25%] right-[8%]" delay={0.6} intensity={0.8}>
-            <div className="w-32 h-32 rounded-2xl bg-gradient-to-r from-purple-400/30 to-pink-400/30 backdrop-blur-sm shadow-lg rotate-12">
-              <div className="w-full h-full rounded-2xl bg-white/10 flex items-center justify-center">
-                <Rocket className="w-10 h-10 text-purple-300" />
-              </div>
-            </div>
-          </FloatingElement>
-          
-          <FloatingElement className="opacity-20 bottom-[25%] left-[15%]" delay={1.0} intensity={1.5}>
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-teal-400/40 to-blue-400/40 backdrop-blur-sm shadow-lg">
-              <div className="w-full h-full rounded-full bg-white/10 flex items-center justify-center">
-                <Zap className="w-6 h-6 text-teal-300" />
-              </div>
-            </div>
-          </FloatingElement>
-          
-          <FloatingElement className="opacity-20 bottom-[35%] right-[20%]" delay={1.4} intensity={1.1}>
-            <div className="w-28 h-28 rounded-xl bg-gradient-to-r from-green-400/30 to-emerald-400/30 backdrop-blur-sm shadow-lg -rotate-12">
-              <div className="w-full h-full rounded-xl bg-white/10 flex items-center justify-center">
-                <Trophy className="w-8 h-8 text-green-300" />
-              </div>
-            </div>
-          </FloatingElement>
-          
-          <FloatingElement className="opacity-15 top-[35%] left-[25%]" delay={1.8} intensity={0.9}>
-            <Clock className="w-12 h-12 text-blue-300/70" />
-          </FloatingElement>
-          
-          <FloatingElement className="opacity-15 top-[50%] right-[35%]" delay={2.2} intensity={1.3}>
-            <Sparkles className="w-10 h-10 text-yellow-300/70" />
-          </FloatingElement>
-        </div>
-
-        {/* Contenu principal avec parallaxe */}
-        <motion.div 
-          className="relative container mx-auto px-4 z-10"
-          style={{ y: contentYSpring }}
+          className="max-w-4xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isVisible ? "visible" : "hidden"}
         >
-          <motion.div 
-            className="max-w-4xl mx-auto space-y-4 md:space-y-8 text-center"
-            variants={containerVariants}
-            initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
+          <motion.h1 
+            className="text-4xl md:text-6xl font-bold mb-4 text-white drop-shadow-md"
+            variants={itemVariants}
           >
-            {/* Card principale avec effet glassmorphism */}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-amber-100">
+              Grand Prix FONIJ {currentYear}
+            </span>
+          </motion.h1>
+          
+          <motion.h2 
+            className="text-xl md:text-3xl font-semibold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-amber-100 to-yellow-300"
+            variants={itemVariants}
+          >
+            {edition ? edition.name : "Édition de l'entrepreneuriat jeune"}
+          </motion.h2>
+          
+          {/* Affichage de l'erreur si elle existe */}
+          {errors && errors['edition_id'] && (
             <motion.div 
-              className="backdrop-blur-xl bg-white/10 p-8 md:p-16 rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden"
-              variants={itemVariants}
-              whileHover={{ scale: 1.02, y: -5 }}
-              transition={{ type: "spring", bounce: 0.3 }}
+              className="mb-8 mx-auto max-w-2xl p-4 bg-red-50 border-2 border-red-300 rounded-lg text-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              {/* Effet de brillance qui traverse la card */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                animate={{
-                  x: ['-100%', '100%'],
+              <p className="text-lg text-red-700 font-bold">{errors['edition_id'][0]}</p>
+              <p className="text-sm text-red-600 mt-1">Veuillez réessayer ultérieurement.</p>
+            </motion.div>
+          )}
+
+          {/* Card principale avec effet glassmorphism */}
+          <motion.div 
+            className="backdrop-blur-xl bg-white/10 p-8 md:p-16 rounded-3xl border border-white/20 shadow-2xl relative overflow-hidden"
+            variants={itemVariants}
+            whileHover={{ scale: 1.02, y: -5 }}
+            transition={{ type: "spring", bounce: 0.3 }}
+          >
+            {/* Effet de brillance qui traverse la card */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              animate={{
+                x: ['-100%', '100%'],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                repeatDelay: 5,
+                ease: "easeInOut"
+              }}
+              style={{ transform: 'skewX(-20deg)' }}
+            />
+            
+            <motion.span 
+              className="text-white/80 font-bold text-sm md:text-xl uppercase tracking-wider block mb-4"
+              variants={itemVariants}
+            >
+              Fonds National pour l'Insertion des Jeunes
+            </motion.span>
+
+            <motion.h1 
+              className="text-5xl md:text-7xl font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-white relative"
+              variants={itemVariants}
+            >
+              Grand Prix FONIJ
+              <motion.div 
+                className="absolute -top-2 -right-2"
+                animate={{ 
+                  rotate: [0, 360],
+                  scale: [1, 1.3, 1]
                 }}
-                transition={{
-                  duration: 3,
+                transition={{ 
+                  duration: 2, 
                   repeat: Infinity,
-                  repeatDelay: 5,
                   ease: "easeInOut"
                 }}
-                style={{ transform: 'skewX(-20deg)' }}
-              />
-              
-              <motion.span 
-                className="text-white/80 font-bold text-sm md:text-xl uppercase tracking-wider block mb-4"
-                variants={itemVariants}
               >
-                Fonds National pour l'Insertion des Jeunes
-              </motion.span>
+                <Sparkles className="w-8 h-8 text-yellow-400 drop-shadow-lg" />
+              </motion.div>
+            </motion.h1>
 
-              <motion.h1 
-                className="text-5xl md:text-7xl font-black leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-200 to-white relative"
-                variants={itemVariants}
-              >
-                Grand Prix FONIJ
-                <motion.div 
-                  className="absolute -top-2 -right-2"
-                  animate={{ 
-                    rotate: [0, 360],
-                    scale: [1, 1.3, 1]
-                  }}
-                  transition={{ 
-                    duration: 2, 
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  <Sparkles className="w-8 h-8 text-yellow-400 drop-shadow-lg" />
-                </motion.div>
-              </motion.h1>
-
-              {edition && (
-                <motion.div 
-                  className="flex flex-wrap justify-center gap-4 mt-6"
-                  variants={itemVariants}
-                >
-                  <motion.div 
-                    className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm py-2 px-6 rounded-full border border-white/30"
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.25)" }}
-                  >
-                    <span className="text-white font-bold text-sm md:text-lg">{edition.name}</span>
-                  </motion.div>
-                  <motion.div 
-                    className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 backdrop-blur-sm py-2 px-6 rounded-full border border-yellow-400/50"
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255,215,0,0.4)" }}
-                  >
-                    <span className="text-yellow-100 font-bold text-sm md:text-lg">Édition {currentYear}</span>
-                  </motion.div>
-                </motion.div>
-              )}
-
-              <motion.div
-                className="w-32 h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 mx-auto my-6 rounded-full"
-                variants={itemVariants}
-                animate={{ scaleX: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              />
-
-              <motion.p 
-                className="text-2xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 font-black"
-                variants={itemVariants}
-              >
-                Déposez votre candidature
-              </motion.p>
-
-              <motion.p 
-                className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto border-t border-white/30 pt-6 mt-6 font-medium"
-                variants={itemVariants}
-              >
-                Transformez votre idée révolutionnaire en entreprise à succès et participez à l'édition {currentYear}
-              </motion.p>
-
+            {edition && (
               <motion.div 
-                className="mt-8 flex flex-wrap justify-center items-center gap-4 text-sm md:text-base text-white/95"
+                className="flex flex-wrap justify-center gap-4 mt-6"
                 variants={itemVariants}
               >
                 <motion.div 
-                  className="flex items-center bg-gradient-to-r from-green-400/20 to-emerald-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-green-400/50"
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm py-2 px-6 rounded-full border border-white/30"
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.25)" }}
                 >
-                  <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
-                  <span className="font-semibold">15-35 ans</span>
+                  <span className="text-white font-bold text-sm md:text-lg">{edition.name}</span>
                 </motion.div>
                 <motion.div 
-                  className="flex items-center bg-gradient-to-r from-blue-400/20 to-purple-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-400/50"
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 backdrop-blur-sm py-2 px-6 rounded-full border border-yellow-400/50"
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255,215,0,0.4)" }}
                 >
-                  <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-blue-400 mr-2" />
-                  <span className="font-semibold">Projet innovant</span>
-                </motion.div>
-                <motion.div 
-                  className="flex items-center bg-gradient-to-r from-red-400/20 to-pink-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-red-400/50"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                >
-                  <span className="font-semibold">
-                    Limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </span>
+                  <span className="text-yellow-100 font-bold text-sm md:text-lg">Édition {currentYear}</span>
                 </motion.div>
               </motion.div>
+            )}
 
+            <motion.div
+              className="w-32 h-2 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 mx-auto my-6 rounded-full"
+              variants={itemVariants}
+              animate={{ scaleX: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            <motion.p 
+              className="text-2xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 font-black"
+              variants={itemVariants}
+            >
+              Déposez votre candidature
+            </motion.p>
+
+            <motion.p 
+              className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto border-t border-white/30 pt-6 mt-6 font-medium"
+              variants={itemVariants}
+            >
+              Transformez votre idée révolutionnaire en entreprise à succès et participez à l'édition {currentYear}
+            </motion.p>
+
+            <motion.div 
+              className="mt-8 flex flex-wrap justify-center items-center gap-4 text-sm md:text-base text-white/95"
+              variants={itemVariants}
+            >
               <motion.div 
-                className="mt-10 flex flex-col sm:flex-row justify-center gap-6"
-                variants={itemVariants}
+                className="flex items-center bg-gradient-to-r from-green-400/20 to-emerald-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-green-400/50"
+                whileHover={{ scale: 1.05, y: -2 }}
               >
-                <motion.button
-                  onClick={() => {
-                    const formProgressElement = document.getElementById('form-progress');
-                    if (formProgressElement) {
-                      formProgressElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="group inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold rounded-2xl shadow-2xl text-lg relative overflow-hidden cursor-pointer"
-                  whileHover={{ scale: 1.05, y: -3 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400"
-                    initial={{ x: '-100%' }}
-                    whileHover={{ x: '100%' }}
-                    transition={{ duration: 0.5 }}
-                  />
-                  <span className="relative z-10">Commencer ma candidature</span>
-                  <ChevronRight className="ml-2 h-6 w-6 relative z-10 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
+                <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-green-400 mr-2" />
+                <span className="font-semibold">15-35 ans</span>
               </motion.div>
-
+              <motion.div 
+                className="flex items-center bg-gradient-to-r from-blue-400/20 to-purple-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-blue-400/50"
+                whileHover={{ scale: 1.05, y: -2 }}
+              >
+                <CheckCircle className="h-5 w-5 md:h-6 md:w-6 text-blue-400 mr-2" />
+                <span className="font-semibold">Projet innovant</span>
+              </motion.div>
+              <motion.div 
+                className="flex items-center bg-gradient-to-r from-red-400/20 to-pink-400/20 backdrop-blur-sm rounded-full px-4 py-2 border border-red-400/50"
+                whileHover={{ scale: 1.05, y: -2 }}
+              >
+                <span className="font-semibold">
+                  Limite: {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </span>
+              </motion.div>
             </motion.div>
+
+            <motion.div 
+              className="mt-10 flex flex-col sm:flex-row justify-center gap-6"
+              variants={itemVariants}
+            >
+              <motion.button
+                onClick={() => {
+                  const formProgressElement = document.getElementById('form-progress');
+                  if (formProgressElement) {
+                    formProgressElement.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="group inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold rounded-2xl shadow-2xl text-lg relative overflow-hidden cursor-pointer"
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-yellow-300 to-orange-400"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: '100%' }}
+                  transition={{ duration: 0.5 }}
+                />
+                <span className="relative z-10">Commencer ma candidature</span>
+                <ChevronRight className="ml-2 h-6 w-6 relative z-10 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            </motion.div>
+
           </motion.div>
         </motion.div>
       </div>
