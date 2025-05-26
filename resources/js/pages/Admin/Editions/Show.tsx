@@ -150,6 +150,11 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
                             {formatDate(edition.end_date)}
                           </div>
                           <div className="flex items-center">
+                            <ClockIcon className="h-4 w-4 mr-2 text-blue-500" />
+                            <span className="font-medium text-slate-700 w-40">Début des inscriptions:</span> 
+                            {formatDate(edition.registration_start_date)}
+                          </div>
+                          <div className="flex items-center">
                             <ClockIcon className="h-4 w-4 mr-2 text-amber-500" />
                             <span className="font-medium text-slate-700 w-40">Fin des inscriptions:</span> 
                             {formatDate(edition.registration_deadline)}

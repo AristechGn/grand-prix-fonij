@@ -249,11 +249,11 @@ export default function Home({ edition }: HomeProps) {
                 
                 {/* Animation subtile au chargement - hauteur adaptée au mobile */}
                 <motion.div 
-                    className="w-full h-[85vh] sm:h-[90vh] md:min-h-screen max-h-screen overflow-hidden"
+                    className="w-full h-[85vh] sm:h-[90vh] md:min-h-screen max-h-screen overflow-hidden bg-gradient-to-l from-primary-400 to-primary-800"
                     variants={heroImage}
                 >
                    <motion.img 
-                        src="/images/fonij/cover_3.png"
+                        src="/images/fonij/cover_4.png"
                         alt="Grand Prix FONIJ"
                         className="md:hidden sm:block w-full h-full object-cover object-center"
                         loading="eager"
@@ -261,9 +261,9 @@ export default function Home({ edition }: HomeProps) {
                         transition={{ duration: 0.7 }}
                     />
                     <motion.img 
-                        src="/images/fonij/cover_3.png"
+                        src="/images/fonij/cover_4.png"
                         alt="Grand Prix FONIJ"
-                        className="md:block sm:hidden w-full h-full object-contain object-center"
+                        className="md:block sm:hidden w-full h-full object-contain object-center border-transparent shadoow-none"
                         loading="eager"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.7 }}
@@ -300,7 +300,7 @@ export default function Home({ edition }: HomeProps) {
                             className="text-base sm:text-lg md:text-2xl mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto text-shadow-sm drop-shadow-lg"
                             variants={heroTextVariants}
                         >
-                            Rejoignez le mouvement de l'innovation entrepreneuriale en Guinée
+                            Ton idée mérite d'aller plus loin
                         </motion.p>
                         <motion.div 
                             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"

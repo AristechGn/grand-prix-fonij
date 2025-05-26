@@ -57,6 +57,7 @@ export interface EditionFormData {
     year: number;
     start_date: string;
     end_date: string;
+    registration_start_date: string;
     registration_deadline: string;
     max_participants: number;
     description: string;
@@ -94,6 +95,7 @@ export interface Edition {
     year: number;
     start_date: string;
     end_date: string;
+    registration_start_date: string;
     registration_deadline: string;
     max_participants: number;
     description: string;

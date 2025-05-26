@@ -20,6 +20,7 @@ class Edition extends Model
         'year',
         'start_date',
         'end_date',
+        'registration_start_date',
         'registration_deadline',
         'max_participants',
         'description',
@@ -35,6 +36,7 @@ class Edition extends Model
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'registration_start_date' => 'datetime',
         'registration_deadline' => 'datetime',
         'is_current' => 'boolean',
     ];

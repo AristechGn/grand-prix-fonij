@@ -41,6 +41,7 @@ export default function CreateEdition() {
     year: new Date().getFullYear(),
     start_date: '',
     end_date: '',
+    registration_start_date: '',
     registration_deadline: '',
     max_participants: 0,
     description: '',
@@ -238,6 +239,21 @@ export default function CreateEdition() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
+                        <Label htmlFor="registration_start_date" className="flex items-center gap-2">
+                          <TimerIcon size={16} className="text-slate-500" />
+                          Date de début des inscriptions
+                        </Label>
+                        <Input
+                          id="registration_start_date"
+                          type="date"
+                          value={data.registration_start_date}
+                          onChange={(e) => setData('registration_start_date', e.target.value)}
+                          className="transition-all duration-200 focus:ring-2 focus:ring-green-500"
+                        />
+                        <InputError message={errors.registration_start_date} />
+                      </div>
+
+                      <div className="space-y-2">
                         <Label htmlFor="registration_deadline" className="flex items-center gap-2">
                           <TimerIcon size={16} className="text-slate-500" />
                           Date limite d'inscription
@@ -251,7 +267,9 @@ export default function CreateEdition() {
                         />
                         <InputError message={errors.registration_deadline} />
                       </div>
+                    </div>
 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="max_participants" className="flex items-center gap-2">
                           <UsersIcon size={16} className="text-slate-500" />
