@@ -464,7 +464,7 @@ export default function APropos({ edition }: AProposProps) {
                                 
                                 <img
                                     src="/images/fonij/dg-fonij.jpg"
-                                    alt="Bandjou KOUROUMA - Directeur Général du FONIJ"
+                                    alt="Abdourahmane Baldé - Directeur Général du FONIJ"
                                     className="rounded-xl shadow-xl w-full h-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
                                 />
                                     
@@ -526,7 +526,7 @@ export default function APropos({ edition }: AProposProps) {
                                 >
                                     <div className="h-10 w-1 bg-white/40 rounded-full"></div> 
                                     <div>
-                                        <p className="font-bold text-2xl text-white">Bandjou KOUROUMA</p>
+                                        <p className="font-bold text-2xl text-white">Abdourahmane Baldé</p>
                                         <p className="text-white/80 text-sm">Directeur Général du FONIJ</p>
                                     </div>
                                 </motion.div>
