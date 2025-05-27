@@ -116,9 +116,9 @@ export default function APropos({ edition }: AProposProps) {
             >
                 {/* Image de fond avec effet de parallaxe */}
                 <motion.div 
-                    className="absolute inset-0 bg-center bg-cover bg-fixed"
+                    className="absolute inset-0 bg-center bg-contain bg-fixed bg-no-repeat"
                     style={{ 
-                        backgroundImage: `url('https://simandou2040.gn/wp-content/uploads/2024/12/1bb49b26-eee7-436d-9806-f6eccfcda1f8-2550x1434-1.jpeg')`,
+                        backgroundImage: `url('/images/covers/guinea-cart.jpg')`,
                         y: heroY,
                     }}
                 />
