@@ -26,7 +26,7 @@ const categories = FONIJ.categories.map(cat => ({
     id: cat.id,
     name: cat.title,
     description: cat.description,
-    icon: cat.textColor,  // Utiliser la couleur comme référence pour l'icône
+    icon: cat.textColor,
     details: cat.crochets || [],
     image: cat.image,
 }));
@@ -399,23 +399,54 @@ export default function Candidater({ edition }: CandidaterProps) {
         }
     };
 
+    const handleCategorySelect = (categoryId: string) => {
+        console.log('Catégorie sélectionnée:', categoryId);
+        setFormData(prev => ({
+            ...prev,
+            categorie: categoryId
+        }));
+        // Réinitialiser les erreurs lors de la sélection d'une catégorie
+        setErrors(prev => {
+            const newErrors = { ...prev };
+            delete newErrors.category;
+            return newErrors;
+        });
+    };
+
     const goToNextStep = () => {
-        // Déterminer quels champs valider en fonction de l'étape actuelle
-        let fieldsToValidate = {};
-        let endpoint = route('api.validate-step');
+        console.log('État actuel du formulaire:', formData);
         
         setSubmitting(true);
         
-        // Préparer les données à valider selon l'étape
         switch (currentStep) {
             case 1: // Catégorie
-                fieldsToValidate = {
-                    category: formData.categorie,
-                    edition_id: edition?.id || ''
-                };
-                break;
+                console.log('Validation de la catégorie:', formData.categorie);
+                
+                // Validation côté serveur de la catégorie
+                axios.post(route('api.validate-step'), {
+                    step: currentStep,
+                    categorie: formData.categorie
+                })
+                .then((response: any) => {
+                    setErrors({});
+                    setCurrentStep(current => Math.min(current + 1, totalSteps));
+                    scrollToTop();
+                })
+                .catch((error: any) => {
+                    if (error.response && error.response.status === 422) {
+                        setErrors(error.response.data.errors || {});
+                        toast.error('Veuillez sélectionner une catégorie');
+                    } else {
+                        toast.error('Une erreur est survenue lors de la validation');
+                    }
+                })
+                .finally(() => {
+                    setSubmitting(false);
+                });
+                return;
+
             case 2: // Informations personnelles
-                fieldsToValidate = {
+                const personalInfoData = {
                     first_name: formData.nom,
                     last_name: formData.prenom,
                     birth_date: formData.dateNaissance,
@@ -427,9 +458,32 @@ export default function Candidater({ edition }: CandidaterProps) {
                     education_level: formData.niveauEtudes,
                     profession: formData.profession
                 };
-                break;
+
+                // Validation côté serveur
+                axios.post(route('api.validate-step'), {
+                    step: currentStep,
+                    ...personalInfoData
+                })
+                .then((response: any) => {
+                    setErrors({});
+                    setCurrentStep(current => Math.min(current + 1, totalSteps));
+                    scrollToTop();
+                })
+                .catch((error: any) => {
+                    if (error.response && error.response.status === 422) {
+                        setErrors(error.response.data.errors || {});
+                        toast.error('Veuillez corriger les erreurs dans le formulaire');
+                    } else {
+                        toast.error('Une erreur est survenue lors de la validation');
+                    }
+                })
+                .finally(() => {
+                    setSubmitting(false);
+                });
+                return;
+
             case 3: // Projet
-                fieldsToValidate = {
+                const projectData = {
                     project_name: formData.nomProjet,
                     project_summary: formData.resumeProjet,
                     problem_solved: formData.problemeResolu,
@@ -439,13 +493,55 @@ export default function Candidater({ edition }: CandidaterProps) {
                     project_start_date: formData.dateDebutProjet,
                     prototype_exists: formData.prototypeExistant
                 };
-                break;
+
+                axios.post(route('api.validate-step'), {
+                    step: currentStep,
+                    ...projectData
+                })
+                .then((response: any) => {
+                    setErrors({});
+                    setCurrentStep(current => Math.min(current + 1, totalSteps));
+                    scrollToTop();
+                })
+                .catch((error: any) => {
+                    if (error.response && error.response.status === 422) {
+                        setErrors(error.response.data.errors || {});
+                    } else {
+                        toast.error('Une erreur est survenue lors de la validation');
+                    }
+                })
+                .finally(() => {
+                    setSubmitting(false);
+                });
+                return;
+
             case 4: // Programme
-                fieldsToValidate = {
+                const programData = {
                     program: formData.programme
                 };
-                break;
-            case 5: // Documents - validation locale uniquement car on ne peut pas envoyer les fichiers facilement
+
+                axios.post(route('api.validate-step'), {
+                    step: currentStep,
+                    ...programData
+                })
+                .then((response: any) => {
+                    setErrors({});
+                    setCurrentStep(current => Math.min(current + 1, totalSteps));
+                    scrollToTop();
+                })
+                .catch((error: any) => {
+                    if (error.response && error.response.status === 422) {
+                        setErrors(error.response.data.errors || {});
+                    } else {
+                        toast.error('Une erreur est survenue lors de la validation');
+                    }
+                })
+                .finally(() => {
+                    setSubmitting(false);
+                });
+                return;
+
+            case 5: // Documents
                 let hasErrors = false;
                 let newErrors: Record<string, string[]> = {};
                 
@@ -472,67 +568,15 @@ export default function Candidater({ edition }: CandidaterProps) {
                 if (hasErrors) {
                     setErrors(newErrors);
                     setSubmitting(false);
-                return;
-            }
-            
+                    return;
+                }
+                
                 // Si pas d'erreurs, passer à l'étape suivante
                 setCurrentStep(current => Math.min(current + 1, totalSteps));
                 setSubmitting(false);
                 scrollToTop();
                 return;
-            }
-        
-        // Validation côté client avant d'envoyer à l'API
-        let hasClientErrors = false;
-        let clientErrors: Record<string, string[]> = {};
-        
-        // Vérification des champs requis selon l'étape
-        Object.entries(fieldsToValidate).forEach(([key, value]) => {
-            if (!value && key !== 'project_start_date' && key !== 'profession') {
-                clientErrors[key] = ['Ce champ est requis'];
-                hasClientErrors = true;
-            }
-        });
-        
-        // Si on a des erreurs côté client, on les affiche sans aller plus loin
-        if (hasClientErrors) {
-            setErrors(clientErrors);
-            setSubmitting(false);
-                return;
-            }
-        
-        // Validation côté serveur (si implémentée)
-        // Si l'API de validation n'est pas encore implémentée, on peut commenter ce bloc et décommenter le bloc ci-dessous
-        axios.post(endpoint, {
-            step: currentStep,
-            ...fieldsToValidate
-        })
-        .then(response => {
-            // Validation réussie, passer à l'étape suivante
-            setErrors({});
-            setCurrentStep(current => Math.min(current + 1, totalSteps));
-            scrollToTop();
-        })
-        .catch(error => {
-            if (error.response && error.response.status === 422) {
-                // Erreurs de validation
-                setErrors(error.response.data.errors || {});
-            } else {
-                // Autres erreurs
-                toast.error('Une erreur est survenue lors de la validation');
-            }
-        })
-        .finally(() => {
-            setSubmitting(false);
-        });
-        
-        /* Si l'API n'est pas implémentée, utiliser ce code à la place:
-        // Validation locale uniquement en attendant l'API
-        setErrors({});
-        setCurrentStep(current => Math.min(current + 1, totalSteps));
-        setSubmitting(false);
-        scrollToTop();
-        */
+        }
     };
         
     // Fonction pour faire défiler jusqu'en haut du formulaire
@@ -563,7 +607,7 @@ export default function Candidater({ edition }: CandidaterProps) {
     const renderStepContent = () => {
         switch (currentStep) {
             case 1:
-    return (
+                return (
                     <div className="mb-8 md:mb-16">
                         <h2 className={sectionTitleClass}>Choisissez votre catégorie</h2>
                         <div className={sectionDividerClass}></div>
@@ -573,20 +617,14 @@ export default function Candidater({ edition }: CandidaterProps) {
                         <CategorySelector 
                             categories={categories} 
                             selectedCategory={formData.categorie}
-                            onSelectCategory={(categoryId) => setFormData({...formData, categorie: categoryId})}
-                            defaultCategory="1"
+                            onSelectCategory={handleCategorySelect}
                         />
                         {hasError('category') && (
-                            <div className="mt-2 text-center">
+                            <div className="mt-4 text-center text-red-600">
                                 <InputError message={getError('category')} />
                             </div>
                         )}
-                        {hasError('edition_id') && (
-                            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-                                <InputError message={getError('edition_id')} className="text-base font-medium" />
-                            </div>
-                        )}
-                        </div>
+                    </div>
                 );
             case 2:
                 return (
@@ -604,14 +642,14 @@ export default function Candidater({ edition }: CandidaterProps) {
                             niveauxEtudes={niveauxEtudes}
                             errors={errors}
                         />
-                                    </div>
+                    </div>
                 );
             case 3:
                 return (
-                                    <motion.div
+                    <motion.div
                         className="mb-8 md:mb-16"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     >
                         <h2 className={sectionTitleClass}>Informations sur votre projet</h2>
@@ -726,10 +764,10 @@ export default function Candidater({ edition }: CandidaterProps) {
                                 <p className="font-medium">Veuillez corriger les erreurs suivantes avant de continuer</p>
                             </div>
                             
-                            {/* Afficher spécifiquement l'erreur d'édition si elle existe */}
-                            {hasError('edition_id') && (
-                                <div className="mt-3 p-3 bg-red-100 rounded-lg text-center">
-                                    <p className="text-red-700 font-semibold">{getError('edition_id')}</p>
+                            {/* Afficher les erreurs spécifiques */}
+                            {errors.category && (
+                                <div className="mt-2 text-sm text-red-600">
+                                    {errors.category}
                                 </div>
                             )}
                         </motion.div>
@@ -744,7 +782,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                         transition={{ duration: 0.5 }}
                     >
                         {renderStepContent()}
-                        </motion.div>
+                    </motion.div>
 
                     {/* Navigation entre les étapes */}
                     {currentStep < totalSteps ? (

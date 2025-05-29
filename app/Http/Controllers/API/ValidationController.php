@@ -27,8 +27,11 @@ class ValidationController extends Controller
         switch ($step) {
             case 1: // Catégorie
                 $rules = [
-                    'category' => $allRules['category'],
-                    'edition_id' => $allRules['edition_id'],
+                    'categorie' => 'required|exists:categories,id',
+                ];
+                $messages = [
+                    'categorie.required' => 'Veuillez sélectionner une catégorie pour votre projet.',
+                    'categorie.exists' => 'La catégorie sélectionnée n\'existe pas.',
                 ];
                 break;
             case 2: // Informations personnelles

@@ -45,6 +45,7 @@ export default function CategorySelector({
   };
 
   const handleCardClick = (categoryId: string) => {
+    console.log('Card clicked:', categoryId);
     onSelectCategory(categoryId);
     const categoryIndex = categories.findIndex(cat => cat.id.toString() === categoryId);
     if (categoryIndex !== -1 && window.innerWidth < 768) {
@@ -85,6 +86,14 @@ export default function CategorySelector({
             onHoverEnd={() => setHoveredCard(null)}
             whileTap={{ scale: 0.97 }}
             layout
+            role="button"
+            aria-pressed={isSelected}
+            tabIndex={0}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleCardClick(category.id.toString());
+              }
+            }}
           >
             {isSelected && (
               <>
