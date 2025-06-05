@@ -73,7 +73,7 @@ export default function AppLayout({
   const modifyDate = dateModified ?? new Date().toISOString();
 
   return (
-    <>
+    <AppLayoutTemplate>
       <Head>
         {/* Balises meta de base */}
         <title>{title}</title>
@@ -190,6 +190,6 @@ export default function AppLayout({
           {children}
         </main>
       </div>
-    </>
+    </AppLayoutTemplate>
   );
 }

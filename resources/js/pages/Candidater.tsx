@@ -58,7 +58,7 @@ interface Edition {
 }
 
 interface CandidaterProps {
-    edition: Edition | null;
+    edition: Edition;
 }
 
 interface NavigationButtonsProps {
@@ -72,7 +72,22 @@ interface NavigationButtonsProps {
 }
 
 export default function Candidater({ edition }: CandidaterProps) {
+    // Vérifier si l'édition est valide
+    if (!edition?.id) {
+        return (
+            <MainLayout>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-red-600 mb-4">Édition non disponible</h1>
+                        <p className="text-gray-600">Aucune édition active n'est disponible pour les candidatures.</p>
+                    </div>
+                </div>
+            </MainLayout>
+        );
+    }
+
     const [formData, setFormData] = useState({
+        edition_id: edition.id,
         // Informations personnelles
         nom: '',
         prenom: '',
@@ -87,28 +102,28 @@ export default function Candidater({ edition }: CandidaterProps) {
         profession: '',
         
         // Catégorie et programme
-        categorie: '',
-        programme: '',
+        category: '',
+        program: '',
         
         // Informations du projet
-        nomProjet: '',
-        resumeProjet: '',
-        problemeResolu: '',
-        impactAttendu: '',
-        publicCible: '',
-        projetLance: 'non',
-        dateDebutProjet: '',
-        prototypeExistant: 'non',
+        project_name: '',
+        project_summary: '',
+        problem_solved: '',
+        expected_impact: '',
+        target_audience: '',
+        project_launched: 'non',
+        project_start_date: '',
+        prototype_exists: 'non',
         
         // Disponibilités
-        disponibiliteMatin: false,
-        disponibiliteApresMidi: false,
-        disponibiliteSoir: false,
+        availability_morning: false,
+        availability_afternoon: false,
+        availability_evening: false,
         
         // Déclaration
-        certificationExactitude: false,
-        participationGratuite: false,
-        autorisationCommunication: false,
+        certification_accuracy: false,
+        free_participation: false,
+        communication_authorization: false,
         
         // Fichiers
         pieceIdentite: null as File | null,
@@ -169,7 +184,7 @@ export default function Candidater({ edition }: CandidaterProps) {
         const formDataObj = new FormData();
         
         // Ajouter les données du formulaire
-        formDataObj.append('edition_id', edition?.id?.toString() || '');
+        formDataObj.append('edition_id', formData.edition_id.toString());
         formDataObj.append('first_name', formData.nom);
         formDataObj.append('last_name', formData.prenom);
         formDataObj.append('birth_date', formData.dateNaissance);
@@ -180,31 +195,31 @@ export default function Candidater({ edition }: CandidaterProps) {
         formDataObj.append('region', formData.region);
         formDataObj.append('education_level', formData.niveauEtudes);
         formDataObj.append('profession', formData.profession);
-        formDataObj.append('category', formData.categorie);
-        formDataObj.append('program', formData.programme);
-        formDataObj.append('project_name', formData.nomProjet);
-        formDataObj.append('project_summary', formData.resumeProjet);
-        formDataObj.append('problem_solved', formData.problemeResolu);
-        formDataObj.append('expected_impact', formData.impactAttendu);
-        formDataObj.append('target_audience', formData.publicCible);
-        formDataObj.append('project_launched', formData.projetLance);
+        formDataObj.append('category', formData.category);
+        formDataObj.append('program', formData.program);
+        formDataObj.append('project_name', formData.project_name);
+        formDataObj.append('project_summary', formData.project_summary);
+        formDataObj.append('problem_solved', formData.problem_solved);
+        formDataObj.append('expected_impact', formData.expected_impact);
+        formDataObj.append('target_audience', formData.target_audience);
+        formDataObj.append('project_launched', formData.project_launched);
         
-        if (formData.dateDebutProjet) {
-            formDataObj.append('project_start_date', formData.dateDebutProjet);
+        if (formData.project_start_date) {
+            formDataObj.append('project_start_date', formData.project_start_date);
         }
         
-        formDataObj.append('prototype_exists', formData.prototypeExistant);
-        formDataObj.append('availability_morning', formData.disponibiliteMatin.toString());
-        formDataObj.append('availability_afternoon', formData.disponibiliteApresMidi.toString());
-        formDataObj.append('availability_evening', formData.disponibiliteSoir.toString());
+        formDataObj.append('prototype_exists', formData.prototype_exists);
+        formDataObj.append('availability_morning', formData.availability_morning.toString());
+        formDataObj.append('availability_afternoon', formData.availability_afternoon.toString());
+        formDataObj.append('availability_evening', formData.availability_evening.toString());
         
         if (formData.videoPresentation) {
             formDataObj.append('videoPresentation', formData.videoPresentation);
         }
         
-        formDataObj.append('certification_accuracy', formData.certificationExactitude.toString());
-        formDataObj.append('free_participation', formData.participationGratuite.toString());
-        formDataObj.append('communication_authorization', formData.autorisationCommunication.toString());
+        formDataObj.append('certification_accuracy', formData.certification_accuracy.toString());
+        formDataObj.append('free_participation', formData.free_participation.toString());
+        formDataObj.append('communication_authorization', formData.communication_authorization.toString());
         
         // Ajouter les fichiers si présents
         if (formData.pieceIdentite) {
@@ -310,6 +325,7 @@ export default function Candidater({ edition }: CandidaterProps) {
     const reset = () => {
         setFormData({
             // Réinitialiser toutes les valeurs du formulaire
+            edition_id: edition.id,
             nom: '',
             prenom: '',
             dateNaissance: '',
@@ -321,22 +337,22 @@ export default function Candidater({ edition }: CandidaterProps) {
             region: '',
             niveauEtudes: '',
             profession: '',
-            categorie: '',
-            programme: '',
-            nomProjet: '',
-            resumeProjet: '',
-            problemeResolu: '',
-            impactAttendu: '',
-            publicCible: '',
-            projetLance: 'non',
-            dateDebutProjet: '',
-            prototypeExistant: 'non',
-            disponibiliteMatin: false,
-            disponibiliteApresMidi: false,
-            disponibiliteSoir: false,
-            certificationExactitude: false,
-            participationGratuite: false,
-            autorisationCommunication: false,
+            category: '',
+            program: '',
+            project_name: '',
+            project_summary: '',
+            problem_solved: '',
+            expected_impact: '',
+            target_audience: '',
+            project_launched: 'non',
+            project_start_date: '',
+            prototype_exists: 'non',
+            availability_morning: false,
+            availability_afternoon: false,
+            availability_evening: false,
+            certification_accuracy: false,
+            free_participation: false,
+            communication_authorization: false,
             pieceIdentite: null,
             businessPlan: null,
             photoProjet: null,
@@ -403,7 +419,7 @@ export default function Candidater({ edition }: CandidaterProps) {
         console.log('Catégorie sélectionnée:', categoryId);
         setFormData(prev => ({
             ...prev,
-            categorie: categoryId
+            category: categoryId
         }));
         // Réinitialiser les erreurs lors de la sélection d'une catégorie
         setErrors(prev => {
@@ -420,12 +436,12 @@ export default function Candidater({ edition }: CandidaterProps) {
         
         switch (currentStep) {
             case 1: // Catégorie
-                console.log('Validation de la catégorie:', formData.categorie);
+                console.log('Validation de la catégorie:', formData.category);
                 
                 // Validation côté serveur de la catégorie
                 axios.post(route('api.validate-step'), {
                     step: currentStep,
-                    categorie: formData.categorie
+                    categorie: formData.category
                 })
                 .then((response: any) => {
                     setErrors({});
@@ -484,14 +500,14 @@ export default function Candidater({ edition }: CandidaterProps) {
 
             case 3: // Projet
                 const projectData = {
-                    project_name: formData.nomProjet,
-                    project_summary: formData.resumeProjet,
-                    problem_solved: formData.problemeResolu,
-                    expected_impact: formData.impactAttendu,
-                    target_audience: formData.publicCible,
-                    project_launched: formData.projetLance,
-                    project_start_date: formData.dateDebutProjet,
-                    prototype_exists: formData.prototypeExistant
+                    project_name: formData.project_name,
+                    project_summary: formData.project_summary,
+                    problem_solved: formData.problem_solved,
+                    expected_impact: formData.expected_impact,
+                    target_audience: formData.target_audience,
+                    project_launched: formData.project_launched,
+                    project_start_date: formData.project_start_date,
+                    prototype_exists: formData.prototype_exists
                 };
 
                 axios.post(route('api.validate-step'), {
@@ -517,7 +533,7 @@ export default function Candidater({ edition }: CandidaterProps) {
 
             case 4: // Programme
                 const programData = {
-                    program: formData.programme
+                    program: formData.program
                 };
 
                 axios.post(route('api.validate-step'), {
@@ -616,7 +632,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                         </p>
                         <CategorySelector 
                             categories={categories} 
-                            selectedCategory={formData.categorie}
+                            selectedCategory={formData.category}
                             onSelectCategory={handleCategorySelect}
                         />
                         {hasError('category') && (
@@ -678,8 +694,8 @@ export default function Candidater({ edition }: CandidaterProps) {
                             Sélectionnez le programme qui correspond le mieux à vos besoins.
                         </p>
                         <ProgramSelector
-                            selectedProgram={formData.programme}
-                            onSelectProgram={(programId) => handleSelectChange('programme', programId)}
+                            selectedProgram={formData.program}
+                            onSelectProgram={(programId) => handleSelectChange('program', programId)}
                         />
                         {hasError('program') && (
                             <div className="mt-2 text-center">
@@ -800,7 +816,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                             onNext={handleSubmitWrapper} 
                             onPrevious={goToPreviousStep} 
                             isSubmit={true}
-                            isNextDisabled={!formData.certificationExactitude || !formData.participationGratuite || !formData.autorisationCommunication}
+                            isNextDisabled={!formData.certification_accuracy || !formData.free_participation || !formData.communication_authorization}
                             submitting={submitting}
                         />
                     )}

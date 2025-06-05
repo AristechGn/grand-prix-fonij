@@ -18,14 +18,14 @@ import {
 import InputError from '@/components/input-error';
 
 interface ProjectFormData {
-    nomProjet: string;
-    resumeProjet: string;
-    problemeResolu: string;
-    impactAttendu: string;
-    publicCible: string;
-    projetLance: string;
-    dateDebutProjet: string;
-    prototypeExistant: string;
+    project_name: string;
+    project_summary: string;
+    problem_solved: string;
+    expected_impact: string;
+    target_audience: string;
+    project_launched: string;
+    project_start_date: string;
+    prototype_exists: string;
 }
 
 interface ProjectInfoFormProps {
@@ -380,8 +380,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.1}
                     >
                         <ModernInput
-                            name="nomProjet"
-                            value={formData.nomProjet}
+                            name="project_name"
+                            value={formData.project_name}
                             onChange={handleChange}
                             placeholder="Donnez un nom accrocheur à votre projet..."
                             required
@@ -397,8 +397,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.2}
                     >
                         <ModernTextarea
-                            name="resumeProjet"
-                            value={formData.resumeProjet}
+                            name="project_summary"
+                            value={formData.project_summary}
                             onChange={handleChange}
                             placeholder="Votre projet en quelques mots..."
                             required
@@ -417,8 +417,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.3}
                     >
                         <ModernTextarea
-                            name="problemeResolu"
-                            value={formData.problemeResolu}
+                            name="problem_solved"
+                            value={formData.problem_solved}
                             onChange={handleChange}
                             placeholder="Décrivez le problème que vous résolvez..."
                             required
@@ -437,8 +437,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.4}
                     >
                         <ModernTextarea
-                            name="impactAttendu"
-                            value={formData.impactAttendu}
+                            name="expected_impact"
+                            value={formData.expected_impact}
                             onChange={handleChange}
                             placeholder="Décrivez l'impact positif de votre projet..."
                             required
@@ -457,8 +457,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.5}
                     >
                         <ModernTextarea
-                            name="publicCible"
-                            value={formData.publicCible}
+                            name="target_audience"
+                            value={formData.target_audience}
                             onChange={handleChange}
                             placeholder="Jeunes entrepreneurs, agriculteurs, étudiants..."
                             required
@@ -476,8 +476,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.6}
                     >
                         <RadioGroup
-                            name="projetLance"
-                            value={formData.projetLance}
+                            name="project_launched"
+                            value={formData.project_launched}
                             onChange={handleChange}
                             options={[
                                 { value: "oui", label: "Oui, c'est parti !" },
@@ -487,7 +487,7 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                     </FormField>
 
                     <AnimatePresence>
-                        {formData.projetLance === 'oui' && (
+                        {formData.project_launched === 'oui' && (
                             <motion.div
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
@@ -502,8 +502,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                                 >
                                     <ModernInput
                                         type="date"
-                                        name="dateDebutProjet"
-                                        value={formData.dateDebutProjet}
+                                        name="project_start_date"
+                                        value={formData.project_start_date}
                                         onChange={handleChange}
                                         required
                                     />
@@ -519,8 +519,8 @@ export default function ProjectInfoForm({ formData, handleChange, errors }: Proj
                         delay={0.7}
                     >
                         <RadioGroup
-                            name="prototypeExistant"
-                            value={formData.prototypeExistant}
+                            name="prototype_exists"
+                            value={formData.prototype_exists}
                             onChange={handleChange}
                             options={[
                                 { value: "oui", label: "Oui, j'ai un prototype" },

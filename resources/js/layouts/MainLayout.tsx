@@ -75,7 +75,7 @@ export default function MainLayout({
         },
         {
             'name': 'A Propos',
-            'label': 'APropos',
+            'label': 'A Propos',
             'icon': GraduationCap,
             'href': route('about.index'),
             'active': 'about.index',

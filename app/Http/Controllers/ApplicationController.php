@@ -97,8 +97,8 @@ class ApplicationController extends Controller
             'region' => $validated['region'],
             'education_level' => $validated['education_level'],
             'profession' => $validated['profession'],
-            'category' => $validated['categorie'],
-            'program' => $validated['programme'] ?? null,
+            'category' => $validated['category'],
+            'program' => $validated['program'] ?? null,
             'project_name' => $validated['project_name'],
             'project_summary' => $validated['project_summary'],
             'problem_solved' => $validated['problem_solved'],
@@ -129,7 +129,7 @@ class ApplicationController extends Controller
             'success' => true,
             'message' => 'Votre candidature a été soumise avec succès!',
             'application_number' => $applicationNumber,
-            'redirect_url' => route('candidater.confirmation', $applicationNumber)
+            'redirect_url' => route('candidature.confirmation', $applicationNumber)
         ], 201);
     }
 

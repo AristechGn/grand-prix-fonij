@@ -27,11 +27,23 @@ class ValidationController extends Controller
         switch ($step) {
             case 1: // Catégorie
                 $rules = [
-                    'categorie' => 'required|exists:categories,id',
+                    'edition_id' => 'nullable|integer',
+                    'categorie' => [
+                        'required',
+                        'string',
+                        function ($attribute, $value, $fail) {
+                            // Vérifier si la catégorie existe dans la liste des catégories FONIJ
+                            $validCategories = [1, 2, 3, 4, 5]; // IDs des catégories FONIJ
+                            if (!in_array((int)$value, $validCategories)) {
+                                $fail('La catégorie sélectionnée n\'est pas valide.');
+                            }
+                        }
+                    ],
                 ];
                 $messages = [
+                    'edition_id.integer' => 'L\'édition doit être un nombre entier.',
                     'categorie.required' => 'Veuillez sélectionner une catégorie pour votre projet.',
-                    'categorie.exists' => 'La catégorie sélectionnée n\'existe pas.',
+                    'categorie.string' => 'La catégorie doit être une chaîne de caractères.',
                 ];
                 break;
             case 2: // Informations personnelles

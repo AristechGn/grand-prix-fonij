@@ -5,9 +5,9 @@ import { useState } from 'react';
 import InputError from '@/components/input-error';
 
 interface FinalizationFormData {
-    certificationExactitude: boolean;
-    participationGratuite: boolean;
-    autorisationCommunication: boolean;
+    certification_accuracy: boolean;
+    free_participation: boolean;
+    communication_authorization: boolean;
 }
 
 interface FinalizationFormProps {
@@ -164,14 +164,14 @@ export default function FinalizationForm({ formData, handleCheckboxChange, error
                                 <div className="flex items-center">
                                     <input
                                         type="checkbox"
-                                        id="certificationExactitude"
-                                        name="certificationExactitude"
-                                        checked={formData.certificationExactitude}
+                                        id="certification_accuracy"
+                                        name="certification_accuracy"
+                                        checked={formData.certification_accuracy}
                                         onChange={handleCheckboxChange}
                                         className="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary"
                                         required
                                     />
-                                    <label htmlFor="certificationExactitude" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="certification_accuracy" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                         Je certifie que toutes les informations fournies sont exactes et complètes
                                     </label>
                                 </div>
@@ -194,14 +194,14 @@ export default function FinalizationForm({ formData, handleCheckboxChange, error
                                 <div className="flex items-center">
                                     <input
                                         type="checkbox"
-                                        id="participationGratuite"
-                                        name="participationGratuite"
-                                        checked={formData.participationGratuite}
+                                        id="free_participation"
+                                        name="free_participation"
+                                        checked={formData.free_participation}
                                         onChange={handleCheckboxChange}
                                         className="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary"
                                         required
                                     />
-                                    <label htmlFor="participationGratuite" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="free_participation" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                         Je comprends que la participation est gratuite et qu'aucun frais ne me sera demandé
                                     </label>
                                 </div>
@@ -224,14 +224,14 @@ export default function FinalizationForm({ formData, handleCheckboxChange, error
                                 <div className="flex items-center">
                                     <input
                                         type="checkbox"
-                                        id="autorisationCommunication"
-                                        name="autorisationCommunication"
-                                        checked={formData.autorisationCommunication}
+                                        id="communication_authorization"
+                                        name="communication_authorization"
+                                        checked={formData.communication_authorization}
                                         onChange={handleCheckboxChange}
                                         className="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary"
                                         required
                                     />
-                                    <label htmlFor="autorisationCommunication" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="communication_authorization" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                         J'autorise le FONIJ à communiquer sur mon projet via ses différents canaux
                                     </label>
                                 </div>
