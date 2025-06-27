@@ -34,7 +34,7 @@ export default function AppLayout({
   children, 
   seo = {
     title: "Grand Prix FONIJ - Fonds National d'Insertion des Jeunes",
-    description: "Le Grand Prix FONIJ est une initiative du FONIJ pour favoriser l'insertion socioéconomique et professionnelle des jeunes guinéens âgés de 15 à 35 ans.",
+    description: "Le Grand Prix FONIJ est une initiative du FONIJ pour favoriser l'insertion socioéconomique et professionnelle des jeunes guinéens âgés de 18 à 35 ans.",
     keywords: "FONIJ, Grand Prix FONIJ, entrepreneuriat jeunes, Guinée, financement projets, insertion professionnelle, jeunes guinéens",
     ogImage: "/images/grand-prix-fonij.jpg",
     canonicalUrl: "https://fonij.cguitech.com",

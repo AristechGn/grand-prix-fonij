@@ -154,6 +154,10 @@ export const FONIJ = {
     ],
     partners: [
         {
+            name: "Président de la République",
+            image: "/images/partners/presidence.png",
+        },
+        {
             name: "Ministère de la Jeunesse et des Sports",
             image: "/images/partners/mjs.jpg",
         },

@@ -160,14 +160,14 @@ class StoreApplicationRequest extends FormRequest
                 }
             }
             
-            // Vérifier l'âge (entre 15 et 35 ans)
+            // Vérifier l'âge (entre 18 et 35 ans)
             if ($this->has('birth_date')) {
                 $birthDate = new \DateTime($this->input('birth_date'));
                 $today = new \DateTime();
                 $age = $birthDate->diff($today)->y;
                 
-                if ($age < 15 || $age > 35) {
-                    $validator->errors()->add('birth_date', 'Vous devez avoir entre 15 et 35 ans pour participer.');
+                if ($age < 18 || $age > 35) {
+                    $validator->errors()->add('birth_date', 'Vous devez avoir entre 18 et 35 ans pour participer.');
                 }
             }
         });

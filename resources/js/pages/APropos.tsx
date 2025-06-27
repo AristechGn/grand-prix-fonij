@@ -331,19 +331,19 @@ export default function APropos({ edition }: AProposProps) {
                                     icon: Award, 
                                     title: "Excellence", 
                                     description: "Reconnaissance des projets les plus innovants et à fort impact pour le développement de la Guinée.",
-                                    color: "from-primary to-primary-dark"
+                                    color: "from-red-500 to-red-700" 
                                 },
                                 { 
                                     icon: Target, 
                                     title: "Impact", 
                                     description: "Soutien aux initiatives répondant aux enjeux prioritaires du développement national.",
-                                    color: "from-red-500 to-red-700" 
+                                    color: "from-secondary to-yellow-600" 
                                 },
                                 { 
                                     icon: Users, 
                                     title: "Inclusion", 
                                     description: "Valorisation de la diversité des talents à travers tout le territoire guinéen.",
-                                    color: "from-secondary to-yellow-600" 
+                                    color: "from-primary to-primary-dark"
                                 }
                             ].map((item, index) => (
                                 <motion.div

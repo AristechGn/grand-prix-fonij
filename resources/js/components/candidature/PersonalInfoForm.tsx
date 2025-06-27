@@ -267,7 +267,7 @@ export default function PersonalInfoForm({
             label="Date de naissance" 
             required 
             icon={<Calendar className="w-5 h-5" />}
-            description="Vous devez avoir entre 15 et 35 ans"
+            description="Vous devez avoir entre 18 et 35 ans"
             delay={0.3}
           >
             <ModernInput
@@ -276,7 +276,7 @@ export default function PersonalInfoForm({
               value={formData.dateNaissance}
               onChange={handleChange}
               required
-              max={new Date(new Date().getFullYear() - 15, new Date().getMonth(), new Date().getDate()).toISOString().split('T')[0]}
+              max={new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate()).toISOString().split('T')[0]}
               min={new Date(new Date().getFullYear() - 35, new Date().getMonth(), new Date().getDate()).toISOString().split('T')[0]}
             />
             {errors['birth_date'] && <InputError message={errors['birth_date'][0]} />}

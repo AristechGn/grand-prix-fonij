@@ -38,11 +38,78 @@ export default function Home({ edition }: HomeProps) {
     });
     
     const membresJuries = [
-        { nom_complet: "?", photo: "/images/avatar1.jpg", post:"ADMINSTRATEUR - INCUBA", countrie:"GUINEE", description: "Accueil et enregistrement des participants" },
-        { nom_complet: "?", photo: "/images/avatar2.jpg", post:"RESPONSABLE IT - CGUITECH", countrie:"GUINEE", description: "Accueil des participants et installation des stands" },
-        { nom_complet: "?", photo: "/images/avatar2.jpg", post:"COMPTABLE - GUINEE ACCOMPTE", countrie:"GUINEE", description: "Message de bienvenue et introduction du jury" },
-        { nom_complet: "?", photo: "/images/avatar1.jpg", post:"DIRECTEUR GENERAl - FONIJ", countrie:"GUINEE", description: "Invitation de nos partenaires pour présenter leurs activités" },
-        // { nom_complet: "Membre du juri 5", photo: "https://fonijguinee.org/wp-content/uploads/2023/05/DSC06167-500x500.jpg", post:"", countrie:"", description: "Discussion sur l'écosystème entrepreneurial en Guinée" },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar1.jpg", 
+            post:"ADMINSTRATEUR - INCUBA", 
+            countrie:"GUINEE", 
+            description: "Accueil et enregistrement des participants",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar2.jpg", 
+            post:"RESPONSABLE IT - CGUITECH", 
+            countrie:"GUINEE", 
+            description: "Accueil des participants et installation des stands",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar1.jpg", 
+            post:"COMPTABLE - GUINEE ACCOMPTE", 
+            countrie:"GUINEE", 
+            description: "Message de bienvenue et introduction du jury",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar2.jpg", 
+            post:"DIRECTEUR GENERAl - FONIJ", 
+            countrie:"GUINEE", 
+            description: "Invitation de nos partenaires pour présenter leurs activités",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar1.jpg", 
+            post:"DIRECTEUR GENERAl - FONIJ", 
+            countrie:"GUINEE", 
+            description: "Invitation de nos partenaires pour présenter leurs activités",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar2.jpg", 
+            post:"DIRECTEUR GENERAl - FONIJ", 
+            countrie:"GUINEE", 
+            description: "Invitation de nos partenaires pour présenter leurs activités",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar1.jpg", 
+            post:"DIRECTEUR GENERAl - FONIJ", 
+            countrie:"GUINEE", 
+            description: "Invitation de nos partenaires pour présenter leurs activités",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar2.jpg", 
+            post:"DIRECTEUR GENERAl - FONIJ", 
+            countrie:"GUINEE", 
+            description: "Invitation de nos partenaires pour présenter leurs activités",
+            isPresident: false,
+        },
+        { 
+            nom_complet: "?", 
+            photo: "/images/avatar1.jpg", 
+            post:"DIRECTEUR GENERAl - FONIJ", 
+            countrie:"GUINEE", 
+            description: "Invitation de nos partenaires pour présenter leurs activités",
+            isPresident: true,
+        },
     ];
 
     // Calculer le temps restant jusqu'à la fin des inscriptions
@@ -251,7 +318,7 @@ export default function Home({ edition }: HomeProps) {
                 <motion.div 
                     className="w-full h-[85vh] sm:h-[90vh] md:min-h-screen max-h-screen overflow-hidden bg-gradient-to-l from-primary-400 to-primary-800"
                     variants={heroImage}
-                >
+                 >
                    <motion.img 
                         src="/images/fonij/cover_4.png"
                         alt="Grand Prix FONIJ"
@@ -274,7 +341,7 @@ export default function Home({ edition }: HomeProps) {
                 <motion.div 
                     className="absolute inset-0 z-20 flex flex-col justify-center items-center text-white px-4 md:px-12"
                     variants={staggerContainer}
-                >
+                 >
                     <div className="max-w-4xl text-center">
                         <motion.h1 
                             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-2 sm:mb-4 md:mb-6 text-shadow-lg drop-shadow-2xl"
@@ -852,46 +919,204 @@ export default function Home({ edition }: HomeProps) {
                             Le jury sera composé de personnalités reconnues pour leur expertise, leur rigueur et leur engagement envers la jeunesse.
                         </p>
                     </motion.div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-                        {membresJuries.map((item, index) => (
+                    {/* Section Président du Jury - Design Premium */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={fadeInUp}
+                        className="mb-12 sm:mb-20"
+                    >
+                        <div className="text-center mb-8 sm:mb-12">
+                            <div className="inline-flex items-center bg-gradient-to-r from-yellow-400/20 to-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                                <Trophy className="h-4 w-4 mr-2" />
+                                PRÉSIDENT DU JURY
+                            </div>
+                        </div>
+
+                        {membresJuries.filter(item => item.isPresident).map((item, index) => (
                             <motion.div
                                 key={index}
-                                className="bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
-                                whileHover={{ y: -10 }}
+                                className="max-w-4xl mx-auto"
+                                whileHover={{ scale: 1.02 }}
                                 initial="hidden"
                                 whileInView="visible"
                                 viewport={{ once: true }}
                                 variants={{
-                                    hidden: { opacity: 0, y: 20 },
+                                    hidden: { opacity: 0, y: 30 },
                                     visible: {
                                         opacity: 1,
                                         y: 0,
-                                        transition: { duration: 0.6, delay: index * 0.1 }
+                                        transition: { duration: 0.8, delay: 0.2 }
                                     }
                                 }}
                             >
-                                <div className="relative h-64 sm:h-80 w-full overflow-hidden">
-                                    <img
-                                        src={item.photo}
-                                        alt={`Membre du jury ${item.nom_complet}`}
-                                        className="w-full h-full object-contain object-center transition-transform duration-500 transform hover:scale-110"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                                        <div className="p-4 sm:p-6 text-white flex flex-col items-center justify-center w-full">
-                                            <h3 className="font-bold text-2xl sm:text-xl mb-1 text-center">{item.nom_complet}</h3>
-                                            {/* <p className="text-secondary font-medium text-xs sm:text-sm">{item.post}</p> */}
+                                <div className="bg-gradient-to-br from-white via-white to-primary/5 rounded-3xl shadow-2xl overflow-hidden border border-primary/10 relative">
+                                    {/* Badge Président */}
+                                    <div className="absolute top-4 right-4 z-10">
+                                        <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                                            PRÉSIDENT
+                                        </div>
+                                    </div>
+
+                                    {/* Contenu Principal */}
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                                        {/* Image */}
+                                        <div className="relative h-80 sm:h-96 lg:h-full overflow-hidden">
+                                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent z-10"></div>
+                                            <img
+                                                src={item.photo}
+                                                alt={`Président du jury ${item.nom_complet}`}
+                                                className="w-full h-full object-cover transition-transform duration-700 transform hover:scale-110"
+                                            />
+                                            {/* Overlay décoratif */}
+                                            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                                        </div>
+
+                                        {/* Informations */}
+                                        <div className="p-8 sm:p-12 flex flex-col justify-center">
+                                            <motion.div
+                                                initial={{ opacity: 0, x: 20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 0.4, duration: 0.6 }}
+                                            >
+                                                <div className="mb-6">
+                                                    <h3 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
+                                                        {item.nom_complet}
+                                                    </h3>
+                                                    <p className="text-primary font-semibold text-lg mb-1">{item.post}</p>
+                                                    <div className="flex items-center text-muted-foreground">
+                                                        <MapPin className="h-4 w-4 mr-2" />
+                                                        <span>{item.countrie}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="w-16 h-1 bg-gradient-to-r from-primary to-yellow-400 mb-6"></div>
+
+                                                <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                                                    {item.description}
+                                                </p>
+
+                                                {/* Stats ou badges */}
+                                                <div className="flex flex-wrap gap-3">
+                                                    <div className="flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
+                                                        <User className="h-4 w-4 mr-2" />
+                                                        Expert Senior
+                                                    </div>
+                                                    <div className="flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+                                                        <Award className="h-4 w-4 mr-2" />
+                                                        Leadership
+                                                    </div>
+                                                </div>
+                                            </motion.div>
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className="p-4 sm:p-6">
-                                    <p className="text-sm sm:text-base text-muted-foreground mb-4">{item.description}</p>
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-primary-light text-xs sm:text-sm">{item.countrie}</p>
-                                    </div>
-                                </div> */}
                             </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
+
+                    {/* Section Membres du Jury - Grid Moderne */}
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={staggerContainer}
+                        className="space-y-8"
+                    >
+                        <div className="text-center mb-8 sm:mb-12">
+                            <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                                Membres du Jury
+                            </h3>
+                            <div className="w-16 h-1 bg-primary mx-auto"></div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                            {membresJuries.filter(item => !item.isPresident).map((item, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="group relative bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500"
+                                    whileHover={{ 
+                                        y: -15,
+                                        transition: { type: "spring", stiffness: 300, damping: 20 }
+                                    }}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true }}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 30 },
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: { duration: 0.6, delay: index * 0.1 }
+                                        }
+                                    }}
+                                >
+                                    {/* Image Container */}
+                                    <div className="relative h-64 sm:h-72 overflow-hidden">
+                                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <img
+                                            src={item.photo}
+                                            alt={`Membre du jury ${item.nom_complet}`}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        
+                                        {/* Badge Membre */}
+                                        <div className="absolute top-3 right-3 z-20">
+                                            <div className="bg-white/90 backdrop-blur-sm text-primary px-2 py-1 rounded-full text-xs font-medium">
+                                                Jury
+                                            </div>
+                                        </div>
+
+                                        {/* Overlay Info */}
+                                        <div className="absolute bottom-0 left-0 right-0 p-4 z-20 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                            <p className="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                                {item.description}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="p-5">
+                                        <h4 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
+                                            {item.nom_complet}
+                                        </h4>
+                                        <p className="text-primary font-medium text-sm mb-2">{item.post}</p>
+                                        <div className="flex items-center text-muted-foreground text-xs">
+                                            <MapPin className="h-3 w-3 mr-1" />
+                                            <span>{item.countrie}</span>
+                                        </div>
+
+                                        {/* Progress Bar Animation */}
+                                        <div className="mt-4 h-1 bg-gray-100 rounded overflow-hidden">
+                                            <motion.div 
+                                                className="h-full bg-gradient-to-r from-primary to-primary-dark rounded"
+                                                initial={{ width: 0 }}
+                                                whileInView={{ width: "100%" }}
+                                                transition={{ duration: 1.5, delay: index * 0.2 }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Hover Effect Border */}
+                                    <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary/20 rounded-2xl transition-colors duration-300"></div>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Message complémentaire */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.8, duration: 0.6 }}
+                            className="text-center mt-12 p-6 bg-gradient-to-r from-primary/5 to-transparent rounded-xl border border-primary/10"
+                        >
+                            <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                                Notre jury d'exception rassemble des experts reconnus dans leurs domaines respectifs, 
+                                garantissant une évaluation rigoureuse et équitable de tous les projets entrepreneuriaux.
+                            </p>
+                        </motion.div>
+                    </motion.div>
                 </div>
             </div>
 
@@ -1008,7 +1233,7 @@ export default function Home({ edition }: HomeProps) {
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
-                            Prêt à participer au Grand Prix FONIJ ?
+                            Souhaitez-vous participer au Grand Prix FONIJ ?
                         </h2>
                         <p className="text-base sm:text-lg text-gray-100 max-w-2xl mx-auto mb-6 sm:mb-10 px-2">
                             Rejoignez la communauté des entrepreneurs innovants et contribuez au développement de la Guinée.
