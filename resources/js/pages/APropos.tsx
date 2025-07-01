@@ -463,7 +463,7 @@ export default function APropos({ edition }: AProposProps) {
                                 />
                                 
                                 <img
-                                    src="/images/fonij/dg-fonij.jpg"
+                                    src="/images/fonij/dg-fonij-2.jpg"
                                     alt="Abdourahmane Baldé - Directeur Général du FONIJ"
                                     className="rounded-xl shadow-xl w-full h-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
                                 />
@@ -636,7 +636,7 @@ export default function APropos({ edition }: AProposProps) {
                                     ></motion.div>
                                     
                                     <img
-                                        src="/images/fonij/Minstre-HABA-transparent.png"
+                                        src="/images/fonij/Minstre-HABA-transparent.jpg"
                                         alt="Ministre Haba"
                                         className="rounded-xl bg-white shadow-lg w-full h-auto object-cover aspect-square"
                                     />

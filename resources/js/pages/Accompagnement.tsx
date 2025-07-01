@@ -1,3 +1,4 @@
+import React from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
@@ -166,9 +167,9 @@ export default function Accompagnement() {
     return (
         <MainLayout>
             {/* Hero Section avec effet de parallaxe et animation de particules */}
-            <div ref={heroRef} className="relative bg-gradient-to-br from-primary-900 via-primary-600 to-indigo-800 min-h-[85vh] overflow-hidden">
+            <div ref={heroRef} className="relative bg-gradient-to-tr from-primary-900/80 via-black/80 to-black/20 min-h-[85vh] overflow-hidden">
                 {/* Overlay de motifs */}
-                <div className="absolute inset-0 bg-[url('https://img.freepik.com/free-vector/perspective-grid-pattern_1409-1826.jpg')] bg-cover bg-no-repeat opacity-15 mix-blend-overlay"></div>
+                <div className="absolute inset-0 bg-[url('/images/accompagnement/cover.jpg')] bg-cover bg-no-repeat opacity-85 mix-blend-overlay"></div>
                 
                 {/* Éléments décoratifs et particules */}
                 <div className="absolute inset-0 overflow-hidden">
@@ -687,82 +688,124 @@ export default function Accompagnement() {
                     </motion.div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-                        {FONIJ.programmes.map((programme, index) => (
-                            <motion.div
-                                key={programme.slug}
-                                className="relative group"
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, margin: "-50px" }}
-                                variants={{
-                                    hidden: { opacity: 0, y: 30 },
-                                    visible: {
-                                        opacity: 1,
-                                        y: 0,
-                                        transition: { duration: 0.7, delay: index * 0.2 }
-                                    }
-                                }}
-                            >
-                                {/* Effet d'arrière plan avec rotation */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 rounded-2xl -z-10 transform rotate-2 scale-[1.03] transition-all duration-300 opacity-50 group-hover:rotate-3 group-hover:scale-[1.05]"></div>
-                                
-                                <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-500 border border-gray-100 h-full flex flex-col transform group-hover:-translate-y-2">
-                                    {/* Image d'en-tête */}
-                                    <div className="relative h-48 overflow-hidden">
+                    {FONIJ.programmes.map((programme, index) => (
+                        <motion.div
+                            key={programme.slug}
+                            className="relative group"
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-50px" }}
+                            variants={{
+                                hidden: { opacity: 0, y: 30 },
+                                visible: {
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: { duration: 0.7, delay: index * 0.2 }
+                                }
+                            }}
+                        >
+                            {/* Effet d'arrière plan avec rotation */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/10 to-blue-500/5 rounded-2xl -z-10 transform rotate-2 scale-[1.03] transition-all duration-300 opacity-50 group-hover:rotate-3 group-hover:scale-[1.05]"></div>
+                            
+                            <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-500 border border-gray-100 h-full flex flex-col transform group-hover:-translate-y-2">
+                                {/* Image d'en-tête améliorée */}
+                                <div className="relative h-48 overflow-hidden">
+                                    {/* Image avec gestion d'erreur et loading */}
+                                    <div className="relative w-full h-full">
                                         <img 
                                             src={programme.image} 
-                                            alt={programme.title} 
-                                            className="w-full h-full object-fill transition-transform duration-700 group-hover:scale-110"
+                                            alt={programme.title}
+                                            className="w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-110"
+                                            loading="lazy"
+                                            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                                                e.currentTarget.src = 'https://via.placeholder.co/600x400/4F46E5/FFFFFF?text=' + encodeURIComponent(programme.title);
+                                            }}
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
-                                            <div className="p-6">
-                                                <h3 className="text-2xl font-bold text-white">
+                                        
+                                        {/* Overlay graduel amélioré */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        
+                                        {/* Badge de statut */}
+                                        <div className="absolute top-4 right-4">
+                                            <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">
+                                                Disponible
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Contenu superposé */}
+                                        <div className="absolute inset-0 flex items-end">
+                                            <div className="p-6 w-full">
+                                                <h3 className="text-2xl font-bold text-white mb-3 drop-shadow-lg">
                                                     {programme.title}
                                                 </h3>
-                                                <div className="flex items-center space-x-2 mt-2">
-                                                    <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white flex items-center">
+                                                <div className="flex items-center space-x-2">
+                                                    <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs text-white flex items-center border border-white/20">
                                                         <Clock className="w-3 h-3 mr-1" />
                                                         {programme.duration}
                                                     </div>
-                                                    <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-white">
+                                                    <div className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs text-white border border-white/20">
+                                                        <Users className="w-3 h-3 mr-1" />
                                                         12 places
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                    <div className="p-6 pt-5 flex-1 flex flex-col">
-                                        <div className="absolute -mt-12 ml-3">
-                                            <div className={`p-3 rounded-xl shadow-md inline-flex items-center justify-center bg-gradient-to-br ${programme.color} text-white`}>
-                                                <programme.icon className="w-6 h-6" />
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="mb-4 pt-4">
-                                            <p className="text-gray-600 text-sm line-clamp-3 mb-4">{programme.description.split('.')[0]}.</p>
-                                        </div>
-                                        
-                                        <div className="space-y-3 mb-6 flex-1">
-                                            {programme.features.slice(0, 3).map((feature, i) => (
-                                                <div key={i} className="flex items-start">
-                                                    <div className="flex-shrink-0 pt-1">
-                                                        <motion.div 
-                                                            className="w-5 h-5 rounded-full border border-primary/30 flex items-center justify-center"
-                                                            whileHover={{ scale: 1.2, backgroundColor: "rgba(var(--primary), 0.1)" }}
-                                                        >
-                                                            <CheckCircle className="w-3 h-3 text-primary" />
-                                                        </motion.div>
-                                                    </div>
-                                                    <span className="text-gray-700 text-sm ml-2">{feature}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
                                 </div>
-                            </motion.div>
-                        ))}
-                    </div>
+                                
+                                <div className="p-6 pt-5 flex-1 flex flex-col">
+                                    {/* Icône flottante améliorée */}
+                                    <div className="absolute -mt-12 ml-3">
+                                        <motion.div 
+                                            className={`p-3 rounded-xl shadow-lg inline-flex items-center justify-center bg-gradient-to-br ${programme.color} text-white border-2 border-white`}
+                                            whileHover={{ scale: 1.1, rotate: 5 }}
+                                            transition={{ type: "spring", stiffness: 300 }}
+                                        >
+                                            <programme.icon className="w-6 h-6" />
+                                        </motion.div>
+                                    </div>
+                                    
+                                    <div className="mb-4 pt-6">
+                                        <p className="text-gray-600 text-sm line-clamp-3 mb-4 leading-relaxed">
+                                            {programme.description.split('.')[0]}.
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="space-y-3 mb-6 flex-1">
+                                        {programme.features.slice(0, 3).map((feature, i) => (
+                                            <motion.div 
+                                                key={i} 
+                                                className="flex items-start"
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: i * 0.1 }}
+                                            >
+                                                <div className="flex-shrink-0 pt-1">
+                                                    <motion.div 
+                                                        className="w-5 h-5 rounded-full border-2 border-green-500/30 flex items-center justify-center bg-green-50"
+                                                        whileHover={{ scale: 1.2, borderColor: "rgb(34 197 94)" }}
+                                                    >
+                                                        <CheckCircle className="w-3 h-3 text-green-500" />
+                                                    </motion.div>
+                                                </div>
+                                                <span className="text-gray-700 text-sm ml-3 leading-relaxed">{feature}</span>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                    
+                                    {/* Bouton d'action */}
+                                    <motion.button
+                                        className={`w-full py-3 px-4 rounded-lg text-white font-semibold bg-gradient-to-r ${programme.color} hover:shadow-lg transition-all duration-300`}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                    >
+                                        En savoir plus
+                                    </motion.button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
                 </div>
             </div>
 

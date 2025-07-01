@@ -111,7 +111,7 @@ export const FONIJ = {
             color: "from-green-400 to-emerald-600",
             textColor: "text-emerald-600",
             bgColor: "bg-emerald-50",
-            image: "/images/programmes/homme-afro-americain-moderne-travaillant-dans-cafe.jpg"
+            image: "/images/programmes/SMART-Entrepreneur.jpg"
         },
         {
             id: 2,
@@ -130,7 +130,7 @@ export const FONIJ = {
             color: "from-blue-400 to-indigo-600",
             textColor: "text-blue-600",
             bgColor: "bg-blue-50",
-            image: "/images/programmes/heureux-homme-noir-tenant-carte-voeux.jpg"
+            image: "/images/programmes/Youth-Incuba.jpg"
         },
         {
             id: 3,
@@ -149,7 +149,7 @@ export const FONIJ = {
             color: "from-purple-400 to-violet-600",
             textColor: "text-purple-600",
             bgColor: "bg-purple-50",
-            image: "/images/programmes/portrait-femme-affaires-holding-executif-demarrage-signe.jpg"
+            image: "/images/programmes/Boost-Entrepreneurs.jpg"
         }
     ],
     partners: [
