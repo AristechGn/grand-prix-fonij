@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Award, Target, Users, BookOpen, GraduationCap, ChevronRight, ArrowUpRight, BrainCircuit, Globe, Heart, Lightbulb, Star, ArrowRight, Sparkles, Rocket } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 import { useRef, useEffect } from 'react';
+import { Edition } from '@/types';
 
 // Composant pour les particules flottantes
 const FloatingParticles = () => {
@@ -37,10 +38,15 @@ const FloatingParticles = () => {
     return <div id="particles-container" className="absolute inset-0 z-10 overflow-hidden pointer-events-none"></div>;
 };
 
-export default function APropos() {
+
+interface AProposProps {
+    edition: Edition | null;
+}
+export default function APropos({ edition }: AProposProps) {
     // Refs pour les sections avec parallaxe
     const heroRef = useRef(null);
     const aboutRef = useRef(null);
+    const currentYear = edition ? edition.year : new Date().getFullYear();
     
     // Animation parallaxe pour le hero
     const { scrollYProgress: heroScrollProgress } = useScroll({
@@ -110,9 +116,9 @@ export default function APropos() {
             >
                 {/* Image de fond avec effet de parallaxe */}
                 <motion.div 
-                    className="absolute inset-0 bg-center bg-cover bg-fixed"
+                    className="absolute inset-0 bg-center bg-contain bg-fixed bg-no-repeat"
                     style={{ 
-                        backgroundImage: `url('https://simandou2040.gn/wp-content/uploads/2024/12/1bb49b26-eee7-436d-9806-f6eccfcda1f8-2550x1434-1.jpeg')`,
+                        backgroundImage: `url('/images/covers/guinea-cart.jpg')`,
                         y: heroY,
                     }}
                 />
@@ -191,7 +197,7 @@ export default function APropos() {
                             variants={slideInRight}
                             className="text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-secondary-400 via-secondary-500 to-secondary-600 font-semibold tracking-wide animate-gradient"
                         >
-                            <span className="text-red-500">Innovation</span> • Excellence • <span className="text-primary">Leadership</span>
+                            <span className="text-red-500">Innover</span> • <span className="text-yellow-500">Entreprendre</span> • <span className="text-green-500">Transformer</span>
                         </motion.p>
                     </motion.div>
                     
@@ -241,6 +247,7 @@ export default function APropos() {
                     </svg>
                 </div>
             </motion.div>
+
             {/* Section Qu'est-ce que le Grand Prix FONIJ ? */}
             <div id="about-section" className="py-16 md:py-24 bg-white relative overflow-hidden">
                 {/* Motifs arrière-plan */}
@@ -305,13 +312,13 @@ export default function APropos() {
                                         whileInView={{ width: "100%" }}
                                         transition={{ duration: 1, delay: 0.5 }}
                                     />
-                                </span> est un concours national porté par le Fonds National pour l'Insertion des Jeunes (FONIJ).
+                                </span> est un concours national initié par le Fonds National pour l'Insertion des Jeunes (FONIJ) pour encourager et valoriser l'entrepreneuriat jeune en Guinée.
                             </motion.p>
                             <motion.p variants={fadeIn}>
-                                Il distingue chaque année les meilleurs projets entrepreneuriaux portés par la jeunesse guinéenne, avec pour objectif de stimuler l'innovation, renforcer l'insertion économique et célébrer l'excellence.
+                                Cette première édition a pour ambition de récompenser les projets les plus innovants, ambitieux et porteurs d'impact, portés par des jeunes issus de toutes les régions du pays.
                             </motion.p>
                             <motion.p variants={fadeIn}>
-                                Lancé sous l'impulsion des plus hautes autorités du pays, le Grand Prix est devenu la référence en matière de promotion de l'entrepreneuriat en Guinée, avec un processus rigoureux de sélection et un accompagnement complet des lauréats.
+                            Conçu sous l'impulsion des plus hautes autorités de la République, le Grand Prix FONIJ marque une nouvelle étape dans la promotion de l'excellence, de l'innovation et de l'insertion économique des jeunes guinéens. Il repose sur un processus de sélection rigoureux et un accompagnement structuré des lauréats.
                             </motion.p>
                         </motion.div>
 
@@ -324,19 +331,19 @@ export default function APropos() {
                                     icon: Award, 
                                     title: "Excellence", 
                                     description: "Reconnaissance des projets les plus innovants et à fort impact pour le développement de la Guinée.",
-                                    color: "from-primary to-primary-dark"
+                                    color: "from-red-500 to-red-700" 
                                 },
                                 { 
                                     icon: Target, 
                                     title: "Impact", 
                                     description: "Soutien aux initiatives répondant aux enjeux prioritaires du développement national.",
-                                    color: "from-red-500 to-red-700" 
+                                    color: "from-secondary to-yellow-600" 
                                 },
                                 { 
                                     icon: Users, 
                                     title: "Inclusion", 
                                     description: "Valorisation de la diversité des talents à travers tout le territoire guinéen.",
-                                    color: "from-secondary to-yellow-600" 
+                                    color: "from-primary to-primary-dark"
                                 }
                             ].map((item, index) => (
                                 <motion.div
@@ -416,9 +423,9 @@ export default function APropos() {
                         <motion.div variants={fadeIn} className="text-center mb-12">
                             <motion.span 
                                 variants={popIn}
-                                className="inline-block rounded-full bg-gradient-to-r from-primary to-secondary px-6 py-2 text-sm font-medium text-white mb-6 shadow-md"
+                                className="inline-block uppercase rounded-full bg-gradient-to-r from-primary to-secondary px-6 py-2 text-sm font-medium text-white mb-6 shadow-md"
                             >
-                                SOUTIEN AU PLUS HAUT NIVEAU
+                                Message officiel
                             </motion.span>
                             
                             <motion.h2 
@@ -456,13 +463,25 @@ export default function APropos() {
                                 />
                                 
                                 <img
-                                    src="https://mjs.gov.gn/file/2024/03/Minstre-HABA1.png"
-                                    alt="Président Mamadi Doumbouya"
+                                    src="/images/fonij/dg-fonij-2.jpg"
+                                    alt="Abdourahmane Baldé - Directeur Général du FONIJ"
                                     className="rounded-xl shadow-xl w-full h-auto relative z-10 transition-transform duration-500 group-hover:scale-105"
                                 />
+                                    
+                                {/* Badge de titre */}
+                                <motion.div 
+                                    className="absolute -bottom-5 -right-5 bg-white text-primary text-xs font-bold px-3 py-1.5 rounded-full shadow-lg z-20"
+                                    animate={{ y: [0, -5, 0] }}
+                                    transition={{ 
+                                        duration: 3, 
+                                        repeat: Infinity 
+                                    }}
+                                >
+                                    Directeur Général
+                                </motion.div>
                                 
                                 {/* Badge flottant */}
-                                <motion.div 
+                                {/* <motion.div 
                                     className="absolute -bottom-5 -right-5 bg-white p-2 rounded-xl shadow-lg z-20"
                                     animate={{ y: [0, -10, 0] }}
                                     transition={{ 
@@ -476,7 +495,7 @@ export default function APropos() {
                                         alt="Ministère" 
                                         className="h-12 w-auto" 
                                     />
-                                </motion.div>
+                                </motion.div> */}
                             </motion.div>
                             
                             <motion.div 
@@ -484,50 +503,32 @@ export default function APropos() {
                                 variants={slideInRight}
                             >
                                 <motion.p variants={fadeIn}>
-                                    Ce projet s'aligne sur la vision du Président de la République, le Général de Corps d'Armée Mamadi Doumbouya, qui a placé la jeunesse au cœur de la Refondation nationale.
+                                    C'est avec fierté et engagement que je vous souhaite la bienvenue sur le site officiel du Grand Prix FONIJ {currentYear}.
                                 </motion.p>
                                 <motion.p variants={fadeIn}>
-                                    Sous la tutelle du Ministère de la Jeunesse et des Sports, le FONIJ déploie ce projet structurant pour renforcer l'esprit d'entreprise chez les jeunes et favoriser leur contribution active à la construction d'une Guinée moderne et inclusive.
+                                Cette initiative du <motion.span 
+                                        className="relative mx-2 font-semibold text-primary-800"
+                                        whileHover={{ scale: 1.05 }}
+                                    >
+                                        "Fonds National pour l'Insertion des Jeunes (FONIJ)"
+                                    </motion.span> s'inscrit dans la vision portée par Son Excellence le Général d'Armée Mamadi Doumbouya, Président de la République de Guinée, qui place la jeunesse au cœur du développement et de la transformation de notre pays.
                                 </motion.p>
                                 <motion.p 
                                     variants={fadeIn}
                                     className="relative"
                                 >
-                                    Cette initiative s'inscrit dans la vision globale
-                                    <motion.span 
-                                        className="relative mx-2 font-semibold text-primary"
-                                        whileHover={{ scale: 1.05 }}
-                                    >
-                                        "Simandou 2040"
-                                        <motion.div 
-                                            className="absolute bottom-0 left-0 w-full h-0.5 bg-primary"
-                                            initial={{ width: 0 }}
-                                            whileInView={{ width: "100%" }}
-                                            viewport={{ once: true }}
-                                            transition={{ duration: 0.8, delay: 1 }}
-                                        />
-                                    </motion.span>
-                                    qui place le développement des compétences et l'innovation au cœur de la transformation économique de la Guinée.
+                                    Le Grand Prix FONIJ se veut bien plus qu’un concours. Il est une plateforme nationale d’opportunités, destinée à révéler, accompagner et valoriser les jeunes porteurs de projets à fort potentiel d’impact, dans toutes les régions de la Guinée.
                                 </motion.p>
-                                
+
                                 <motion.div 
-                                    className="flex items-center gap-4 mt-8 flex-wrap"
-                                    variants={fadeIn}
+                                        className="pt-8 flex items-center gap-3 bg-gradient-to-r from-primary to-black rounded-lg p-4"
+                                        variants={fadeIn}
                                 >
-                                    <motion.img
-                                        src="https://mjs.gov.gn/file/2022/09/logo-MJS.png"
-                                        alt="Ministère de la Jeunesse et des Sports"
-                                        className="h-16 w-auto"
-                                        whileHover={{ scale: 1.1, rotate: 5 }}
-                                        transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                                    />
-                                    <motion.img
-                                        src="/images/fonij/logo-transparent.png"
-                                        alt="FONIJ"
-                                        className="h-16 w-auto"
-                                        whileHover={{ scale: 1.1, rotate: -5 }}
-                                        transition={{ type: "spring", stiffness: 300, damping: 10 }}
-                                    />
+                                    <div className="h-10 w-1 bg-white/40 rounded-full"></div> 
+                                    <div>
+                                        <p className="font-bold text-2xl text-white">Abdourahmane Baldé</p>
+                                        <p className="text-white/80 text-sm">Directeur Général du FONIJ</p>
+                                    </div>
                                 </motion.div>
                             </motion.div>
                         </div>
@@ -535,7 +536,7 @@ export default function APropos() {
                 </div>
             </div>
 
-            {/* Section Le mot du Directeur Général du FONIJ */}
+            {/* Section Le mot du Ministre de la Jeunesse et des Sports */}
             <div className="py-16 md:py-24 relative overflow-hidden">
                 {/* Fond avec gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900"></div>
@@ -596,9 +597,9 @@ export default function APropos() {
                             
                             <motion.h2 
                                 variants={fadeIn}
-                                className="text-3xl md:text-4xl font-bold text-white mb-6"
+                                className="text-3xl uppercase md:text-2xl font-bold text-white mb-6"
                             >
-                                Le mot du Directeur Général du FONIJ
+                                Le mot du Ministre de la Jeunesse et des Sports
                             </motion.h2>
                             
                             <motion.div 
@@ -635,9 +636,9 @@ export default function APropos() {
                                     ></motion.div>
                                     
                                     <img
-                                        src="https://fonijguinee.org/wp-content/uploads/2022/10/FONIJ-29-300x208-1.jpg"
-                                        alt="Directeur Général du FONIJ"
-                                        className="rounded-xl shadow-lg w-full h-auto object-cover aspect-square"
+                                        src="/images/fonij/Minstre-HABA-transparent.jpg"
+                                        alt="Ministre Haba"
+                                        className="rounded-xl bg-white shadow-lg w-full h-auto object-cover aspect-square"
                                     />
                                     
                                     {/* Badge de titre */}
@@ -649,7 +650,7 @@ export default function APropos() {
                                             repeat: Infinity 
                                         }}
                                     >
-                                        Directeur Général
+                                        Ministre de la Jeunesse et des Sports
                                     </motion.div>
                                 </motion.div>
                                 
@@ -684,7 +685,7 @@ export default function APropos() {
                                                 repeat: Infinity
                                             }}
                                         >
-                                            "Le Grand Prix FONIJ n'est pas qu'un concours. C'est un levier de transformation, un incubateur de talents et une plateforme d'impact portée par la jeunesse guinéenne."
+                                            "La jeunesse est la force vive de notre nation. C’est pourquoi le Grand Prix FONIJ 2025 s’inscrit pleinement dans cette dynamique. Il constitue un cadre structurant et équitable pour encourager l’innovation, valoriser l’initiative et accompagner les projets portés par les jeunes Guinéens.
                                         </motion.p>
                                         
                                         <motion.div 
@@ -707,12 +708,25 @@ export default function APropos() {
                                     >
                                         <div className="h-10 w-1 bg-white/40 rounded-full"></div>
                                         <div>
-                                            <p className="font-bold text-2xl text-white">Bandjou KOUROUMA</p>
-                                            <p className="text-white/80 text-sm">Directeur Général du FONIJ</p>
+                                            <p className="font-bold text-2xl text-white">Keamou Bogola Haba</p>
+                                            <p className="text-white/80 text-sm">Ministre de la Jeunesse et des Sports</p>
                                         </div>
                                     </motion.div>
                                 </motion.div>
                             </div>
+                                
+                            <motion.div 
+                                className="flex items-center gap-4 mt-8 flex-wrap bg-white/80 rounded-lg p-4"
+                                variants={fadeIn}
+                            >
+                                <motion.img
+                                    src="https://mjs.gov.gn/file/2022/09/logo-MJS.png"
+                                    alt="Ministère de la Jeunesse et des Sports"
+                                    className="h-16 w-auto"
+                                    whileHover={{ scale: 1.1, rotate: 5 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                                />
+                            </motion.div>
                         </motion.div>
                     </motion.div>
                 </div>
@@ -1034,7 +1048,7 @@ export default function APropos() {
                                         className="text-white/80 mb-8 text-lg"
                                         variants={fadeIn}
                                     >
-                                        Participez à l'édition 2025-2026 du Grand Prix et transformez votre idée en une entreprise prospère pour contribuer au développement de la Guinée.
+                                        Participez à l'édition {currentYear} du Grand Prix et transformez votre idée en une entreprise prospère pour contribuer au développement de la Guinée.
                                     </motion.p>
                                     
                                     <motion.div 

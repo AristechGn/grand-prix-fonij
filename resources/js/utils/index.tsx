@@ -111,7 +111,7 @@ export const FONIJ = {
             color: "from-green-400 to-emerald-600",
             textColor: "text-emerald-600",
             bgColor: "bg-emerald-50",
-            image: "/images/programmes/homme-afro-americain-moderne-travaillant-dans-cafe.jpg"
+            image: "/images/programmes/SMART-Entrepreneur.jpg"
         },
         {
             id: 2,
@@ -130,7 +130,7 @@ export const FONIJ = {
             color: "from-blue-400 to-indigo-600",
             textColor: "text-blue-600",
             bgColor: "bg-blue-50",
-            image: "/images/programmes/heureux-homme-noir-tenant-carte-voeux.jpg"
+            image: "/images/programmes/Youth-Incuba.jpg"
         },
         {
             id: 3,
@@ -149,48 +149,52 @@ export const FONIJ = {
             color: "from-purple-400 to-violet-600",
             textColor: "text-purple-600",
             bgColor: "bg-purple-50",
-            image: "/images/programmes/portrait-femme-affaires-holding-executif-demarrage-signe.jpg"
+            image: "/images/programmes/Boost-Entrepreneurs.jpg"
         }
     ],
     partners: [
         {
-            name: "Ministère du Plan et de la Coopération Internationale",
-            image: "/images/partners/ministere-plan.jpg",
+            name: "Président de la République",
+            image: "/images/partners/presidence.png",
         },
         {
-            name: "Ambassade du Japon en Guinée",
-            image: "/images/partners/ambassade-japon.jpg",
+            name: "Ministère de la Jeunesse et des Sports",
+            image: "/images/partners/mjs.jpg",
+        },
+        {
+            name: "Ministère du Plan et de la Coopération Internationale",
+            image: "/images/partners/ministere-plan.jpg",
         },
         {
             name: "Conseil National de la Transition (CNT)",
             image: "/images/partners/cnt.jpeg",
         },
         {
-            name: "Ministère de la Jeunesse et des Sports",
-            image: "/images/partners/mjs.jpg",
+            name: "Ambassade du Japon en Guinée",
+            image: "/images/partners/ambassade-japon.jpg",
         },
     ],
     contactInfo: {
-        phone: "+224 626 754 150",
-        unespace_phone: "+224626754150",
-        phones: ["+224 626 754 150", "+224 622 023 909", "+224 628 862 002"],
+        phone: "+224 612 96 96 96",
+        unespace_phone: "+224612969696",
+        phones: ["+224 612 96 96 96", "+224 622 02 39 09", "+224 628 86 20 02"],
         unespace_phones: [
             {
-                phone: '+224 626 754 150',
-                unespace_phone: '+224626754150'
+                phone: '+224 612 96 96 96',
+                unespace_phone: '+224612969696'
             },
             {
-                phone: '+224 622 023 909',
+                phone: '+224 622 02 39 09',
                 unespace_phone: '+224622023909'
             },
             {
-                phone: '+224 628 862 002',
+                phone: '+224 628 86 20 02',
                 unespace_phone: '+224628862002'
             },
         ],
         address: "102-316 Av. de la République, Conakry, Guinée",
         quartier: "Kaloum",
-        repere: "Kaloum, Ancien ENIPRA, Conakry, Guinée",
+        repere: "Kaloum, en face du Ministère de l'Agriculture et l'élevage",
         repere_map: "https://maps.app.goo.gl/f1WjwZaZrjXzN7ii7",
         hours: {
             weekdays: "08:00 - 17:00",

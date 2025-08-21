@@ -1,8 +1,16 @@
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import { PageProps } from '@/types';
 
 export interface Auth {
     user: User;
+}
+
+export interface PageProps {
+    auth: Auth;
+    errors: Record<string, string>;
+    flash: Record<string, string>;
+    [key: string]: unknown;
 }
 
 export interface BreadcrumbItem {
@@ -21,6 +29,7 @@ export interface NavItem {
     active?: string
     icon?: LucideIcon | null;
     isActive?: boolean;
+    children?: NavItem[];
 }
 
 export interface SharedData {
@@ -57,6 +66,7 @@ export interface EditionFormData {
     year: number;
     start_date: string;
     end_date: string;
+    registration_start_date: string;
     registration_deadline: string;
     max_participants: number;
     description: string;
@@ -94,6 +104,7 @@ export interface Edition {
     year: number;
     start_date: string;
     end_date: string;
+    registration_start_date: string;
     registration_deadline: string;
     max_participants: number;
     description: string;

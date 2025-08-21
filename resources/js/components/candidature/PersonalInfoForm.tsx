@@ -3,6 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import InputError from '@/components/input-error';
 
 interface PersonalInfoFormProps {
   formData: {
@@ -18,10 +20,11 @@ interface PersonalInfoFormProps {
     niveauEtudes: string;
     profession: string;
   };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleSelectChange: (name: string, value: string) => void;
   regions: string[];
   niveauxEtudes: string[];
+  errors: Record<string, string[]>;
 }
 
 interface FormFieldProps {
@@ -209,7 +212,8 @@ export default function PersonalInfoForm({
   handleChange, 
   handleSelectChange,
   regions,
-  niveauxEtudes
+  niveauxEtudes,
+  errors
 }: PersonalInfoFormProps) {
   const completedFields = Object.values(formData).filter(value => 
     value !== '' && value !== undefined && value !== null
@@ -240,6 +244,7 @@ export default function PersonalInfoForm({
               placeholder="Votre nom de famille"
               required
             />
+            {errors['last_name'] && <InputError message={errors['last_name'][0]} />}
           </FormField>
 
           <FormField 
@@ -255,13 +260,14 @@ export default function PersonalInfoForm({
               placeholder="Votre prénom"
               required
             />
+            {errors['first_name'] && <InputError message={errors['first_name'][0]} />}
           </FormField>
 
           <FormField 
             label="Date de naissance" 
             required 
             icon={<Calendar className="w-5 h-5" />}
-            description="Vous devez avoir entre 15 et 35 ans"
+            description="Vous devez avoir entre 18 et 35 ans"
             delay={0.3}
           >
             <ModernInput
@@ -270,9 +276,10 @@ export default function PersonalInfoForm({
               value={formData.dateNaissance}
               onChange={handleChange}
               required
-              max={new Date(new Date().getFullYear() - 15, new Date().getMonth(), new Date().getDate()).toISOString().split('T')[0]}
+              max={new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate()).toISOString().split('T')[0]}
               min={new Date(new Date().getFullYear() - 35, new Date().getMonth(), new Date().getDate()).toISOString().split('T')[0]}
             />
+            {errors['birth_date'] && <InputError message={errors['birth_date'][0]} />}
             {formData.age && (
               <motion.p 
                 className="mt-2 text-sm text-primary font-medium bg-primary-50/50 dark:bg-primary-900/20 py-1 px-3 rounded-lg inline-block"
@@ -302,6 +309,7 @@ export default function PersonalInfoForm({
                 { value: "autre", label: "Autre" }
               ]}
             />
+            {errors['gender'] && <InputError message={errors['gender'][0]} />}
           </FormField>
 
           <FormField 
@@ -318,6 +326,7 @@ export default function PersonalInfoForm({
               placeholder="votre.email@exemple.com"
               required
             />
+            {errors['email'] && <InputError message={errors['email'][0]} />}
           </FormField>
 
           <FormField 
@@ -334,6 +343,7 @@ export default function PersonalInfoForm({
               placeholder="+224 XX XX XX XX"
               required
             />
+            {errors['phone'] && <InputError message={errors['phone'][0]} />}
           </FormField>
 
           <FormField 
@@ -350,6 +360,7 @@ export default function PersonalInfoForm({
               required
               options={regions.map(region => ({ value: region, label: region }))}
             />
+            {errors['region'] && <InputError message={errors['region'][0]} />}
           </FormField>
 
           <FormField 
@@ -365,6 +376,7 @@ export default function PersonalInfoForm({
               placeholder="Votre ville de résidence"
               required
             />
+            {errors['city'] && <InputError message={errors['city'][0]} />}
           </FormField>
 
           <FormField 
@@ -381,6 +393,7 @@ export default function PersonalInfoForm({
               required
               options={niveauxEtudes.map(niveau => ({ value: niveau, label: niveau }))}
             />
+            {errors['education_level'] && <InputError message={errors['education_level'][0]} />}
           </FormField>
 
           <FormField 
@@ -395,6 +408,7 @@ export default function PersonalInfoForm({
               onChange={handleChange}
               placeholder="Votre métier ou occupation actuelle"
             />
+            {errors['profession'] && <InputError message={errors['profession'][0]} />}
           </FormField>
         </div>
         

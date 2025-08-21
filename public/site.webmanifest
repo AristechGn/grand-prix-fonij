@@ -1,0 +1,42 @@
+{
+    "name": "Grand Prix FONIJ",
+    "short_name": "Grand Prix FONIJ",
+    "description": "Le Grand Prix FONIJ est une initiative du Fonds National d'Insertion des Jeunes pour favoriser l'insertion socioéconomique et professionnelle des jeunes guinéens",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#008751",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/images/favicon/web-app-manifest-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/web-app-manifest-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/favicon/favicon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "shortcuts": [
+        {
+            "name": "Inscription au Grand Prix",
+            "short_name": "Inscription",
+            "description": "Inscrivez-vous au Grand Prix FONIJ pour bénéficier d'un financement",
+            "url": "/inscription",
+            "icons": [{ "src": "/images/favicon/favicon-96x96.png", "sizes": "96x96" }]
+        }
+    ],
+    "categories": ["government", "youth", "entrepreneurship"],
+    "lang": "fr",
+    "dir": "ltr"
+} 

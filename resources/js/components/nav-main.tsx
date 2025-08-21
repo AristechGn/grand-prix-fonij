@@ -1,6 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 interface NavMainProps {
   items: NavItem[];
@@ -14,6 +16,9 @@ declare function route(): {
 
 export function NavMain({ items, className }: NavMainProps) {
   const { url } = usePage();
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+
+  console.log('NavMain items:', items); // Log pour déboguer
 
   // Fonction simple qui vérifie si l'URL actuelle correspond à l'URL de l'élément
   const isActive = (item: NavItem): boolean => {
@@ -26,34 +31,93 @@ export function NavMain({ items, className }: NavMainProps) {
     if (item.active) {
       try {
         return typeof route === 'function' && route().current(item.active);
-      } catch {
-        // Si route() échoue, on repose sur la comparaison d'URL
+      } catch (error) {
+        console.error('Erreur route().current:', error); // Log pour déboguer
         return false;
       }
+    }
+    
+    // Vérifier si un sous-menu est actif
+    if (item.children) {
+      return item.children.some(child => isActive(child));
     }
     
     return false;
   };
 
-  return (
-    <SidebarMenu className={className}>
-      {items.map((item, index) => {
-        const active = isActive(item);
-        return (
-          <SidebarMenuItem key={index}>
+  const toggleMenu = (title: string) => {
+    console.log('Toggle menu:', title); // Log pour déboguer
+    setOpenMenus(prev => ({
+      ...prev,
+      [title]: !prev[title]
+    }));
+  };
+
+  const renderMenuItem = (item: NavItem) => {
+    console.log('Rendering item:', item); // Log pour déboguer
+    const active = isActive(item);
+    const hasChildren = item.children && item.children.length > 0;
+    const isOpen = openMenus[item.title];
+
+    if (hasChildren) {
+      return (
+        <SidebarMenuItem key={item.title}>
+          <div className="space-y-1">
             <SidebarMenuButton 
-              asChild
-              tooltip={item.title}
-              className={active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : "text-foreground hover:text-primary-900"}
+              onClick={() => toggleMenu(item.title)}
+              className={`w-full flex items-center justify-between p-2 rounded-lg ${
+                active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : 
+                "text-foreground hover:bg-accent hover:text-accent-foreground"
+              }`}
             >
-              <Link href={item.href}>
+              <div className="flex items-center">
                 {item.icon && <item.icon className="mr-2 h-4 w-4" />}
                 <span>{item.title}</span>
-              </Link>
+              </div>
+              <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
             </SidebarMenuButton>
-          </SidebarMenuItem>
-        );
-      })}
+            
+            <div className={`ml-4 space-y-1 ${isOpen ? 'block' : 'hidden'}`}>
+              {item.children?.map((child) => (
+                <Link
+                  key={child.title}
+                  href={child.href}
+                  className={`flex items-center py-1.5 px-2 rounded-lg text-sm ${
+                    isActive(child) 
+                      ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" 
+                      : "text-foreground hover:bg-accent hover:text-accent-foreground"
+                  }`}
+                >
+                  {child.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </SidebarMenuItem>
+      );
+    }
+
+    return (
+      <SidebarMenuItem key={item.title}>
+        <SidebarMenuButton 
+          asChild
+          className={`w-full p-2 ${
+            active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : 
+            "text-foreground hover:bg-accent hover:text-accent-foreground"
+          }`}
+        >
+          <Link href={item.href} className="flex items-center">
+            {item.icon && <item.icon className="mr-2 h-4 w-4" />}
+            <span>{item.title}</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  };
+
+  return (
+    <SidebarMenu className={className}>
+      {items.map(renderMenuItem)}
     </SidebarMenu>
   );
 }

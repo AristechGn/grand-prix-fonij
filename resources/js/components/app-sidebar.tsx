@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, Users, FileText, Award, ChartBar, CheckCircle, AlertCircle, Briefcase, Calendar, Clock } from 'lucide-react';
+import { BookOpen, LayoutGrid, Users, FileText, Award, ChartBar, CheckCircle, AlertCircle, Briefcase, Calendar, Clock, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -24,45 +24,45 @@ import AppLogo from './app-logo';
 const adminNavItems: NavItem[] = [
     {
         title: 'Tableau de bord',
-        href: '/admin/dashboard',
+        href: route('admin.dashboard'),
         icon: LayoutGrid,
+        active: 'admin.dashboard'
     },
     {
-        title: 'Gestion des candidats',
-        href: '/admin/candidats',
-        icon: Users,
-    },
-    {
-        title: 'Projets soumis',
-        href: '/admin/projets',
+        title: 'Candidatures',
+        href: '#',
         icon: FileText,
+        active: 'admin.applications.*',
+        children: [
+            {
+                title: 'Liste des candidatures',
+                href: route('admin.applications.index'),
+                active: 'admin.applications.index'
+            },
+            {
+                title: 'Évaluations',
+                href: route('admin.applications.index', { filter: 'to_rate' }),
+                active: 'admin.applications.index'
+            },
+            {
+                title: 'Statistiques',
+                href: route('admin.applications.index', { view: 'stats' }),
+                active: 'admin.applications.index'
+            }
+        ]
     },
     {
-        title: 'Planification des entretiens',
-        href: '/admin/entretiens',
+        title: 'Éditions',
+        href: route('admin.editions.index'),
         icon: Calendar,
+        active: 'admin.editions.*'
     },
     {
-        title: 'Évaluation des projets',
-        href: '/admin/evaluations',
-        icon: CheckCircle,
-    },
-    {
-        title: 'Programmes d\'accompagnement',
-        href: '/admin/programmes',
-        icon: Award,
-    },
-    {
-        title: 'Gestion des éditions',
-        href: '/admin/editions',
-        active: 'admin.editions.*',
-        icon: Calendar,
-    },
-    {
-        title: 'Déroulement',
-        href: '/deroulement',
-        icon: Clock,
-    },
+        title: 'Utilisateurs',
+        href: route('admin.users.index'),
+        icon: Users,
+        active: 'admin.users.*'
+    }
 ];
 
 // Menu pour le super administrateur

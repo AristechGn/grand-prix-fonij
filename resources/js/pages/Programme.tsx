@@ -211,7 +211,7 @@ export default function Programme() {
         },
         { 
             icon: Trophy, 
-            label: "500M GNF par projet",
+            label: "300M GNF par projet",
             animation: {
                 y: [0, -5, 0],
                 scale: [1, 1.3, 1],
@@ -247,9 +247,9 @@ export default function Programme() {
     return (
         <MainLayout>
             {/* Hero Section moderne et ludique */}
-            <div className="relative overflow-hidden bg-[url('/images/covers/groupe-afro-americains-travaillant-ensemble.jpg')] bg-cover bg-center min-h-[90vh]">
+            <div className="relative overflow-hidden bg-[url('/images/programmes/hero.jpg')] bg-cover bg-center min-h-[90vh]">
                 {/* Overlay d'effets visuels */}
-                <div className="absolute inset-0 bg-black opacity-40"></div>
+                <div className="absolute inset-0 bg-black opacity-60"></div>
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/50 rounded-full mix-blend-multiply filter blur-[10px] opacity-5 animate-blob"></div>
                     <div className="absolute top-60 -left-20 w-72 h-72 bg-primary-light/50 rounded-full mix-blend-multiply filter blur-[80px] opacity-5 animate-blob animation-delay-2000"></div>
@@ -327,7 +327,7 @@ export default function Programme() {
                             variants={fadeInUp}
                             className="text-base sm:text-lg md:text-xl text-white/80 mb-8 sm:mb-10 max-w-2xl mx-auto"
                         >
-                            Découvrez les 7 étapes palpitantes de notre programme d'innovation qui transformera votre idée en entreprise florissante !
+                            Découvrez les 3 étapes palpitantes de notre programme d'innovation qui transformera votre idée en entreprise florissante !
                         </motion.p>
                         
                         <motion.div 
@@ -451,7 +451,7 @@ export default function Programme() {
                         <h2 className="text-4xl font-bold mb-6">L'aventure en 7 étapes</h2>
                         <div className="h-1 w-24 bg-gradient-fonij mx-auto mb-6"></div>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            Suivez votre parcours entrepreneurial à travers ces 7 phases excitantes, 
+                            Suivez votre parcours entrepreneurial à travers ces 3 phases excitantes, 
                             de l'appel à candidatures jusqu'à la victoire finale !
                         </p>
                     </motion.div>

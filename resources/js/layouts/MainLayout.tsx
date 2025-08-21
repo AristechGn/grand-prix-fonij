@@ -75,7 +75,7 @@ export default function MainLayout({
         },
         {
             'name': 'A Propos',
-            'label': 'APropos',
+            'label': 'A Propos',
             'icon': GraduationCap,
             'href': route('about.index'),
             'active': 'about.index',
@@ -142,7 +142,7 @@ export default function MainLayout({
                 }`}
                 aria-label="Navigation principale"
              >
-                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
                     <div className="flex justify-between items-center">
                         {/* Logo Section - taille réduite sur mobile */}
                         <div className="flex items-center">
@@ -160,6 +160,13 @@ export default function MainLayout({
                                             src="/images/guinee.jpg"
                                             alt="Drapeau Guinée" 
                                             className="h-8 sm:h-12 md:h-14 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                        />
+                                    </div>
+                                    <div className="relative ml-2 sm:ml-4 bg-slate-500">
+                                        <img 
+                                            src="/images/LOGO-FONIJ-2.jpg"
+                                            alt="Drapeau Guinée" 
+                                            className="h-10 sm:h-14 md:h-16 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
                                     </div>
                                 </div>
@@ -188,7 +195,7 @@ export default function MainLayout({
                         {/* CTA and Mobile Menu Section */}
                         <div className="flex items-center">
                             {/* Desktop CTA Button */}
-                            <div className="hidden md:block">
+                            <div className="hidden md:block ml-4">
                                 <Link 
                                     href="/candidater" 
                                     className="inline-flex items-center px-4 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm font-medium rounded-full bg-gradient-fonij text-white hover:bg-gradient-fonij-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-md hover:shadow-lg transition-all duration-200"
@@ -282,6 +289,10 @@ export default function MainLayout({
                             <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
                                 <img src="/images/fonij/logo-transparent.png" alt="FONIJ Logo" className="h-14 sm:h-16 md:h-20 w-auto" />
                                 <h3 className="font-bold text-base sm:text-lg text-background">Grand Prix FONIJ</h3>
+                            </div>
+                            <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
+                                <img src="/images/LOGO-FONIJ-2.jpg" alt="FONIJ Logo" className="h-16 w-auto rounded-xl" />
+                                <img src="/images/guinee.jpg" alt="FONIJ Logo" className="h-16 w-auto rounded-xl" />
                             </div>
                             <p className="text-white/90 text-xs sm:text-sm leading-relaxed">
                                 Le Grand Prix FONIJ récompense les initiatives exceptionnelles en faveur de l'entrepreneuriat en Guinée et soutient le développement économique.

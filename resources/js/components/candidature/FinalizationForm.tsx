@@ -1,17 +1,19 @@
 import { Input } from '@/components/ui/input';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Shield, Lock, AlertCircle, Sparkles, Award } from 'lucide-react';
+import { CheckCircle, Shield, Lock, AlertCircle, Sparkles, Award, FileCheck } from 'lucide-react';
 import { useState } from 'react';
+import InputError from '@/components/input-error';
 
 interface FinalizationFormData {
-    certificationExactitude: boolean;
-    participationGratuite: boolean;
-    autorisationCommunication: boolean;
+    certification_accuracy: boolean;
+    free_participation: boolean;
+    communication_authorization: boolean;
 }
 
 interface FinalizationFormProps {
     formData: FinalizationFormData;
     handleCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    errors: Record<string, string[]>;
 }
 
 interface ModernCheckboxProps {
@@ -134,7 +136,7 @@ function ModernCheckbox({ name, checked, onChange, label, icon, required = false
     );
 }
 
-export default function FinalizationForm({ formData, handleCheckboxChange }: FinalizationFormProps) {
+export default function FinalizationForm({ formData, handleCheckboxChange, errors }: FinalizationFormProps) {
     const completedChecks = Object.values(formData).filter(Boolean).length;
     const totalChecks = Object.values(formData).length;
     const progressPercentage = (completedChecks / totalChecks) * 100;
@@ -148,35 +150,95 @@ export default function FinalizationForm({ formData, handleCheckboxChange }: Fin
         >
             <div className="p-6 sm:p-8 lg:p-10">
                 <div className="space-y-6">
-                    <ModernCheckbox
-                        name="certificationExactitude"
-                        checked={formData.certificationExactitude}
-                        onChange={handleCheckboxChange}
-                        label="Je certifie que les informations fournies sont exactes et complètes"
-                        icon={<Shield className="w-5 h-5" />}
-                        required
-                        delay={0.1}
-                    />
-                    
-                    <ModernCheckbox
-                        name="participationGratuite"
-                        checked={formData.participationGratuite}
-                        onChange={handleCheckboxChange}
-                        label="Je comprends que la participation au programme est gratuite"
-                        icon={<Award className="w-5 h-5" />}
-                        required
-                        delay={0.2}
-                    />
-                    
-                    <ModernCheckbox
-                        name="autorisationCommunication"
-                        checked={formData.autorisationCommunication}
-                        onChange={handleCheckboxChange}
-                        label="J'autorise FONIJ à utiliser mes informations pour communiquer sur le programme"
-                        icon={<Lock className="w-5 h-5" />}
-                        required
-                        delay={0.3}
-                    />
+                    <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <div className="flex items-start gap-4">
+                            <div className="bg-green-100 dark:bg-green-900/30 rounded-lg p-3 mt-1">
+                                <FileCheck className="h-6 w-6 text-green-600 dark:text-green-400" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-lg font-semibold mb-2">Certification d'exactitude</h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                    Je certifie l'exactitude des informations fournies dans ce formulaire.
+                                </p>
+                                
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id="certification_accuracy"
+                                        name="certification_accuracy"
+                                        checked={formData.certification_accuracy}
+                                        onChange={handleCheckboxChange}
+                                        className="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary"
+                                        required
+                                    />
+                                    <label htmlFor="certification_accuracy" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                        Je certifie que toutes les informations fournies sont exactes et complètes
+                                    </label>
+                                </div>
+                                {errors['certification_accuracy'] && <InputError message={errors['certification_accuracy'][0]} />}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <div className="flex items-start gap-4">
+                            <div className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3 mt-1">
+                                <CheckCircle className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-lg font-semibold mb-2">Participation gratuite</h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                    Je comprends que ma participation au Grand Prix FONIJ est entièrement gratuite.
+                                </p>
+                                
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id="free_participation"
+                                        name="free_participation"
+                                        checked={formData.free_participation}
+                                        onChange={handleCheckboxChange}
+                                        className="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary"
+                                        required
+                                    />
+                                    <label htmlFor="free_participation" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                        Je comprends que la participation est gratuite et qu'aucun frais ne me sera demandé
+                                    </label>
+                                </div>
+                                {errors['free_participation'] && <InputError message={errors['free_participation'][0]} />}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <div className="flex items-start gap-4">
+                            <div className="bg-purple-100 dark:bg-purple-900/30 rounded-lg p-3 mt-1">
+                                <Shield className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-lg font-semibold mb-2">Autorisation de communication</h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                                    J'autorise le FONIJ à utiliser les informations fournies à des fins de communication.
+                                </p>
+                                
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id="communication_authorization"
+                                        name="communication_authorization"
+                                        checked={formData.communication_authorization}
+                                        onChange={handleCheckboxChange}
+                                        className="h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary"
+                                        required
+                                    />
+                                    <label htmlFor="communication_authorization" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                        J'autorise le FONIJ à communiquer sur mon projet via ses différents canaux
+                                    </label>
+                                </div>
+                                {errors['communication_authorization'] && <InputError message={errors['communication_authorization'][0]} />}
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Message de confirmation */}
                     <motion.div 
