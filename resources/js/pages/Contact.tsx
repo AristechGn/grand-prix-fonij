@@ -51,7 +51,7 @@ export default function contact() {
             >
                 <div
                     className="relative flex min-h-[60vh] w-full items-center justify-center bg-cover bg-fixed bg-top md:min-h-[80vh]"
-                    style={{ backgroundImage: `url('/images/covers/deux-femme-affaires-dans-cafe.jpg')` }}
+                    style={{ backgroundImage: `url('/images/covers/salle-informatique-fonij.jpg')` }}
                 >
                     <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/40"></div>
                     {/* Formes décoratives animées */}

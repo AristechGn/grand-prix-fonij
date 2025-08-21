@@ -158,8 +158,8 @@ export const FONIJ = {
             image: "/images/partners/presidence.png",
         },
         {
-            name: "Ministère de la Jeunesse et des Sports",
-            image: "/images/partners/mjs.jpg",
+            name: "Ministère de la Jeunesse",
+            image: "/images/partners/mj.jpg",
         },
         {
             name: "Ministère du Plan et de la Coopération Internationale",

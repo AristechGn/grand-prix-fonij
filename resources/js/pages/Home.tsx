@@ -1,7 +1,7 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, User, Users, Mail } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, Users, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { FONIJ } from '../utils';
 
@@ -60,38 +60,6 @@ export default function Home({ edition }: HomeProps) {
             post:"COMPTABLE - GUINEE ACCOMPTE", 
             countrie:"GUINEE", 
             description: "Message de bienvenue et introduction du jury",
-            isPresident: false,
-        },
-        { 
-            nom_complet: "?", 
-            photo: "/images/avatar2.jpg", 
-            post:"DIRECTEUR GENERAl - FONIJ", 
-            countrie:"GUINEE", 
-            description: "Invitation de nos partenaires pour présenter leurs activités",
-            isPresident: false,
-        },
-        { 
-            nom_complet: "?", 
-            photo: "/images/avatar1.jpg", 
-            post:"DIRECTEUR GENERAl - FONIJ", 
-            countrie:"GUINEE", 
-            description: "Invitation de nos partenaires pour présenter leurs activités",
-            isPresident: false,
-        },
-        { 
-            nom_complet: "?", 
-            photo: "/images/avatar2.jpg", 
-            post:"DIRECTEUR GENERAl - FONIJ", 
-            countrie:"GUINEE", 
-            description: "Invitation de nos partenaires pour présenter leurs activités",
-            isPresident: false,
-        },
-        { 
-            nom_complet: "?", 
-            photo: "/images/avatar1.jpg", 
-            post:"DIRECTEUR GENERAl - FONIJ", 
-            countrie:"GUINEE", 
-            description: "Invitation de nos partenaires pour présenter leurs activités",
             isPresident: false,
         },
         { 
@@ -826,7 +794,7 @@ export default function Home({ edition }: HomeProps) {
                                 }}
                             >
                                 {/* Accent coloré au hasard en haut */}
-                                <div className={`h-3 w-full bg-gradient-to-br from-primary-200 to-black/50 transition-all duration-300 ease-in-out'
+                                <div className={`h-3 w-full bg-gradient-to-br from-primary-400 to-primary-900 transition-all duration-300 ease-in-out'
                                 }`}></div>
                                 
                                 <div className="p-4 flex flex-col items-center justify-center">
@@ -984,7 +952,7 @@ export default function Home({ edition }: HomeProps) {
                                                     <h3 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">
                                                         {item.nom_complet}
                                                     </h3>
-                                                    <p className="text-primary font-semibold text-lg mb-1">{item.post}</p>
+                                                    {/* <p className="text-primary font-semibold text-lg mb-1">{item.post}</p> */}
                                                     <div className="flex items-center text-muted-foreground">
                                                         <MapPin className="h-4 w-4 mr-2" />
                                                         <span>{item.countrie}</span>
@@ -996,18 +964,6 @@ export default function Home({ edition }: HomeProps) {
                                                 <p className="text-muted-foreground text-lg leading-relaxed mb-8">
                                                     {item.description}
                                                 </p>
-
-                                                {/* Stats ou badges */}
-                                                <div className="flex flex-wrap gap-3">
-                                                    <div className="flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                                                        <User className="h-4 w-4 mr-2" />
-                                                        Expert Senior
-                                                    </div>
-                                                    <div className="flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
-                                                        <Award className="h-4 w-4 mr-2" />
-                                                        Leadership
-                                                    </div>
-                                                </div>
                                             </motion.div>
                                         </div>
                                     </div>
@@ -1081,10 +1037,10 @@ export default function Home({ edition }: HomeProps) {
                                         <h4 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
                                             {item.nom_complet}
                                         </h4>
-                                        <p className="text-primary font-medium text-sm mb-2">{item.post}</p>
+                                        {/* <p className="text-primary font-medium text-sm mb-2">{item.post}</p> */}
                                         <div className="flex items-center text-muted-foreground text-xs">
                                             <MapPin className="h-3 w-3 mr-1" />
-                                            <span>{item.countrie}</span>
+                                            {/* <span>{item.countrie}</span> */}
                                         </div>
 
                                         {/* Progress Bar Animation */}

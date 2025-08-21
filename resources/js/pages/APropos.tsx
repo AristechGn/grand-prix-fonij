@@ -491,7 +491,7 @@ export default function APropos({ edition }: AProposProps) {
                                     }}
                                 >
                                     <img 
-                                        src="https://mjs.gov.gn/file/2022/09/logo-MJS.png" 
+                                        src="/images/fonij/logo-MJ.png" 
                                         alt="Ministère" 
                                         className="h-12 w-auto" 
                                     />
@@ -536,7 +536,7 @@ export default function APropos({ edition }: AProposProps) {
                 </div>
             </div>
 
-            {/* Section Le mot du Ministre de la Jeunesse et des Sports */}
+            {/* Section Le mot du Ministre de la Jeunesse */}
             <div className="py-16 md:py-24 relative overflow-hidden">
                 {/* Fond avec gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary-900 via-primary-800 to-indigo-900"></div>
@@ -599,7 +599,7 @@ export default function APropos({ edition }: AProposProps) {
                                 variants={fadeIn}
                                 className="text-3xl uppercase md:text-2xl font-bold text-white mb-6"
                             >
-                                Le mot du Ministre de la Jeunesse et des Sports
+                                Le mot du Ministre de la Jeunesse
                             </motion.h2>
                             
                             <motion.div 
@@ -636,8 +636,8 @@ export default function APropos({ edition }: AProposProps) {
                                     ></motion.div>
                                     
                                     <img
-                                        src="/images/fonij/Minstre-HABA-transparent.jpg"
-                                        alt="Ministre Haba"
+                                        src="/images/fonij/minstre-de-la-jeunesse-Mamadou-Cellou-Balde.jpg"
+                                        alt="Ministre de la Jeunesse"
                                         className="rounded-xl bg-white shadow-lg w-full h-auto object-cover aspect-square"
                                     />
                                     
@@ -650,7 +650,7 @@ export default function APropos({ edition }: AProposProps) {
                                             repeat: Infinity 
                                         }}
                                     >
-                                        Ministre de la Jeunesse et des Sports
+                                        Ministre de la Jeunesse
                                     </motion.div>
                                 </motion.div>
                                 
@@ -708,8 +708,8 @@ export default function APropos({ edition }: AProposProps) {
                                     >
                                         <div className="h-10 w-1 bg-white/40 rounded-full"></div>
                                         <div>
-                                            <p className="font-bold text-2xl text-white">Keamou Bogola Haba</p>
-                                            <p className="text-white/80 text-sm">Ministre de la Jeunesse et des Sports</p>
+                                            <p className="font-bold text-2xl text-white">Mamadou Cellou Baldé</p>
+                                            <p className="text-white/80 text-sm">Ministre de la Jeunesse</p>
                                         </div>
                                     </motion.div>
                                 </motion.div>
@@ -720,8 +720,8 @@ export default function APropos({ edition }: AProposProps) {
                                 variants={fadeIn}
                             >
                                 <motion.img
-                                    src="https://mjs.gov.gn/file/2022/09/logo-MJS.png"
-                                    alt="Ministère de la Jeunesse et des Sports"
+                                    src="/images/fonij/logo-MJ.png"
+                                    alt="Ministère de la Jeunesse"
                                     className="h-16 w-auto"
                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                     transition={{ type: "spring", stiffness: 300, damping: 10 }}
