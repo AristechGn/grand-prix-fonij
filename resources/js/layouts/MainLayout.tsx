@@ -143,7 +143,7 @@ export default function MainLayout({
                 aria-label="Navigation principale"
              >
                 <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center md:gap-3">
                         {/* Logo Section - taille réduite sur mobile */}
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group">
