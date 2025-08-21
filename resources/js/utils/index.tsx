@@ -192,7 +192,7 @@ export const FONIJ = {
                 unespace_phone: '+224628862002'
             },
         ],
-        address: "102-316 Av. de la République, Conakry, Guinée",
+        address: "102-316 Av. de la République, Conakry, Palais du Peuple",
         quartier: "Kaloum",
         repere: "Kaloum, en face du Ministère de l'Agriculture et l'élevage",
         repere_map: "https://maps.app.goo.gl/f1WjwZaZrjXzN7ii7",

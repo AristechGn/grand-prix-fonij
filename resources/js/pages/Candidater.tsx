@@ -1,5 +1,5 @@
 import MainLayout from '@/layouts/MainLayout';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
@@ -80,6 +80,24 @@ export default function Candidater({ edition }: CandidaterProps) {
                     <div className="text-center">
                         <h1 className="text-2xl font-bold text-red-600 mb-4">Édition non disponible</h1>
                         <p className="text-gray-600">Aucune édition active n'est disponible pour les candidatures.</p>
+                    </div>
+                </div>
+            </MainLayout>
+        );
+    }
+        
+    const dateFinInscriptions = useMemo(() => 
+        edition ? new Date(edition.registrationDeadline) : new Date('now'), 
+        [edition]
+    );
+
+    if(dateFinInscriptions < new Date('now')) {
+        return (
+            <MainLayout>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-red-600 mb-4">Inscriptions fermées</h1>
+                        <p className="text-gray-600">Les inscriptions sont fermées.</p>
                     </div>
                 </div>
             </MainLayout>

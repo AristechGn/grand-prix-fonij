@@ -3,7 +3,7 @@ import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Calendar, ChevronRight, CheckCircle, Clock, Users, MapPin, Trophy, Target, Sparkles, Zap, BookOpen, Award, Info, Star, BarChart, ArrowRight, Rocket, Lightbulb } from 'lucide-react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { FONIJ } from '@/utils';
 
 const testimonials = [
@@ -27,18 +27,19 @@ const testimonials = [
     }
 ];
 
-// Impact Global du Programme d'Accélération
-const impactGlobal = {
-    title: "Notre Impact",
-    points: [
-        "Plus de 160 projets accompagnés à travers la Guinée",
-        "Des jeunes de toutes les régions formés, accompagnés et valorisés",
-        "Des dizaines d'emplois créés grâce à des projets issus du programme",
-        "Une visibilité médiatique nationale (TV, radio, web)",
-        "Une forte promotion de l'entrepreneuriat féminin et inclusif"
-    ],
-    summary: "Le Grand Prix FONIJ est votre tremplin pour passer à l'action. Nos programmes sont pensés pour vous accompagner étape par étape, jusqu'à la réussite."
-};
+
+interface EditionProps {
+    name: string;
+    year: number;
+    startDate: string;
+    endDate: string;
+    registrationDeadline: string;
+}
+
+interface AccompagnementProps {
+    edition: EditionProps | null;
+}
+
 
 // Composant pour les particules flottantes
 const FloatingParticles = () => {
@@ -73,10 +74,16 @@ const FloatingParticles = () => {
     return <div id="particles-container" className="absolute inset-0 z-10 overflow-hidden pointer-events-none"></div>;
 };
 
-export default function Accompagnement() {
+export default function Accompagnement({ edition }: AccompagnementProps) {
     // Références pour les animations avec parallaxe
     const heroRef = useRef(null);
     const aboutRef = useRef(null);
+
+    
+    const dateFinInscriptions = useMemo(() => 
+        edition ? new Date(edition.registrationDeadline) : new Date('now'), 
+        [edition]
+    );
     
     // Animation scroll parallaxe
     const { scrollYProgress } = useScroll({
@@ -330,8 +337,7 @@ export default function Accompagnement() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                         {[
                             { icon: Calendar, text: "3 à 12 mois d'accompagnement", animation: { rotate: [0, 5, 0] } },
-                            { icon: MapPin, text: "Conakry, Guinée", animation: { y: [0, -6, 0] } },
-                            { icon: Users, text: "+250 Entrepreneurs accompagnés", animation: { scale: [1, 1.1, 1] } },
+                            { icon: MapPin, text: "Conakry, Palais du Peuple", animation: { y: [0, -6, 0] } },
                             { icon: Trophy, text: "3 Parcours spécialisés", animation: { x: [0, 5, 0, -5, 0] } }
                         ].map((item, index) => (
                             <motion.div
@@ -541,10 +547,6 @@ export default function Accompagnement() {
                                             />
                                         </motion.div>
                                     </div>
-                                    <div className="flex justify-between mt-3 text-sm text-gray-600">
-                                        <span>0 entrepreneurs</span>
-                                        <span>{participants.target} places disponibles</span>
-                                    </div>
                                 </motion.div>
                                 
                                 <motion.div 
@@ -553,43 +555,50 @@ export default function Accompagnement() {
                                 >
                                     <div className="inline-flex items-center bg-gradient-to-r from-primary/20 to-secondary/20 px-8 py-5 rounded-xl">
                                         <div>
-                                            <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary-200">{participants.count}</div>
-                                            <p className="text-gray-600 font-medium">Entrepreneurs déjà inscrits pour 2025</p>
+                                            <p className="text-gray-600 font-medium">Valorise ton projet d'entreprise</p>
                                         </div>
                                     </div>
                                 </motion.div>
-                                
-                                <motion.div variants={fadeInUp}>
-                                    <Link
-                                        href="/inscription"
-                                        className="group relative inline-flex w-full items-center justify-center px-6 py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                                    >
-                                        {/* Effet d'éclat au survol */}
-                                        <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
-                                        
-                                        <span className="relative flex items-center">
-                                            S'inscrire maintenant
-                                            <motion.span 
-                                                className="ml-2"
-                                                animate={{ x: [0, 5, 0] }}
-                                                transition={{ 
-                                                    duration: 1.5, 
-                                                    repeat: Infinity,
-                                                    repeatType: "loop" 
-                                                }}
+                                {dateFinInscriptions > new Date('now') ? (
+                                    <>
+                                        <motion.div variants={fadeInUp}>
+                                            <Link
+                                                href="/inscription"
+                                                className="group relative inline-flex w-full items-center justify-center px-6 py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                                             >
-                                                <ArrowRight className="h-5 w-5" />
-                                            </motion.span>
-                                        </span>
-                                    </Link>
-                                </motion.div>
+                                                {/* Effet d'éclat au survol */}
+                                                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                                                
+                                                <span className="relative flex items-center">
+                                                    S'inscrire maintenant
+                                                    <motion.span 
+                                                        className="ml-2"
+                                                        animate={{ x: [0, 5, 0] }}
+                                                        transition={{ 
+                                                            duration: 1.5, 
+                                                            repeat: Infinity,
+                                                            repeatType: "loop" 
+                                                        }}
+                                                    >
+                                                        <ArrowRight className="h-5 w-5" />
+                                                    </motion.span>
+                                                </span>
+                                            </Link>
+                                        </motion.div>
+
+                                        <motion.div 
+                                            variants={fadeIn}
+                                            className="mt-6 text-center text-sm text-gray-500"
+                                        >
+                                            Inscriptions ouvertes jusqu'au {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                        </motion.div>
+                                        </>
+                                ) : (
+                                    <motion.div variants={fadeInUp}>
+                                        <p className="text-gray-600 font-medium">Inscriptions fermées</p>
+                                    </motion.div>
+                                )}
                                 
-                                <motion.div 
-                                    variants={fadeIn}
-                                    className="mt-6 text-center text-sm text-gray-500"
-                                >
-                                    Inscriptions ouvertes jusqu'au 15 septembre 2025
-                                </motion.div>
                             </motion.div>
                         </motion.div>
                     </div>
@@ -888,40 +897,6 @@ export default function Accompagnement() {
                             </motion.div>
                         ))}
                     </div>
-                </div>
-            </div>
-
-            {/* Impact Global du Programme d'Accélération */}
-            <div className="py-24 bg-muted">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        variants={fadeInUp}
-                        className="text-center mb-16"
-                    >
-                        <div className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full text-sm font-medium mb-6">
-                            NOTRE IMPACT
-                        </div>
-                        <h2 className="text-4xl font-bold text-foreground mb-6">
-                            {impactGlobal.title}
-                        </h2>
-                        <div className="w-24 h-1 bg-primary mx-auto mb-8"></div>
-                        
-                        <div className="flex flex-col items-center justify-center mb-10">
-                            {impactGlobal.points.map((point, index) => (
-                                <div key={index} className="flex items-center bg-background py-3 px-6 rounded-lg shadow-sm mb-3 max-w-xl w-full border border-border/40">
-                                    <CheckCircle className="h-6 w-6 text-primary mr-3 flex-shrink-0" />
-                                    <span className="text-foreground/80">{point}</span>
-                                </div>
-                            ))}
-                        </div>
-                        
-                        <p className="text-lg text-foreground font-medium max-w-3xl mx-auto">
-                            {impactGlobal.summary}
-                        </p>
-                    </motion.div>
                 </div>
             </div>
 

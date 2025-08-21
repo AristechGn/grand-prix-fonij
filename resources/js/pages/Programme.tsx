@@ -202,14 +202,6 @@ export default function Programme() {
             }
         },
         { 
-            icon: Users, 
-            label: "1000+ participants",
-            animation: {
-                y: [0, -8, 0],
-                x: [0, 5, 0, -5, 0],
-            }
-        },
-        { 
             icon: Trophy, 
             label: "300M GNF par projet",
             animation: {

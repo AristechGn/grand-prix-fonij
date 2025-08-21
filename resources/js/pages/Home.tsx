@@ -394,11 +394,7 @@ export default function Home({ edition }: HomeProps) {
                             </motion.div>
                             <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
                                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
-                                <span className="text-[10px] sm:text-xs md:text-sm">Conakry, Guinée</span>
-                            </motion.div>
-                            <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
-                                <Users className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
-                                <span className="text-[10px] sm:text-xs md:text-sm">+1000 Participants</span>
+                                <span className="text-[10px] sm:text-xs md:text-sm">Conakry, Palais du Peuple</span>
                             </motion.div>
                             <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
                                 <Trophy className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
@@ -469,7 +465,7 @@ export default function Home({ edition }: HomeProps) {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-foreground text-sm sm:text-base">Lieu</h4>
-                                            <p className="text-primary-light text-xs sm:text-sm">Conakry, Guinée</p>
+                                            <p className="text-primary-light text-xs sm:text-sm">Conakry, Palais du Peuple</p>
                                         </div>
                                     </motion.div>
                                     <motion.div 
