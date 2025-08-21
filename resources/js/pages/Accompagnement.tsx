@@ -81,12 +81,12 @@ export default function Accompagnement({ edition }: AccompagnementProps) {
 
     
     const dateFinInscriptions = useMemo(() => 
-        edition ? new Date(edition.registrationDeadline) : new Date('now'), 
+        edition ? new Date(edition.registrationDeadline) : new Date(), 
         [edition]
     );
 
     console.log("dateFinInscriptions", dateFinInscriptions);
-    console.log("now", new Date('now'));
+    console.log("now", new Date());
     
     // Animation scroll parallaxe
     const { scrollYProgress } = useScroll({
@@ -562,7 +562,7 @@ export default function Accompagnement({ edition }: AccompagnementProps) {
                                         </div>
                                     </div>
                                 </motion.div>
-                                {dateFinInscriptions < new Date('now') ? (
+                                {dateFinInscriptions < new Date() ? (
                                     <>
                                         <motion.div variants={fadeInUp}>
                                             <Link
