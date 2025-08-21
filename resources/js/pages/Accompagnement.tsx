@@ -559,7 +559,7 @@ export default function Accompagnement({ edition }: AccompagnementProps) {
                                         </div>
                                     </div>
                                 </motion.div>
-                                {dateFinInscriptions > new Date('now') ? (
+                                {dateFinInscriptions < new Date('now') ? (
                                     <>
                                         <motion.div variants={fadeInUp}>
                                             <Link
