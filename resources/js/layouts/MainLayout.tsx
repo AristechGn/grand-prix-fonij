@@ -1,10 +1,16 @@
 import { Link } from '@inertiajs/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { 
     Menu, X, Home, Award, GraduationCap, Send, 
     Mail, Phone, MapPin, Facebook, Twitter, 
-    Instagram, Linkedin, Calendar, ChevronRight 
+    Instagram, Linkedin, Calendar, ChevronRight,
+    ArrowUp, Sparkles,
+    PhoneCall,
+    CalendarDays,
+    HandHelping
 } from 'lucide-react';
+
+import { FONIJ } from '@/utils';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -27,6 +33,8 @@ export default function MainLayout({
 }: MainLayoutProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [showBackToTop, setShowBackToTop] = useState(false);
+    const mainContentRef = useRef<HTMLElement>(null);
     
     // Routes configuration
     const route_list: RouteItem[] = [
@@ -37,33 +45,33 @@ export default function MainLayout({
             'href': '/',
             'active': 'home',
         },
-        {
-            'name': 'agenda',
-            'label': 'Agenda',
-            'icon': Calendar,
-            'href': '/#agenda',
-            'active': 'agenda',
-        },
+        // {
+        //     'name': 'agenda',
+        //     'label': 'Agenda',
+        //     'icon': Calendar,
+        //     'href': '/#agenda',
+        //     'active': 'agenda',
+        // },
         {
             'name': 'categories',
-            'label': 'Catégories',
+            'label': 'Catégories de prix',
             'icon': Award,
-            'href': '/categories',
+            'href': route('categories'),
             'active': 'categories',
         },
         {
-            'name': 'deroulement',
-            'label': 'Déroulement',
-            'icon': GraduationCap,
-            'href': route('deroulement'),
-            'active': 'deroulement',
+            'name': 'programme',
+            'label': 'Programme',
+            'icon': CalendarDays,
+            'href': route('programme'),
+            'active': 'programme',
         },
         {
             'name': 'accompagnement',
             'label': 'Accompagnement',
-            'icon': GraduationCap,
-            'href': route('programmes'),
-            'active': 'programmes',
+            'icon': HandHelping,
+            'href': route('accompagnement'),
+            'active': 'accompagnement',
         },
         {
             'name': 'A Propos',
@@ -72,6 +80,13 @@ export default function MainLayout({
             'href': route('about.index'),
             'active': 'about.index',
         },
+        {
+            'name': 'Contact',
+            'label': 'Contact',
+            'icon': PhoneCall,
+            'href': route('contact'),
+            'active': 'contact',
+        },
     ];
 
     const isActiveRoute = (routeName: string) => route().current(routeName);
@@ -79,7 +94,16 @@ export default function MainLayout({
     // Memoize scroll handler for better performance
     const handleScroll = useCallback(() => {
         setScrolled(window.scrollY > 10);
+        setShowBackToTop(window.scrollY > 300);
     }, []);
+    
+    // Fonction pour remonter en haut de la page
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
 
     // Close mobile menu on resize to prevent UI issues
     const handleResize = useCallback(() => {
@@ -109,33 +133,33 @@ export default function MainLayout({
             <title>{title}</title>
             <meta name="description" content={metaDescription} />
             
-            {/* Navigation */}
+            {/* Navigation - hauteur réduite sur mobile */}
             <nav 
                 className={`fixed w-full z-50 transition-all duration-300 ${
                     scrolled 
-                        ? 'bg-background/90 backdrop-blur-md shadow-md py-2' 
-                        : 'bg-transparent py-4'
+                        ? 'bg-background/90 backdrop-blur-md shadow-md py-1 sm:py-2' 
+                        : 'bg-transparent py-2 sm:py-4'
                 }`}
                 aria-label="Navigation principale"
              >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
                     <div className="flex justify-between items-center">
-                        {/* Logo Section */}
+                        {/* Logo Section - taille réduite sur mobile */}
                         <div className="flex items-center">
-                            <Link href="/" className="flex items-center space-x-2 group">
+                            <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group">
                                 <div className="relative flex items-center">
                                     <div className="relative">
                                         <img 
                                             src="/images/fonij/logo-transparent.png" 
                                             alt="FONIJ Logo" 
-                                            className="h-16 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                            className="h-10 sm:h-14 md:h-16 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
                                     </div>
-                                    <div className="relative ml-4">
+                                    <div className="relative ml-2 sm:ml-4">
                                         <img 
                                             src="/images/guinee.jpg"
                                             alt="Drapeau Guinée" 
-                                            className="h-14 w-auto transition-transform duration-300 group-hover:scale-105" 
+                                            className="h-8 sm:h-12 md:h-14 w-auto transition-transform duration-300 group-hover:scale-105" 
                                         />
                                     </div>
                                 </div>
@@ -143,36 +167,33 @@ export default function MainLayout({
                         </div>
 
                         {/* Desktop Navigation */}
-                        <div className="hidden md:flex items-center space-x-2">
+                        <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
                             {route_list.map((route) => (
                                 <Link 
                                     key={route.name}
                                     href={route.href} 
-                                    className={`inline-flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative ${
+                                    className={`inline-flex items-center px-3 lg:px-4 py-2 text-xs lg:text-sm font-medium transition-all duration-200 rounded-lg relative ${
                                         isActiveRoute(route.active) 
                                             ? 'bg-primary text-white shadow-sm border-b-4 border-yellow-400' 
-                                            : 'text-black hover:text-white hover:bg-primary-900'
+                                            : 'text-black hover:text-white hover:bg-primary'
                                     }`}
                                     aria-current={isActiveRoute(route.active) ? 'page' : undefined}
                                 >
-                                    <route.icon className="h-4 w-4 mr-2" />
-                                    {route.label}
-                                    {/* {isActiveRoute(route.active) && (
-                                        <span className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-full h-1 bg-secondary rounded-full" />
-                                    )} */}
+                                    <route.icon className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
+                                    <span className="whitespace-nowrap">{route.label}</span>
                                 </Link>
                             ))}
                         </div>
 
                         {/* CTA and Mobile Menu Section */}
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center">
                             {/* Desktop CTA Button */}
                             <div className="hidden md:block">
                                 <Link 
                                     href="/candidater" 
-                                    className="inline-flex items-center px-6 py-2.5 text-sm font-medium rounded-full bg-gradient-fonij text-white hover:bg-gradient-fonij-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-md hover:shadow-lg transition-all duration-200"
+                                    className="inline-flex items-center px-4 lg:px-6 py-2 lg:py-2.5 text-xs lg:text-sm font-medium rounded-full bg-gradient-fonij text-white hover:bg-gradient-fonij-gold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-md hover:shadow-lg transition-all duration-200"
                                 >
-                                    <Send className="h-4 w-4 mr-2" />
+                                    <Send className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
                                     Candidater
                                 </Link>
                             </div>
@@ -181,31 +202,31 @@ export default function MainLayout({
                             <div className="md:hidden">
                                 <button
                                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                    className="inline-flex items-center justify-center p-2 rounded-lg text-foreground hover:text-primary hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-colors"
+                                    className="inline-flex items-center justify-center p-1.5 sm:p-2 rounded-lg text-foreground hover:text-primary hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-colors"
                                     aria-expanded={isMenuOpen}
                                     aria-controls="mobile-menu"
                                     aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
                                 >
                                     <span className="sr-only">{isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}</span>
-                                    {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                                    {isMenuOpen ? <X className="h-5 sm:h-6 w-5 sm:w-6" /> : <Menu className="h-5 sm:h-6 w-5 sm:w-6" />}
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
+                {/* Mobile Menu - amélioration de l'ergonomie */}
                 {isMenuOpen && (
                     <div 
                         id="mobile-menu"
-                        className="md:hidden bg-background/95 backdrop-blur-md shadow-xl rounded-b-2xl mt-2 border-t border-border animate-slideDown"
+                        className="md:hidden bg-white/30 backdrop-blur-md shadow-xl rounded-b-2xl mt-1 sm:mt-2 border-t border-border animate-slideDown max-h-[80vh] overflow-y-auto"
                     >
-                        <div className="pt-2 pb-3 space-y-1 px-4">
+                        <div className="pt-2 pb-3 space-y-1 px-3 sm:px-4">
                             {route_list.map((route) => (
                                 <Link 
                                     key={route.name}
                                     href={route.href} 
-                                    className={`flex items-center justify-between px-4 py-3 text-base font-medium rounded-lg transition-colors ${
+                                    className={`flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base font-medium rounded-lg transition-colors ${
                                         isActiveRoute(route.active) 
                                             ? 'bg-primary/10 text-primary' 
                                             : 'text-foreground hover:text-primary hover:bg-primary/5'
@@ -214,19 +235,19 @@ export default function MainLayout({
                                     aria-current={isActiveRoute(route.active) ? 'page' : undefined}
                                 >
                                     <div className="flex items-center">
-                                        <route.icon className="h-5 w-5 mr-3" />
+                                        <route.icon className="h-4 sm:h-5 w-4 sm:w-5 mr-2 sm:mr-3" />
                                         {route.label}
                                     </div>
-                                    {isActiveRoute(route.active) && <ChevronRight className="h-4 w-4 text-primary" />}
+                                    {isActiveRoute(route.active) && <ChevronRight className="h-3 sm:h-4 w-3 sm:w-4 text-primary" />}
                                 </Link>
                             ))}
-                            <div className="pt-4 pb-2">
+                            <div className="pt-3 sm:pt-4 pb-2">
                                 <Link 
                                     href="/candidater" 
-                                    className="flex items-center justify-center px-4 py-3 text-base font-medium bg-gradient-fonij text-white hover:bg-gradient-fonij-gold rounded-full shadow-md hover:shadow-lg transition-all duration-200" 
+                                    className="flex items-center justify-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base font-medium bg-gradient-fonij text-white hover:bg-gradient-fonij-gold rounded-full shadow-md hover:shadow-lg transition-all duration-200" 
                                     onClick={() => setIsMenuOpen(false)}
                                 >
-                                    <Send className="h-5 w-5 mr-2" />
+                                    <Send className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
                                     Candidater maintenant
                                 </Link>
                             </div>
@@ -235,28 +256,42 @@ export default function MainLayout({
                 )}
             </nav>
 
-            {/* Main Content with padding for fixed navbar */}
-            <main className="flex-grow pt-24">{children}</main>
+            {/* Main Content - moins de padding sur mobile */}
+            <main ref={mainContentRef} className="flex-grow pt-16 sm:pt-20 md:pt-24">{children}</main>
+            
+            {/* Bouton Back to Top avec animation */}
+            <button
+                onClick={scrollToTop}
+                className={`fixed right-4 bottom-4 sm:bottom-6 z-40 p-4 sm:p-3 rounded-full bg-primary hover:bg-primary-dark text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 ${
+                    showBackToTop 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-10 pointer-events-none'
+                }`}
+                aria-label="Retour en haut de page"
+            >
+                <ArrowUp className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-20"></span>
+            </button>
 
-            {/* Footer */}
-            <footer className="bg-gradient-to-b from-primary-800 to-black mt-12 text-gray-200">
-                <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Footer - adapter pour mobile */}
+            <footer className="bg-gradient-to-b from-primary-800 to-black mt-8 sm:mt-12 text-gray-200">
+                <div className="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
                         {/* About Section */}
                         <div className="md:col-span-1">
-                            <div className="flex items-center space-x-3 mb-6">
-                                <img src="/images/fonij/logo-transparent.png" alt="FONIJ Logo" className="h-20 w-auto" />
-                                <h3 className="font-bold text-lg text-background">Grand Prix FONIJ</h3>
+                            <div className="flex items-center space-x-2 sm:space-x-3 mb-4 sm:mb-6">
+                                <img src="/images/fonij/logo-transparent.png" alt="FONIJ Logo" className="h-14 sm:h-16 md:h-20 w-auto" />
+                                <h3 className="font-bold text-base sm:text-lg text-background">Grand Prix FONIJ</h3>
                             </div>
-                            <p className="text-white/90 text-sm leading-relaxed">
+                            <p className="text-white/90 text-xs sm:text-sm leading-relaxed">
                                 Le Grand Prix FONIJ récompense les initiatives exceptionnelles en faveur de l'entrepreneuriat en Guinée et soutient le développement économique.
                             </p>
                         </div>
                         
                         {/* Objectives Section */}
                         <div>
-                            <h3 className="text-lg font-semibold mb-4 text-background">Objectifs</h3>
-                            <ul className="space-y-3 text-sm text-background/90">
+                            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-background">Objectifs</h3>
+                            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-background/90">
                                 <li className="flex items-start group hover:translate-x-1 transition-transform duration-200">
                                     <span className="text-secondary mr-2 flex-shrink-0">•</span>
                                     <span>Promotion de l'entrepreneuriat et l'innovation</span>
@@ -278,15 +313,15 @@ export default function MainLayout({
                         
                         {/* Useful Links Section */}
                         <div>
-                            <h3 className="text-lg font-semibold mb-4 text-background">Liens utiles</h3>
-                            <ul className="space-y-2 text-sm">
+                            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-background mt-4 sm:mt-0">Liens utiles</h3>
+                            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                                 {route_list.map((route) => (
                                     <li key={route.name}>
                                         <Link 
                                             href={route.href} 
                                             className="text-background/90 hover:text-background flex items-center transition-colors hover:translate-x-1 duration-200 group"
                                         >
-                                            <route.icon className="h-4 w-4 mr-2 group-hover:text-secondary transition-colors" />
+                                            <route.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 group-hover:text-secondary transition-colors" />
                                             {route.label}
                                         </Link>
                                     </li>
@@ -296,7 +331,7 @@ export default function MainLayout({
                                         href="/candidater" 
                                         className="text-background/90 hover:text-background flex items-center transition-colors hover:translate-x-1 duration-200 group"
                                     >
-                                        <Send className="h-4 w-4 mr-2 group-hover:text-secondary transition-colors" />
+                                        <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 group-hover:text-secondary transition-colors" />
                                         Candidater
                                     </Link>
                                 </li>
@@ -305,67 +340,50 @@ export default function MainLayout({
                         
                         {/* Contact Section */}
                         <div>
-                            <h3 className="text-lg font-semibold mb-4 text-background">Contact</h3>
-                            <ul className="space-y-3 text-sm text-background/90">
+                            <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-background mt-4 sm:mt-0">Contact</h3>
+                            <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-background/90">
                                 <li className="flex items-center group hover:translate-x-1 transition-transform duration-200">
-                                    <Mail className="h-4 w-4 mr-2 text-secondary" />
-                                    <a href="mailto:contact@fonij.org" className="hover:text-background transition-colors">
-                                        contact@fonij.org
+                                    <Mail className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-secondary" />
+                                    <a href={`mailto:${FONIJ.contactInfo.email}`} className="hover:text-background transition-colors">
+                                        {FONIJ.contactInfo.email}
                                     </a>
                                 </li>
                                 <li className="flex items-center group hover:translate-x-1 transition-transform duration-200">
-                                    <Phone className="h-4 w-4 mr-2 text-secondary" />
-                                    <a href="tel:+224123456789" className="hover:text-background transition-colors">
-                                        +224 123 456 789
+                                    <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-secondary" />
+                                    <a href={FONIJ.contactInfo.unespace_phone} className="hover:text-background transition-colors">
+                                        {FONIJ.contactInfo.phone}
                                     </a>
                                 </li>
                                 <li className="flex items-start group hover:translate-x-1 transition-transform duration-200">
-                                    <MapPin className="h-4 w-4 mr-2 text-secondary flex-shrink-0 mt-0.5" />
-                                    <span>Conakry, Guinée</span>
+                                    <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2 text-secondary flex-shrink-0 mt-0.5" />
+                                    <span>{FONIJ.contactInfo.repere}</span>
                                 </li>
                             </ul>
                             
                             {/* Social Media Icons */}
-                            <div className="mt-6 flex space-x-4">
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="Facebook"
-                                >
-                                    <Facebook className="h-5 w-5" />
+                            <div className="mt-4 sm:mt-6 flex space-x-3 sm:space-x-4">
+                                { FONIJ.contactInfo.social.map((item, index) => (
+                                    <a 
+                                        key={index}
+                                        href={item.url} 
+                                        className="bg-background/10 p-1.5 sm:p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
+                                        aria-label={item.name}
+                                        target="_blank"
+                                    >
+                                    <item.icon className={`sm:h-5 sm:w-5 md:h-6 md:w-6 font-bold text-${item.color}`} />
                                 </a>
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="Twitter"
-                                >
-                                    <Twitter className="h-5 w-5" />
-                                </a>
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="Instagram"
-                                >
-                                    <Instagram className="h-5 w-5" />
-                                </a>
-                                <a 
-                                    href="#" 
-                                    className="bg-background/10 p-2 rounded-full text-background hover:bg-background/20 hover:text-secondary hover:scale-110 transform transition-all duration-200"
-                                    aria-label="LinkedIn"
-                                >
-                                    <Linkedin className="h-5 w-5" />
-                                </a>
+                                ))}
                             </div>
                         </div>
                     </div>
                     
                     {/* Copyright and Legal Links */}
-                    <div className="mt-8 pt-8 border-t border-background/20">
-                        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                            <p className="text-background/90 text-sm">
-                                &copy; {new Date().getFullYear()} FONIJ. Tous droits réservés.
+                    <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-background/20">
+                        <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
+                            <p className="text-primary-300/90 text-xs sm:text-sm">
+                                &copy; {new Date().getFullYear()} <span className="font-bold text-white">GRAND PRIX FONIJ</span>. Tous droits réservés.
                             </p>
-                            <div className="flex space-x-6 text-sm">
+                            <div className="flex flex-wrap justify-center space-x-4 sm:space-x-6 text-xs sm:text-sm">
                                 <Link href="/mentions-legales" className="text-background/90 hover:text-background transition-colors">
                                     Mentions légales
                                 </Link>
@@ -380,6 +398,47 @@ export default function MainLayout({
                     </div>
                 </div>
             </footer>
+            
+            {/* Styles pour les animations */}
+            <style>{`
+                @keyframes slideDown {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                
+                .animate-slideDown {
+                    animation: slideDown 0.2s ease-out forwards;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                .animate-fadeIn {
+                    animation: fadeIn 0.5s ease-in-out forwards;
+                }
+                
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+                
+                .animate-pulse-slow {
+                    animation: pulse 2s infinite;
+                }
+                
+                @keyframes float {
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-10px); }
+                    100% { transform: translateY(0px); }
+                }
+                
+                .animate-float {
+                    animation: float 3s ease-in-out infinite;
+                }
+            `}</style>
         </div>
     );
 }

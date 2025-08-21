@@ -5,8 +5,8 @@ export default function Home() {
     return (
         <MainLayout>
             {/* Hero Section */}
-            <div className="relative bg-blue-600 text-white">
-                <div className="absolute inset-0">
+            <div className="relative bg-blue-600 text-white h-90">
+                <div className="absolute inset-0 h-screen">
                     <img
                         className="w-full h-full object-cover opacity-20"
                         src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"

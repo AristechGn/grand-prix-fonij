@@ -78,14 +78,14 @@ class WelcomeController extends Controller
 
     public function accompagnement()
     {
-        return Inertia::render('Programmes', [
+        return Inertia::render('Accompagnement', [
             'edition' => $this->getCurrentEdition()
         ]);
     }
 
-    public function deroulement()
+    public function programme()
     {
-        return Inertia::render('Deroulement', [
+        return Inertia::render('Programme', [
             'edition' => $this->getCurrentEdition()
         ]);
     }
@@ -107,6 +107,13 @@ class WelcomeController extends Controller
     public function about()
     {
         return Inertia::render('APropos', [
+            'edition' => $this->getCurrentEdition()
+        ]);
+    }
+
+    public function contact()
+    {
+        return Inertia::render('Contact', [
             'edition' => $this->getCurrentEdition()
         ]);
     }
