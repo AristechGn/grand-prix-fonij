@@ -87,11 +87,11 @@ export default function Candidater({ edition }: CandidaterProps) {
     }
         
     const dateFinInscriptions = useMemo(() => 
-        edition ? new Date(edition.registrationDeadline) : new Date('now'), 
+        edition ? new Date(edition.registrationDeadline) : new Date(), 
         [edition]
     );
 
-    if(dateFinInscriptions < new Date('now')) {
+    if(dateFinInscriptions < new Date()) {
         return (
             <MainLayout>
                 <div className="min-h-screen flex items-center justify-center">
