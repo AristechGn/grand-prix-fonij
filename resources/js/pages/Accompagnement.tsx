@@ -562,45 +562,37 @@ export default function Accompagnement({ edition }: AccompagnementProps) {
                                         </div>
                                     </div>
                                 </motion.div>
-                                {dateFinInscriptions < new Date() ? (
-                                    <>
-                                        <motion.div variants={fadeInUp}>
-                                            <Link
-                                                href="/inscription"
-                                                className="group relative inline-flex w-full items-center justify-center px-6 py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                                            >
-                                                {/* Effet d'éclat au survol */}
-                                                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
-                                                
-                                                <span className="relative flex items-center">
-                                                    S'inscrire maintenant
-                                                    <motion.span 
-                                                        className="ml-2"
-                                                        animate={{ x: [0, 5, 0] }}
-                                                        transition={{ 
-                                                            duration: 1.5, 
-                                                            repeat: Infinity,
-                                                            repeatType: "loop" 
-                                                        }}
-                                                    >
-                                                        <ArrowRight className="h-5 w-5" />
-                                                    </motion.span>
-                                                </span>
-                                            </Link>
-                                        </motion.div>
-
-                                        <motion.div 
-                                            variants={fadeIn}
-                                            className="mt-6 text-center text-sm text-gray-500"
-                                        >
-                                            Inscriptions ouvertes jusqu'au {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                        </motion.div>
-                                        </>
-                                ) : (
                                     <motion.div variants={fadeInUp}>
-                                        <p className="text-gray-600 font-medium">Inscriptions fermées</p>
+                                        <Link
+                                            href="/inscription"
+                                            className="group relative inline-flex w-full items-center justify-center px-6 py-4 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                                        >
+                                            {/* Effet d'éclat au survol */}
+                                            <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                                            
+                                            <span className="relative flex items-center">
+                                                S'inscrire maintenant
+                                                <motion.span 
+                                                    className="ml-2"
+                                                    animate={{ x: [0, 5, 0] }}
+                                                    transition={{ 
+                                                        duration: 1.5, 
+                                                        repeat: Infinity,
+                                                        repeatType: "loop" 
+                                                    }}
+                                                >
+                                                    <ArrowRight className="h-5 w-5" />
+                                                </motion.span>
+                                            </span>
+                                        </Link>
                                     </motion.div>
-                                )}
+
+                                    <motion.div 
+                                        variants={fadeIn}
+                                        className="mt-6 text-center text-sm text-gray-500"
+                                    >
+                                        Inscriptions ouvertes jusqu'au {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                    </motion.div>
                                 
                             </motion.div>
                         </motion.div>
