@@ -85,8 +85,8 @@ export default function Accompagnement({ edition }: AccompagnementProps) {
         [edition]
     );
 
-    console.log("dateFinInscriptions", dateFinInscriptions.toLocaleDateString());
-    console.log("now", new Date('now').toLocaleDateString());
+    console.log("dateFinInscriptions", dateFinInscriptions);
+    console.log("now", new Date('now'));
     
     // Animation scroll parallaxe
     const { scrollYProgress } = useScroll({
