@@ -392,7 +392,7 @@ export default function Home({ edition }: HomeProps) {
                         >
                             <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
                                 <Calendar className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
-                                <span className="text-[10px] sm:text-xs md:text-sm">{dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} - {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}</span>
+                                <span className="text-[10px] sm:text-xs md:text-sm">{dateFinalEvenement.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
                             </motion.div>
                             <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
                                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
@@ -480,7 +480,7 @@ export default function Home({ edition }: HomeProps) {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-foreground text-sm sm:text-base">Date</h4>
-                                            <p className="text-primary-light text-xs sm:text-sm">{dateEvenement.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                            <p className="text-primary-light text-xs sm:text-sm">{dateFinalEvenement.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                         </div>
                                     </motion.div>
                                 </motion.div>
