@@ -340,7 +340,7 @@ export default function Accompagnement({ edition }: AccompagnementProps) {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                         {[
                             { icon: Calendar, text: "3 à 12 mois d'accompagnement", animation: { rotate: [0, 5, 0] } },
-                            { icon: MapPin, text: "Conakry, Palais du Peuple", animation: { y: [0, -6, 0] } },
+                            { icon: MapPin, text: "Palais du Peuple, Conakry", animation: { y: [0, -6, 0] } },
                             { icon: Trophy, text: "3 Parcours spécialisés", animation: { x: [0, 5, 0, -5, 0] } }
                         ].map((item, index) => (
                             <motion.div

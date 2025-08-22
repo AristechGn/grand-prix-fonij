@@ -28,6 +28,8 @@ export default function Home({ edition }: HomeProps) {
         edition ? new Date(edition.registrationDeadline) : new Date('now'), 
         [edition]
     );
+
+    const inscriptionsIsOpen = dateFinInscriptions > new Date() ? true : false;
     
     // État pour le compteur
     const [timeLeft, setTimeLeft] = useState({
@@ -394,7 +396,7 @@ export default function Home({ edition }: HomeProps) {
                             </motion.div>
                             <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
                                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
-                                <span className="text-[10px] sm:text-xs md:text-sm">Conakry, Palais du Peuple</span>
+                                <span className="text-[10px] sm:text-xs md:text-sm">Palais du Peuple, Conakry</span>
                             </motion.div>
                             <motion.div className="flex items-center space-x-1 sm:space-x-2" variants={fadeInUp}>
                                 <Trophy className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary-light" />
@@ -465,7 +467,7 @@ export default function Home({ edition }: HomeProps) {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-foreground text-sm sm:text-base">Lieu</h4>
-                                            <p className="text-primary-light text-xs sm:text-sm">Conakry, Palais du Peuple</p>
+                                            <p className="text-primary-light text-xs sm:text-sm">Palais du Peuple, Conakry</p>
                                         </div>
                                     </motion.div>
                                     <motion.div 
@@ -478,7 +480,7 @@ export default function Home({ edition }: HomeProps) {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-foreground text-sm sm:text-base">Date</h4>
-                                            <p className="text-primary-light text-xs sm:text-sm">Du {dateEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })} au {dateFinalEvenement.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                            <p className="text-primary-light text-xs sm:text-sm">{dateEvenement.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                         </div>
                                     </motion.div>
                                 </motion.div>
@@ -513,6 +515,9 @@ export default function Home({ edition }: HomeProps) {
                                     transition: { duration: 0.4 } 
                                 }}
                             >
+                                {inscriptionsIsOpen ? (
+                                    <>
+                                    
                                 <motion.h3 
                                     className="text-xl sm:text-3xl font-bold text-foreground mb-4 sm:mb-8"
                                     variants={fadeInUp}
@@ -525,6 +530,8 @@ export default function Home({ edition }: HomeProps) {
                                 >
                                     Inscrivez-vous avant le {dateFinInscriptions.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                                 </motion.p>
+
+                                
                                 <motion.div 
                                     className="grid grid-cols-4 gap-2 sm:gap-4"
                                     variants={staggerContainer}
@@ -570,7 +577,17 @@ export default function Home({ edition }: HomeProps) {
                                 >
                                     Les candidatures feminines sont vivement encouragées
                                 </motion.div>
+                                </>
+                                ) : (
+                                    <motion.h3 
+                                    className="text-xl sm:text-3xl font-bold text-red-500 mb-4 sm:mb-8"
+                                    variants={fadeInUp}
+                                >
+                                    Candidatures Closes
+                                </motion.h3>
+                                )}
                             </motion.div>
+                            
                         </motion.div>
                     </div>
                 </div>

@@ -194,7 +194,7 @@ export default function EditPhase({ edition, phase }: EditPhaseProps) {
                       id="location"
                       value={data.location}
                       onChange={(e) => setData('location', e.target.value)}
-                      placeholder="Ex: Conakry, Palais du Peuple"
+                      placeholder="Ex: Palais du Peuple, Conakry"
                       className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
                     />
                     <InputError message={errors.location} />
