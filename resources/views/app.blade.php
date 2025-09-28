@@ -28,6 +28,18 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="apple-mobile-web-app-title" content="{{ config('app.name', 'Grand Prix FONIJ') }}">
+        
+        {{-- Meta tags supplémentaires pour le SEO --}}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+        <meta name="googlebot" content="index, follow">
+        <meta name="bingbot" content="index, follow">
+        <meta name="language" content="fr">
+        <meta name="geo.region" content="GN">
+        <meta name="geo.country" content="Guinée">
+        <meta name="geo.placename" content="Conakry">
+        <meta name="distribution" content="global">
+        <meta name="rating" content="general">
+        <meta name="revisit-after" content="1 days">
 
         {{-- Sécurité --}}
         <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -64,14 +76,22 @@
 
         <title inertia>{{ config('app.name', 'Grand Prix FONIJ') }}</title>
 
-        {{-- Favicons --}}
+        {{-- Favicons et icônes --}}
         <link rel="icon" href="/images/favicon/favicon.ico" sizes="any">
         <link rel="icon" href="/images/favicon/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/images/favicon/apple-touch-icon.png" sizes="180x180">
+        <link rel="icon" href="/images/favicon/favicon-96x96.png" sizes="96x96">
         <link rel="manifest" href="/site.webmanifest" crossorigin="use-credentials">
         <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#008751">
         <meta name="msapplication-TileColor" content="#008751">
         <meta name="msapplication-config" content="/browserconfig.xml">
+        
+        {{-- Images par défaut pour le partage social --}}
+        <meta property="og:image" content="{{ config('app.url') }}/images/affiche.jpg">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="Grand Prix FONIJ - Initiative pour l'entrepreneuriat des jeunes guinéens">
+        <meta name="twitter:image" content="{{ config('app.url') }}/images/affiche.jpg">
 
         {{-- Préchargement des polices --}}
         <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
