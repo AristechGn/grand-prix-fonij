@@ -19,13 +19,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Edition;
-use App\Traits\HasSEO;
+use App\Traits\SeoTools;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
-    use HasSEO;
+    use SeoTools;
     /**
      * Récupère l'édition courante ou la dernière édition si aucune n'est marquée comme courante
      * 
@@ -62,73 +62,79 @@ class WelcomeController extends Controller
     
     public function home()
     {
-        $seoData = $this->setHomeSEO();
+        $this->setHomeSeoMeta();
         
         return Inertia::render('Home', array_merge([
             'edition' => $this->getCurrentEdition(true)
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function categories()
     {
-        $seoData = $this->setCategoriesSEO();
+        $this->setCategoriesSeoMeta();
         
         return Inertia::render('Categories', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function accompagnement()
     {
-        $seoData = $this->setSupportSEO();
+        $title = 'Accompagnement et soutien - Grand Prix FONIJ';
+        $description = 'Bénéficiez d\'un accompagnement complet avec le Grand Prix FONIJ : mentorat personnalisé, formations spécialisées, accès à des espaces de travail, et intégration dans notre réseau d\'entrepreneurs. Transformez votre idée en entreprise prospère.';
+        $this->setAboutSeoMeta($title, $description);
         
         return Inertia::render('Accompagnement', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function programme()
     {
-        $seoData = $this->setProgramSEO();
+        $this->setProgramSeoMeta();
         
         return Inertia::render('Programme', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function actualites()
     {
-        $seoData = $this->setNewsSEO();
+        $title = 'Actualités - Grand Prix FONIJ';
+        $description = 'Restez informé des dernières actualités du Grand Prix FONIJ : annonces importantes, témoignages de lauréats, événements, et nouvelles initiatives pour l\'entrepreneuriat des jeunes guinéens.';
+        $this->setAboutSeoMeta($title, $description);
         
         return Inertia::render('Actualites', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function candidater()
     {
-        $seoData = $this->setApplicationSEO();
+        $this->setApplicationSeoMeta();
         
         return Inertia::render('Candidater', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function about()
     {
-        $seoData = $this->setAboutSEO();
+        $title = 'À propos - Grand Prix FONIJ';
+        $description = 'Découvrez l\'histoire et la mission du Grand Prix FONIJ, une initiative pour l\'insertion socioéconomique des jeunes guinéens.';
+        $this->setAboutSeoMeta($title, $description);
         
         return Inertia::render('APropos', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 
     public function contact()
     {
-        $seoData = $this->setContactSEO();
+        $this->setContactSeoMeta();
         
         return Inertia::render('Contact', array_merge([
             'edition' => $this->getCurrentEdition()
-        ], $seoData));
+        ], $this->getSeoData()));
     }
 }

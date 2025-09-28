@@ -4,18 +4,43 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        {{-- SEO Meta Tags --}}
-        @if(class_exists('Artesaos\SEOTools\Facades\SEOMeta'))
-            {!! Artesaos\SEOTools\Facades\SEOMeta::generate() !!}
-        @endif
-        @if(class_exists('Artesaos\SEOTools\Facades\OpenGraph'))
-            {!! Artesaos\SEOTools\Facades\OpenGraph::generate() !!}
-        @endif
-        @if(class_exists('Artesaos\SEOTools\Facades\TwitterCard'))
-            {!! Artesaos\SEOTools\Facades\TwitterCard::generate() !!}
-        @endif
-        @if(class_exists('Artesaos\SEOTools\Facades\JsonLd'))
-            {!! Artesaos\SEOTools\Facades\JsonLd::generate() !!}
+        {{-- SEO Tools - Métadonnées dynamiques --}}
+        @if(session('seo_title'))
+            <title>{{ session('seo_title') }}</title>
+            <meta name="description" content="{{ session('seo_description') }}">
+            @if(session('seo_keywords'))
+                <meta name="keywords" content="{{ implode(', ', session('seo_keywords')) }}">
+            @endif
+            @if(session('seo_canonical'))
+                <link rel="canonical" href="{{ session('seo_canonical') }}">
+            @endif
+            
+            {{-- Open Graph --}}
+            <meta property="og:title" content="{{ session('seo_title') }}">
+            <meta property="og:description" content="{{ session('seo_description') }}">
+            <meta property="og:url" content="{{ session('seo_canonical') ?? request()->url() }}">
+            <meta property="og:site_name" content="Grand Prix FONIJ - Fonds National d'Insertion des Jeunes">
+            @if(session('seo_type'))
+                <meta property="og:type" content="{{ session('seo_type') }}">
+            @endif
+            @if(session('seo_image'))
+                <meta property="og:image" content="{{ session('seo_image') }}">
+            @endif
+            
+            {{-- Twitter Card --}}
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:title" content="{{ session('seo_title') }}">
+            <meta name="twitter:description" content="{{ session('seo_description') }}">
+            <meta name="twitter:site" content="@FONIJGUINEE">
+            <meta name="twitter:creator" content="@FONIJGUINEE">
+            @if(session('seo_image'))
+                <meta name="twitter:image" content="{{ session('seo_image') }}">
+            @endif
+        @else
+            {{-- Métadonnées par défaut --}}
+            <title>Grand Prix FONIJ - Initiative pour l'entrepreneuriat des jeunes guinéens</title>
+            <meta name="description" content="Le Grand Prix FONIJ récompense les jeunes entrepreneurs guinéens âgés de 18 à 35 ans dans 5 catégories : promotion de l'esprit d'entreprise, éducation aux compétences entrepreneuriales, transition numérique, entrepreneuriat agricole durable et grand prix du jury.">
+            <meta name="keywords" content="FONIJ, Grand Prix FONIJ, Guinée, jeunes entrepreneurs, entrepreneuriat, innovation, insertion professionnelle, concours, startup, business plan">
         @endif
         
         <meta name="author" content="FONIJ">
@@ -110,5 +135,51 @@
                 Pour une expérience optimale, veuillez activer JavaScript dans votre navigateur.
             </div>
         </noscript>
+
+        {{-- JSON-LD dynamique --}}
+        @if(session('seo_organization_name'))
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "{{ session('seo_organization_type', 'Organization') }}",
+            "name": "{{ session('seo_organization_name') }}",
+            "description": "{{ session('seo_description', 'Le Grand Prix FONIJ récompense les jeunes entrepreneurs guinéens âgés de 18 à 35 ans dans 5 catégories : promotion de l\'esprit d\'entreprise, éducation aux compétences entrepreneuriales, transition numérique, entrepreneuriat agricole durable et grand prix du jury.') }}",
+            "url": "{{ config('app.url') }}",
+            @if(session('seo_address'))
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "102-316 Av. de la République",
+                "addressLocality": "Conakry",
+                "addressRegion": "Conakry",
+                "addressCountry": "GN"
+            },
+            @endif
+            @if(session('seo_contact_phone'))
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "{{ session('seo_contact_phone') }}",
+                @if(session('seo_contact_email'))
+                "email": "{{ session('seo_contact_email') }}",
+                @endif
+                "contactType": "customer service",
+                "areaServed": "GN",
+                "availableLanguage": "French"
+            },
+            @endif
+            @if(session('seo_social_facebook') || session('seo_social_linkedin'))
+            "sameAs": [
+                @if(session('seo_social_facebook'))"{{ session('seo_social_facebook') }}"@endif
+                @if(session('seo_social_facebook') && session('seo_social_linkedin')),@endif
+                @if(session('seo_social_linkedin'))"{{ session('seo_social_linkedin') }}"@endif
+            ],
+            @endif
+            "parentOrganization": {
+                "@type": "GovernmentOrganization",
+                "name": "République de Guinée",
+                "url": "https://www.gouvernement.gov.gn"
+            }
+        }
+        </script>
+        @endif
     </body>
 </html>
