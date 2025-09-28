@@ -1,10 +1,6 @@
 <?php
 
 /*
- * Nom       : Gnimassou
- * Prénom    : Jean-Marie Aristide 
- * Email     : aristechdev@gmail.com
- *
  * Signature DREAMER:
  *
  *  _______   _______   ________   ______   __       __  ________  _______  
@@ -23,11 +19,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Edition;
+use App\Traits\HasSEO;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class WelcomeController extends Controller
 {
+    use HasSEO;
     /**
      * Récupère l'édition courante ou la dernière édition si aucune n'est marquée comme courante
      * 
@@ -64,57 +62,73 @@ class WelcomeController extends Controller
     
     public function home()
     {
-        return Inertia::render('Home', [
+        $seoData = $this->setHomeSEO();
+        
+        return Inertia::render('Home', array_merge([
             'edition' => $this->getCurrentEdition(true)
-        ]);
+        ], $seoData));
     }
 
     public function categories()
     {
-        return Inertia::render('Categories', [
+        $seoData = $this->setCategoriesSEO();
+        
+        return Inertia::render('Categories', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 
     public function accompagnement()
     {
-        return Inertia::render('Accompagnement', [
+        $seoData = $this->setSupportSEO();
+        
+        return Inertia::render('Accompagnement', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 
     public function programme()
     {
-        return Inertia::render('Programme', [
+        $seoData = $this->setProgramSEO();
+        
+        return Inertia::render('Programme', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 
     public function actualites()
     {
-        return Inertia::render('Actualites', [
+        $seoData = $this->setNewsSEO();
+        
+        return Inertia::render('Actualites', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 
     public function candidater()
     {
-        return Inertia::render('Candidater', [
+        $seoData = $this->setApplicationSEO();
+        
+        return Inertia::render('Candidater', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 
     public function about()
     {
-        return Inertia::render('APropos', [
+        $seoData = $this->setAboutSEO();
+        
+        return Inertia::render('APropos', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 
     public function contact()
     {
-        return Inertia::render('Contact', [
+        $seoData = $this->setContactSEO();
+        
+        return Inertia::render('Contact', array_merge([
             'edition' => $this->getCurrentEdition()
-        ]);
+        ], $seoData));
     }
 }

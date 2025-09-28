@@ -4,9 +4,21 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="{{ config('app.description', 'Le Grand Prix FONIJ est une initiative du FONIJ pour favoriser l\'insertion socioéconomique et professionnelle des jeunes guinéens âgés de 18 à 35 ans.') }}">
+        {{-- SEO Meta Tags --}}
+        @if(class_exists('Artesaos\SEOTools\Facades\SEOMeta'))
+            {!! Artesaos\SEOTools\Facades\SEOMeta::generate() !!}
+        @endif
+        @if(class_exists('Artesaos\SEOTools\Facades\OpenGraph'))
+            {!! Artesaos\SEOTools\Facades\OpenGraph::generate() !!}
+        @endif
+        @if(class_exists('Artesaos\SEOTools\Facades\TwitterCard'))
+            {!! Artesaos\SEOTools\Facades\TwitterCard::generate() !!}
+        @endif
+        @if(class_exists('Artesaos\SEOTools\Facades\JsonLd'))
+            {!! Artesaos\SEOTools\Facades\JsonLd::generate() !!}
+        @endif
+        
         <meta name="author" content="FONIJ">
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
         <meta name="format-detection" content="telephone=no">
         <meta name="theme-color" content="#008751" media="(prefers-color-scheme: light)">
         <meta name="theme-color" content="#1e293b" media="(prefers-color-scheme: dark)">

@@ -1,9 +1,11 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
-import { PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, Users, Mail } from 'lucide-react';
+import { PhoneCall, ChevronRight, CheckCircle, Trophy, Calendar, MapPin, Clock, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { FONIJ } from '../utils';
+import SEO from '@/components/SEO';
+import useSEO from '@/hooks/useSEO';
 
 interface EditionProps {
     name: string;
@@ -18,11 +20,13 @@ interface HomeProps {
 }
 
 export default function Home({ edition }: HomeProps) {
+    // Utiliser les données SEO du contrôleur
+    const seoData = useSEO();
+    
     // Références pour les animations au scroll
     const heroRef = useRef(null);
     
     // Utiliser les dates de l'édition actuelle ou des dates par défaut si non disponibles
-    const dateEvenement = edition ? new Date(edition.startDate) : new Date('now');
     const dateFinalEvenement = edition ? new Date(edition.endDate) : new Date('now');
     const dateFinInscriptions = useMemo(() => 
         edition ? new Date(edition.registrationDeadline) : new Date('now'), 
@@ -219,6 +223,8 @@ export default function Home({ edition }: HomeProps) {
 
     return (
         <MainLayout>
+            <SEO {...seoData} />
+            
             {/* Hero Section améliorée et responsive avec animations */}
             <motion.div 
                 ref={heroRef}
@@ -892,7 +898,7 @@ export default function Home({ edition }: HomeProps) {
                         <div className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                             PANEL D'EXPERTS
                         </div>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4 sm:mb-6">
+                        <h2 className="sm:text-3xl text-2xl md:text-4xl text-foreground font-bold  mb-4 sm:mb-6">
                             Membres du Jury
                         </h2>
                         <div className="w-16 sm:w-24 h-1 bg-primary mx-auto mb-4 sm:mb-6"></div>

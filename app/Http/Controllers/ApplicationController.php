@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Edition;
+use App\Traits\HasSEO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -13,11 +14,14 @@ use App\Http\Requests\StoreApplicationRequest;
 
 class ApplicationController extends Controller
 {
+    use HasSEO;
     /**
      * Affiche le formulaire de candidature.
      */
     public function create()
     {
+        $seoData = $this->setApplicationSEO();
+        
         // Obtenir l'édition actuelle
         $edition = Edition::where('is_current', true)
             ->where('status', 'active')
@@ -52,11 +56,11 @@ class ApplicationController extends Controller
             }
         }
         
-        return Inertia::render('Candidater', [
+        return Inertia::render('Candidater', array_merge([
             'edition' => $edition,
             'isOpenForRegistration' => $isOpenForRegistration,
             'registrationMessage' => $registrationMessage
-        ]);
+        ], $seoData));
     }
 
     /**

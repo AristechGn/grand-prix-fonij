@@ -1,8 +1,10 @@
 import MainLayout from '@/layouts/MainLayout';
 import { Link } from '@inertiajs/react';
-import { Award, BookOpen, Laptop, Sprout, Check, ChevronRight, Trophy } from 'lucide-react';
+import { Check, ChevronRight, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { FONIJ } from '../utils';
+import SEO from '@/components/SEO';
+import useSEO from '@/hooks/useSEO';
 
 interface Edition {
     id: number;
@@ -18,6 +20,9 @@ interface CategoriesProps {
 const categories = FONIJ.categories;
 
 export default function Categories({ edition }: CategoriesProps) {
+    // Utiliser les données SEO du contrôleur
+    const seoData = useSEO();
+    
     // Date limite d'inscription formatée
     const dateFinInscriptions = edition 
         ? new Date(edition.registrationDeadline) 
@@ -28,6 +33,8 @@ export default function Categories({ edition }: CategoriesProps) {
     
     return (
         <MainLayout>
+            <SEO {...seoData} />
+            
             {/* Hero Section avec effet parallaxe */}
             <div 
                 className="w-full min-h-[90vh] bg-fixed bg-top bg-cover bg-gradient-to-b from-black/60 via-black/50 to-black/40 relative flex items-center justify-center py-32" 

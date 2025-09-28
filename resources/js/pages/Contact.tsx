@@ -2,8 +2,13 @@ import MainLayout from '@/layouts/MainLayout';
 import { FONIJ } from '@/utils/index';
 import { motion } from 'framer-motion';
 import { ChevronRight, Clock, Globe, Mail, MapPin, Phone, Send } from 'lucide-react';
+import SEO from '@/components/SEO';
+import useSEO from '@/hooks/useSEO';
 
 export default function contact() {
+    // Utiliser les données SEO du contrôleur
+    const seoData = useSEO();
+    
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -42,6 +47,8 @@ export default function contact() {
 
     return (
         <MainLayout>
+            <SEO {...seoData} />
+            
             {/* Hero Section avec Parallaxe */}
             <motion.div
                 className="bg-primary relative overflow-hidden"

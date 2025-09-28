@@ -1,13 +1,12 @@
 import MainLayout from '@/layouts/MainLayout';
 import { useState, useEffect, useMemo } from 'react';
-import { CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { FONIJ } from '@/utils';
 import axios from 'axios';
 import { toast } from 'sonner';
 import InputError from '@/components/input-error';
+import SEO from '@/components/SEO';
+import useSEO from '@/hooks/useSEO';
 
 // Composants
 import CandidatureHero from '@/components/candidature/CandidatureHero';
@@ -41,10 +40,6 @@ const regions = [
     "Faranah", "Kankan", "Nzérékoré", "Autre"
 ];
 
-// Styles communs pour les inputs, selects et textareas
-const inputClass = "w-full px-4 py-2 border border-primary/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background/50 backdrop-blur-sm shadow-sm text-foreground";
-const textareaClass = "w-full px-4 py-2 border border-primary/30 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-background/50 backdrop-blur-sm shadow-sm text-foreground";
-
 // Styles pour les titres de section
 const sectionTitleClass = "text-2xl md:text-3xl font-bold text-foreground mb-4 text-center";
 const sectionDividerClass = "mx-auto h-1 w-20 bg-gradient-fonij mb-6";
@@ -61,51 +56,18 @@ interface CandidaterProps {
     edition: Edition;
 }
 
-interface NavigationButtonsProps {
-    currentStep: number;
-    totalSteps: number;
-    onNext: () => void;
-    onPrevious: () => void;
-    isSubmit?: boolean;
-    isNextDisabled?: boolean;
-    submitting?: boolean;
-}
-
 export default function Candidater({ edition }: CandidaterProps) {
-    // Vérifier si l'édition est valide
-    if (!edition?.id) {
-        return (
-            <MainLayout>
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="text-center">
-                        <h1 className="text-2xl font-bold text-red-600 mb-4">Édition non disponible</h1>
-                        <p className="text-gray-600">Aucune édition active n'est disponible pour les candidatures.</p>
-                    </div>
-                </div>
-            </MainLayout>
-        );
-    }
-        
+    // Utiliser les données SEO du contrôleur
+    const seoData = useSEO();
+    
+    // Déplacer tous les hooks avant les conditions
     const dateFinInscriptions = useMemo(() => 
         edition ? new Date(edition.registrationDeadline) : new Date(), 
         [edition]
     );
-
-    if(dateFinInscriptions < new Date()) {
-        return (
-            <MainLayout>
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="text-center">
-                        <h1 className="text-2xl font-bold text-red-600 mb-4">Inscriptions fermées</h1>
-                        <p className="text-gray-600">Les inscriptions sont fermées.</p>
-                    </div>
-                </div>
-            </MainLayout>
-        );
-    }
-
+    
     const [formData, setFormData] = useState({
-        edition_id: edition.id,
+        edition_id: edition?.id || 0,
         // Informations personnelles
         nom: '',
         prenom: '',
@@ -151,21 +113,9 @@ export default function Candidater({ edition }: CandidaterProps) {
     });
 
     const [currentStep, setCurrentStep] = useState(1);
-    const totalSteps = 6;
+    const [errors, setErrors] = useState<Record<string, string[]>>({});
+    const [submitting, setSubmitting] = useState(false);
     
-    // Étapes du formulaire
-    const formSteps = [
-        "Catégorie",
-        "Informations personnelles",
-        "Projet",
-        "Programme",
-        "Documents",
-        "Finalisation"
-    ];
-    
-    // Calculer l'année de l'édition actuelle ou utiliser l'année en cours
-    const currentYear = edition ? edition.year : new Date().getFullYear();
-
     // Calculer l'âge en fonction de la date de naissance
     const calculerAge = (dateNaissance: string): string => {
         if (!dateNaissance) return '';
@@ -194,6 +144,50 @@ export default function Candidater({ edition }: CandidaterProps) {
             }));
         }
     }, [formData.dateNaissance]);
+    
+    // Vérifier si l'édition est valide
+    if (!edition?.id) {
+        return (
+            <MainLayout>
+                <SEO {...seoData} />
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-red-600 mb-4">Édition non disponible</h1>
+                        <p className="text-gray-600">Aucune édition active n'est disponible pour les candidatures.</p>
+                    </div>
+                </div>
+            </MainLayout>
+        );
+    }
+
+    if(dateFinInscriptions < new Date()) {
+        return (
+            <MainLayout>
+                <SEO {...seoData} />
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-red-600 mb-4">Inscriptions fermées</h1>
+                        <p className="text-gray-600">Les inscriptions sont fermées.</p>
+                    </div>
+                </div>
+            </MainLayout>
+        );
+    }
+
+    const totalSteps = 6;
+    
+    // Étapes du formulaire
+    const formSteps = [
+        "Catégorie",
+        "Informations personnelles",
+        "Projet",
+        "Programme",
+        "Documents",
+        "Finalisation"
+    ];
+    
+    // Calculer l'année de l'édition actuelle ou utiliser l'année en cours
+    // const currentYear = edition ? edition.year : new Date().getFullYear();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -335,10 +329,6 @@ export default function Candidater({ edition }: CandidaterProps) {
         return 1; // Par défaut, revenir à la première étape
     };
 
-    // État pour les erreurs et la soumission
-    const [errors, setErrors] = useState<Record<string, string[]>>({});
-    const [submitting, setSubmitting] = useState(false);
-    
     // Réinitialiser le formulaire
     const reset = () => {
         setFormData({
@@ -461,7 +451,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                     step: currentStep,
                     categorie: formData.category
                 })
-                .then((response: any) => {
+                .then((response: unknown) => {
                     setErrors({});
                     setCurrentStep(current => Math.min(current + 1, totalSteps));
                     scrollToTop();
@@ -498,7 +488,7 @@ export default function Candidater({ edition }: CandidaterProps) {
                     step: currentStep,
                     ...personalInfoData
                 })
-                .then((response: any) => {
+                .then((response: unknown) => {
                     setErrors({});
                     setCurrentStep(current => Math.min(current + 1, totalSteps));
                     scrollToTop();
@@ -770,6 +760,8 @@ export default function Candidater({ edition }: CandidaterProps) {
 
     return (
         <MainLayout>
+            <SEO {...seoData} />
+            
             {/* Hero Section */}
             <CandidatureHero edition={edition} errors={errors} />
 

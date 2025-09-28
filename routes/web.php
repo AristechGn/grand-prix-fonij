@@ -1,9 +1,6 @@
 <?php
 
 /*
- * Nom       : Gnimassou
- * Prénom    : Jean-Marie Aristide 
- * Email     : aristechdev@gmail.com
  *
  * Signature DREAMER:
  *
@@ -26,6 +23,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\SitemapController;
 
 Route::get('/init', [RegisteredUserController::class, 'init'])->name('app.init');
 
@@ -49,6 +47,9 @@ Route::get('/candidature/{applicationNumber}', [ApplicationController::class, 's
 Route::get('/a-propos', [WelcomeController::class, 'about'])->name('about.index');
 
 Route::get('/contact', [WelcomeController::class, 'contact'])->name('contact');
+
+// Sitemap route
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
