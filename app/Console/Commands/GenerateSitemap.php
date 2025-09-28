@@ -36,21 +36,23 @@ class GenerateSitemap extends Command
         // Generate sitemap by crawling the site
         SitemapGenerator::create(config('app.url'))
             ->hasCrawled(function (Url $url) {
+                $urlString = $url->url;
+                
                 // Skip admin routes
-                if (str_contains($url->getPath(), '/admin')) {
+                if (str_contains($urlString, '/admin')) {
                     return false;
                 }
                 
                 // Skip API routes
-                if (str_contains($url->getPath(), '/api')) {
+                if (str_contains($urlString, '/api')) {
                     return false;
                 }
                 
                 // Skip authentication routes
-                if (str_contains($url->getPath(), '/login') || 
-                    str_contains($url->getPath(), '/register') ||
-                    str_contains($url->getPath(), '/forgot-password') ||
-                    str_contains($url->getPath(), '/reset-password')) {
+                if (str_contains($urlString, '/login') || 
+                    str_contains($urlString, '/register') ||
+                    str_contains($urlString, '/forgot-password') ||
+                    str_contains($urlString, '/reset-password')) {
                     return false;
                 }
                 
