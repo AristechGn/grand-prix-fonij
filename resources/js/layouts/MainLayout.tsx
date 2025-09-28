@@ -2,9 +2,8 @@ import { Link } from '@inertiajs/react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { 
     Menu, X, Home, Award, GraduationCap, Send, 
-    Mail, Phone, MapPin, Facebook, Twitter, 
-    Instagram, Linkedin, Calendar, ChevronRight,
-    ArrowUp, Sparkles,
+    Mail, Phone, MapPin,ChevronRight,
+    ArrowUp,
     PhoneCall,
     CalendarDays,
     HandHelping
@@ -16,6 +15,19 @@ interface MainLayoutProps {
     children: React.ReactNode;
     title?: string;
     metaDescription?: string;
+    keywords?: string[];
+    canonical?: string;
+    image?: string;
+    type?: string;
+    organization?: {
+        type: string;
+        name: string;
+        contact_phone?: string;
+        contact_email?: string;
+        address?: string;
+        social_facebook?: string;
+        social_linkedin?: string;
+    };
 }
 
 interface RouteItem {
@@ -29,7 +41,12 @@ interface RouteItem {
 export default function MainLayout({ 
     children, 
     title = 'Grand Prix FONIJ',
-    metaDescription = 'Le Grand Prix FONIJ récompense les initiatives exceptionnelles en faveur de l\'entrepreneuriat en Guinée.' 
+    metaDescription = 'Le Grand Prix FONIJ récompense les initiatives exceptionnelles en faveur de l\'entrepreneuriat en Guinée.',
+    keywords = [],
+    canonical,
+    image,
+    type = 'website',
+    organization
 }: MainLayoutProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -129,9 +146,97 @@ export default function MainLayout({
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
-            {/* Meta tags */}
+            {/* Meta tags SEO dynamiques */}
             <title>{title}</title>
             <meta name="description" content={metaDescription} />
+            {keywords.length > 0 && (
+                <meta name="keywords" content={keywords.join(', ')} />
+            )}
+            {canonical && (
+                <link rel="canonical" href={canonical} />
+            )}
+            
+            {/* Open Graph Meta Tags */}
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={metaDescription} />
+            <meta property="og:type" content={type} />
+            <meta property="og:site_name" content="Grand Prix FONIJ - Fonds National d'Insertion des Jeunes" />
+            {canonical && (
+                <meta property="og:url" content={canonical} />
+            )}
+            {image && (
+                <meta property="og:image" content={image} />
+            )}
+            
+            {/* Twitter Card Meta Tags */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={title} />
+            <meta name="twitter:description" content={metaDescription} />
+            <meta name="twitter:site" content="@FONIJGUINEE" />
+            <meta name="twitter:creator" content="@FONIJGUINEE" />
+            {image && (
+                <meta name="twitter:image" content={image} />
+            )}
+            
+            {/* Meta tags supplémentaires pour le SEO */}
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow" />
+            <meta name="bingbot" content="index, follow" />
+            <meta name="language" content="fr" />
+            <meta name="geo.region" content="GN" />
+            <meta name="geo.country" content="Guinée" />
+            <meta name="geo.placename" content="Conakry" />
+            <meta name="distribution" content="global" />
+            <meta name="rating" content="general" />
+            <meta name="revisit-after" content="1 days" />
+            
+            {/* JSON-LD Structured Data */}
+            {organization && (
+                <script 
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": organization.type,
+                            "name": organization.name,
+                            "description": metaDescription,
+                            "url": canonical || window.location.href,
+                            ...(organization.address && {
+                                "address": {
+                                    "@type": "PostalAddress",
+                                    "streetAddress": "102-316 Av. de la République",
+                                    "addressLocality": "Conakry",
+                                    "addressRegion": "Conakry",
+                                    "addressCountry": "GN"
+                                }
+                            }),
+                            ...(organization.contact_phone && {
+                                "contactPoint": {
+                                    "@type": "ContactPoint",
+                                    "telephone": organization.contact_phone,
+                                    ...(organization.contact_email && {
+                                        "email": organization.contact_email
+                                    }),
+                                    "contactType": "customer service",
+                                    "areaServed": "GN",
+                                    "availableLanguage": "French"
+                                }
+                            }),
+                            ...((organization.social_facebook || organization.social_linkedin) && {
+                                "sameAs": [
+                                    ...(organization.social_facebook ? [organization.social_facebook] : []),
+                                    ...(organization.social_linkedin ? [organization.social_linkedin] : [])
+                                ]
+                            }),
+                            "parentOrganization": {
+                                "@type": "GovernmentOrganization",
+                                "name": "République de Guinée",
+                                "url": "https://www.gouvernement.gov.gn"
+                            }
+                        })
+                    }}
+                />
+            )}
             
             {/* Navigation - hauteur réduite sur mobile */}
             <nav 

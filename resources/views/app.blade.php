@@ -138,48 +138,48 @@
 
         {{-- JSON-LD dynamique --}}
         @if(session('seo_organization_name'))
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "{{ session('seo_organization_type', 'Organization') }}",
-                    "name": "{{ session('seo_organization_name') }}",
-                    "description": "{{ session('seo_description', 'Le Grand Prix FONIJ récompense les jeunes entrepreneurs guinéens âgés de 18 à 35 ans dans 5 catégories : promotion de l\'esprit d\'entreprise, éducation aux compétences entrepreneuriales, transition numérique, entrepreneuriat agricole durable et grand prix du jury.') }}",
-                    "url": "{{ config('app.url') }}",
-                    @if(session('seo_address'))
-                    "address": {
-                        "@type": "PostalAddress",
-                        "streetAddress": "102-316 Av. de la République",
-                        "addressLocality": "Conakry",
-                        "addressRegion": "Conakry",
-                        "addressCountry": "GN"
-                    },
-                    @endif
-                    @if(session('seo_contact_phone'))
-                    "contactPoint": {
-                        "@type": "ContactPoint",
-                        "telephone": "{{ session('seo_contact_phone') }}",
-                        @if(session('seo_contact_email'))
-                        "email": "{{ session('seo_contact_email') }}",
-                        @endif
-                        "contactType": "customer service",
-                        "areaServed": "GN",
-                        "availableLanguage": "French"
-                    },
-                    @endif
-                    @if(session('seo_social_facebook') || session('seo_social_linkedin'))
-                    "sameAs": [
-                        @if(session('seo_social_facebook'))"{{ session('seo_social_facebook') }}"@endif
-                        @if(session('seo_social_facebook') && session('seo_social_linkedin')),@endif
-                        @if(session('seo_social_linkedin'))"{{ session('seo_social_linkedin') }}"@endif
-                    ],
-                    @endif
-                    "parentOrganization": {
-                        "@type": "GovernmentOrganization",
-                        "name": "République de Guinée",
-                        "url": "https://www.gouvernement.gov.gn"
-                    }
-                }
-            </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "{{ session('seo_organization_type', 'Organization') }}",
+            "name": "{{ session('seo_organization_name') }}",
+            "description": "{{ session('seo_description', 'Le Grand Prix FONIJ récompense les jeunes entrepreneurs guinéens âgés de 18 à 35 ans dans 5 catégories : promotion de l\'esprit d\'entreprise, éducation aux compétences entrepreneuriales, transition numérique, entrepreneuriat agricole durable et grand prix du jury.') }}",
+            "url": "{{ config('app.url') }}",
+            @if(session('seo_address'))
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "102-316 Av. de la République",
+                "addressLocality": "Conakry",
+                "addressRegion": "Conakry",
+                "addressCountry": "GN"
+            },
+            @endif
+            @if(session('seo_contact_phone'))
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "{{ session('seo_contact_phone') }}",
+                @if(session('seo_contact_email'))
+                "email": "{{ session('seo_contact_email') }}",
+                @endif
+                "contactType": "customer service",
+                "areaServed": "GN",
+                "availableLanguage": "French"
+            },
+            @endif
+            @if(session('seo_social_facebook') || session('seo_social_linkedin'))
+            "sameAs": [
+                @if(session('seo_social_facebook'))"{{ session('seo_social_facebook') }}"@endif
+                @if(session('seo_social_facebook') && session('seo_social_linkedin')),@endif
+                @if(session('seo_social_linkedin'))"{{ session('seo_social_linkedin') }}"@endif
+            ],
+            @endif
+            "parentOrganization": {
+                "@type": "GovernmentOrganization",
+                "name": "République de Guinée",
+                "url": "https://www.gouvernement.gov.gn"
+            }
+        }
+        </script>
         @endif
     </body>
 </html>
