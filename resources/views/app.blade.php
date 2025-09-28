@@ -112,11 +112,11 @@
         <meta name="msapplication-config" content="/browserconfig.xml">
         
         {{-- Images par défaut pour le partage social --}}
-        <meta property="og:image" content="{{ config('app.url') }}/images/affiche.jpg">
+        <meta property="og:image" content="{{ config('app.url') }}/images/fonij/logo.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:image:alt" content="Grand Prix FONIJ - Initiative pour l'entrepreneuriat des jeunes guinéens">
-        <meta name="twitter:image" content="{{ config('app.url') }}/images/affiche.jpg">
+        <meta name="twitter:image" content="{{ config('app.url') }}/images/fonij/logo.png">
 
         {{-- Préchargement des polices --}}
         <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>

@@ -242,7 +242,7 @@ $staticPages = [
 ## 🖼️ Images Open Graph
 
 Images utilisées pour le SEO (optimisées pour 1200x630px) :
-- `/images/affiche.jpg` - Page d'accueil (affiche du Grand Prix)
+- `/images/fonij/logo.png` - Page d'accueil (affiche du Grand Prix)
 - `/images/fonij/cover.png` - À propos (couverture FONIJ)
 - `/images/programmes/hero.jpg` - Candidature (image héro programmes)
 - `/images/programmes/SMART-Entrepreneur.jpg` - Programme (programme SMART)

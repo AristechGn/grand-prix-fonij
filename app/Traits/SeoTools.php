@@ -320,7 +320,7 @@ trait SeoTools
         // Utiliser les mots-clés intelligents pour la page d'accueil
         $keywords = $this->createIntelligentSeoKeywords('entrepreneuriat', 'haute', 'national', 'general');
         
-        $this->setSeoMeta($title, $description, $keywords, route('home'), '/images/affiche.jpg', 'website');
+        $this->setSeoMeta($title, $description, $keywords, route('home'), '/images/fonij/logo.png', 'website');
         
         // Stocker des métadonnées spécifiques pour la page d'accueil
         session([

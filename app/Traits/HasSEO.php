@@ -229,7 +229,7 @@ trait HasSEO
                 'pérennité', 'viabilité', 'rentabilité', 'profitabilité', 'revenus',
                 'emplois créés', 'valeur ajoutée', 'contribution économique'
             ],
-            image: '/images/affiche.jpg'
+            image: '/images/fonij/logo.png'
         );
     }
 
