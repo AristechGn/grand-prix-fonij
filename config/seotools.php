@@ -149,7 +149,7 @@ return [
             'type'        => 'website',
             'site_name'   => 'Grand Prix FONIJ',
             'images'      => [
-                '/images/og-home.jpg',
+                '/images/affiche.jpg',
                 '/images/fonij/logo-transparent.png'
             ],
         ],
@@ -174,7 +174,7 @@ return [
             'url'         => 'current', // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove
             'type'        => 'WebPage',
             'images'      => [
-                '/images/og-home.jpg',
+                '/images/affiche.jpg',
                 '/images/fonij/logo-transparent.png'
             ],
         ],

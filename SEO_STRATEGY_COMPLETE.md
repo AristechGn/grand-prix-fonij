@@ -171,7 +171,7 @@ public function nouvellePage()
         title: 'Nouvelle Page - Grand Prix FONIJ',
         description: 'Description de la nouvelle page',
         keywords: ['mot1', 'mot2', 'mot3'],
-        image: '/images/og-nouvelle-page.jpg'
+        image: '/images/programmes/Youth-Incuba.jpg'
     );
     
     return Inertia::render('NouvellePage', array_merge([
@@ -222,15 +222,23 @@ $staticPages = [
 
 ## 🖼️ Images Open Graph
 
-Créez des images optimisées (1200x630px) dans `public/images/` :
-- `og-home.jpg` - Page d'accueil
-- `og-about.jpg` - À propos
-- `og-application.jpg` - Candidature
-- `og-program.jpg` - Programme
-- `og-categories.jpg` - Catégories
-- `og-actualites.jpg` - Actualités
-- `og-accompagnement.jpg` - Accompagnement
-- `og-contact.jpg` - Contact
+Images utilisées pour le SEO (optimisées pour 1200x630px) :
+- `/images/affiche.jpg` - Page d'accueil (affiche du Grand Prix)
+- `/images/fonij/cover.png` - À propos (couverture FONIJ)
+- `/images/programmes/hero.jpg` - Candidature (image héro programmes)
+- `/images/programmes/SMART-Entrepreneur.jpg` - Programme (programme SMART)
+- `/images/categories/1.jpg` - Catégories (image catégorie 1)
+- `/images/covers/salle-informatique-fonij.jpg` - Actualités (salle informatique)
+- `/images/accompagnement/cover.jpg` - Accompagnement (couverture accompagnement)
+- `/images/fonij/dg-fonij.jpg` - Contact (directeur général FONIJ)
+
+**Images supplémentaires disponibles :**
+- `/images/favicon/apple-touch-icon.png` - Icône Apple Touch
+- `/images/favicon/favicon-96x96.png` - Favicon 96x96
+- `/images/favicon/web-app-manifest-192x192.png` - Manifest 192x192
+- `/images/favicon/web-app-manifest-512x512.png` - Manifest 512x512
+- `/images/favicon/favicon.svg` - Favicon SVG
+- `/logo.svg` - Logo principal SVG
 
 ## 🧪 Tests et validation
 

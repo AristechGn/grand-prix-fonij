@@ -229,7 +229,7 @@ trait HasSEO
                 'pérennité', 'viabilité', 'rentabilité', 'profitabilité', 'revenus',
                 'emplois créés', 'valeur ajoutée', 'contribution économique'
             ],
-            image: '/images/og-home.jpg'
+            image: '/images/affiche.jpg'
         );
     }
 
@@ -242,7 +242,7 @@ trait HasSEO
             title: 'À propos - Grand Prix FONIJ',
             description: 'Découvrez l\'histoire et la mission du Grand Prix FONIJ, une initiative pour l\'insertion socioéconomique des jeunes guinéens.',
             keywords: ['FONIJ', 'à propos', 'mission', 'histoire', 'jeunes guinéens', 'insertion'],
-            image: '/images/og-about.jpg'
+            image: '/images/fonij/cover.png'
         );
     }
 
@@ -334,7 +334,7 @@ trait HasSEO
                 'santé', 'éducation', 'formation', 'emploi', 'travail',
                 'commerce', 'services', 'industrie', 'manufacture', 'production'
             ],
-            image: '/images/og-application.jpg'
+            image: '/images/programmes/hero.jpg'
         );
     }
 
@@ -351,7 +351,7 @@ trait HasSEO
                 'formation entrepreneuriat', 'coaching projet', 'mentorat jeunes', 'développement startup',
                 'accompagnement personnalisé', 'formation gestion', 'levée de fonds', 'networking'
             ],
-            image: '/images/og-program.jpg'
+            image: '/images/programmes/SMART-Entrepreneur.jpg'
         );
     }
 
@@ -436,7 +436,7 @@ trait HasSEO
                 'transformation', 'amélioration', 'optimisation', 'efficacité',
                 'performance', 'excellence', 'qualité', 'valeur ajoutée'
             ],
-            image: '/images/og-categories.jpg'
+            image: '/images/categories/1.jpg'
         );
     }
 
@@ -453,7 +453,7 @@ trait HasSEO
                 'équipe FONIJ', 'Conakry', 'Palais du Peuple', 'Kaloum', 'téléphone FONIJ',
                 'email FONIJ', 'adresse FONIJ', 'horaires FONIJ'
             ],
-            image: '/images/og-contact.jpg'
+            image: '/images/fonij/dg-fonij.jpg'
         );
     }
 
@@ -470,7 +470,7 @@ trait HasSEO
                 'annonces importantes', 'initiatives jeunes', 'news FONIJ', 'blog entrepreneuriat',
                 'succès stories', 'cas d\'étude', 'retours d\'expérience'
             ],
-            image: '/images/og-news.jpg'
+            image: '/images/covers/salle-informatique-fonij.jpg'
         );
     }
 
@@ -487,7 +487,7 @@ trait HasSEO
                 'espaces de travail', 'réseau entrepreneurs', 'coaching individuel', 'expertise entrepreneuriat',
                 'développement projet', 'croissance entreprise', 'partenariats', 'financement'
             ],
-            image: '/images/og-support.jpg'
+            image: '/images/accompagnement/cover.jpg'
         );
     }
 }
