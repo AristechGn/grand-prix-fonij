@@ -171,7 +171,7 @@ public function nouvellePage()
         title: 'Nouvelle Page - Grand Prix FONIJ',
         description: 'Description de la nouvelle page',
         keywords: ['mot1', 'mot2', 'mot3'],
-        image: asset('images/og-nouvelle-page.jpg')
+        image: '/images/og-nouvelle-page.jpg'
     );
     
     return Inertia::render('NouvellePage', array_merge([
@@ -186,6 +186,7 @@ import SEO from '@/components/SEO';
 import useSEO from '@/hooks/useSEO';
 
 export default function NouvellePage({ data }: Props) {
+    
     const seoData = useSEO();
     
     return (
@@ -256,6 +257,7 @@ Créez des images optimisées (1200x630px) dans `public/images/` :
 4. **Structured data** - Données structurées pour les moteurs de recherche
 5. **Robots.txt** - Contrôle de l'indexation
 6. **Intégration React** - Meta tags gérés côté client avec Inertia.js
+7. **Correction des erreurs de production** - Suppression des fonctions `asset()` dans les fichiers de configuration pour éviter les erreurs UrlGenerator
 
 ## 🎉 Résultat
 
@@ -265,5 +267,16 @@ Votre site dispose maintenant d'une stratégie SEO complète et moderne qui :
 - Facilite l'indexation par les moteurs de recherche
 - Fournit des données structurées pour les moteurs de recherche
 - S'intègre parfaitement avec votre stack React/Inertia.js
+- Fonctionne correctement en production sans erreurs UrlGenerator
 
 La stratégie est évolutive et facilement maintenable pour l'ajout de nouvelles pages.
+
+## ⚠️ Important - Correction des erreurs de production
+
+**Problème résolu** : L'erreur `UrlGenerator::__construct(): Argument #2 ($request) must be of type Illuminate\Http\Request, null given` a été corrigée en :
+
+1. **Supprimant les fonctions `asset()`** des fichiers de configuration (`config/seotools.php`)
+2. **Remplaçant par des chemins relatifs** dans le trait `HasSEO.php`
+3. **Mettant à jour la documentation** pour utiliser des chemins relatifs
+
+**Règle importante** : Ne jamais utiliser `asset()`, `url()`, ou `route()` dans les fichiers de configuration Laravel car ces fonctions nécessitent une instance de requête HTTP qui n'est pas disponible lors du chargement des configurations.

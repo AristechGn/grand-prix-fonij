@@ -93,7 +93,7 @@ trait HasSEO
             'name' => 'FONIJ - Fonds National pour l\'Insertion des Jeunes',
             'alternateName' => 'FONIJ',
             'url' => config('app.url'),
-            'logo' => asset('images/fonij/logo-transparent.png'),
+            'logo' => '/images/fonij/logo-transparent.png',
             'description' => 'Le FONIJ est une institution publique guinéenne dédiée à l\'insertion socioéconomique et professionnelle des jeunes.',
             'address' => [
                 '@type' => 'PostalAddress',
@@ -229,7 +229,7 @@ trait HasSEO
                 'pérennité', 'viabilité', 'rentabilité', 'profitabilité', 'revenus',
                 'emplois créés', 'valeur ajoutée', 'contribution économique'
             ],
-            image: asset('images/og-home.jpg')
+            image: '/images/og-home.jpg'
         );
     }
 
@@ -242,7 +242,7 @@ trait HasSEO
             title: 'À propos - Grand Prix FONIJ',
             description: 'Découvrez l\'histoire et la mission du Grand Prix FONIJ, une initiative pour l\'insertion socioéconomique des jeunes guinéens.',
             keywords: ['FONIJ', 'à propos', 'mission', 'histoire', 'jeunes guinéens', 'insertion'],
-            image: asset('images/og-about.jpg')
+            image: '/images/og-about.jpg'
         );
     }
 
@@ -334,7 +334,7 @@ trait HasSEO
                 'santé', 'éducation', 'formation', 'emploi', 'travail',
                 'commerce', 'services', 'industrie', 'manufacture', 'production'
             ],
-            image: asset('images/og-application.jpg')
+            image: '/images/og-application.jpg'
         );
     }
 
@@ -351,7 +351,7 @@ trait HasSEO
                 'formation entrepreneuriat', 'coaching projet', 'mentorat jeunes', 'développement startup',
                 'accompagnement personnalisé', 'formation gestion', 'levée de fonds', 'networking'
             ],
-            image: asset('images/og-program.jpg')
+            image: '/images/og-program.jpg'
         );
     }
 
@@ -436,7 +436,7 @@ trait HasSEO
                 'transformation', 'amélioration', 'optimisation', 'efficacité',
                 'performance', 'excellence', 'qualité', 'valeur ajoutée'
             ],
-            image: asset('images/og-categories.jpg')
+            image: '/images/og-categories.jpg'
         );
     }
 
@@ -453,7 +453,7 @@ trait HasSEO
                 'équipe FONIJ', 'Conakry', 'Palais du Peuple', 'Kaloum', 'téléphone FONIJ',
                 'email FONIJ', 'adresse FONIJ', 'horaires FONIJ'
             ],
-            image: asset('images/og-contact.jpg')
+            image: '/images/og-contact.jpg'
         );
     }
 
@@ -470,7 +470,7 @@ trait HasSEO
                 'annonces importantes', 'initiatives jeunes', 'news FONIJ', 'blog entrepreneuriat',
                 'succès stories', 'cas d\'étude', 'retours d\'expérience'
             ],
-            image: asset('images/og-news.jpg')
+            image: '/images/og-news.jpg'
         );
     }
 
@@ -487,7 +487,7 @@ trait HasSEO
                 'espaces de travail', 'réseau entrepreneurs', 'coaching individuel', 'expertise entrepreneuriat',
                 'développement projet', 'croissance entreprise', 'partenariats', 'financement'
             ],
-            image: asset('images/og-support.jpg')
+            image: '/images/og-support.jpg'
         );
     }
 }
