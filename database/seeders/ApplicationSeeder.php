@@ -31,6 +31,7 @@ class ApplicationSeeder extends Seeder
         }
 
         // Données de test pour les candidatures
+        // Catégories FONIJ: 1=Promotion esprit entreprise, 2=Éducation compétences, 3=Transition numérique, 4=Entrepreneuriat agricole, 5=Grand prix jury
         $applicationsData = [
             [
                 'first_name' => 'Aminata',
@@ -40,7 +41,7 @@ class ApplicationSeeder extends Seeder
                 'city' => 'Conakry',
                 'region' => 'Conakry',
                 'project_name' => 'AgriTech Connect',
-                'category' => 'agri',
+                'category' => 4, // Entrepreneuriat agricole durable
                 'status' => 'validated',
                 'score' => 85,
                 'education_level' => 'universitaire',
@@ -55,7 +56,7 @@ class ApplicationSeeder extends Seeder
                 'city' => 'Kankan',
                 'region' => 'Kankan',
                 'project_name' => 'EduTech Mobile',
-                'category' => 'tech',
+                'category' => 3, // Transition numérique
                 'status' => 'pending',
                 'score' => null,
                 'education_level' => 'universitaire',
@@ -70,7 +71,7 @@ class ApplicationSeeder extends Seeder
                 'city' => 'Labé',
                 'region' => 'Labé',
                 'project_name' => 'Santé Communautaire',
-                'category' => 'social',
+                'category' => 1, // Promotion de l'esprit d'entreprise
                 'status' => 'selected',
                 'score' => 92,
                 'education_level' => 'universitaire',
@@ -85,7 +86,7 @@ class ApplicationSeeder extends Seeder
                 'city' => 'N\'Zérékoré',
                 'region' => 'N\'Zérékoré',
                 'project_name' => 'Green Energy Solutions',
-                'category' => 'tech',
+                'category' => 3, // Transition numérique
                 'status' => 'finalist',
                 'score' => 88,
                 'education_level' => 'universitaire',
@@ -100,7 +101,7 @@ class ApplicationSeeder extends Seeder
                 'city' => 'Boké',
                 'region' => 'Boké',
                 'project_name' => 'Artisanat Digital',
-                'category' => 'social',
+                'category' => 5, // Grand prix du jury (initiative la plus créative)
                 'status' => 'winner',
                 'score' => 95,
                 'education_level' => 'secondaire',
@@ -183,110 +184,150 @@ class ApplicationSeeder extends Seeder
     }
 
     /**
-     * Génère un résumé de projet basé sur le nom et la catégorie
+     * Génère un résumé de projet basé sur le nom et la catégorie (ID)
      */
-    private function generateProjectSummary(string $projectName, string $category): string
+    private function generateProjectSummary(string $projectName, int $category): string
     {
         $summaries = [
-            'agri' => [
-                "Projet innovant visant à moderniser l'agriculture locale grâce aux nouvelles technologies.",
-                "Solution agricole durable pour améliorer la productivité et la qualité des récoltes.",
-                "Initiative d'agriculture intelligente pour réduire les pertes et optimiser les ressources.",
+            1 => [ // Promotion de l'esprit d'entreprise
+                "Projet innovant pour promouvoir la culture entrepreneuriale chez les jeunes.",
+                "Initiative inspirante pour susciter l'envie d'entreprendre dans la société.",
+                "Programme créatif pour dynamiser l'écosystème entrepreneurial local.",
             ],
-            'tech' => [
+            2 => [ // Éducation aux compétences entrepreneuriales
+                "Formation pratique aux compétences essentielles de l'entrepreneuriat.",
+                "Programme éducatif pour développer les savoir-faire entrepreneuriaux.",
+                "Initiative d'apprentissage pour renforcer les capacités des jeunes entrepreneurs.",
+            ],
+            3 => [ // Transition numérique
                 "Application mobile révolutionnaire pour connecter les communautés locales.",
                 "Plateforme technologique innovante pour résoudre les défis du quotidien.",
                 "Solution digitale créative pour améliorer l'efficacité des services.",
             ],
-            'social' => [
-                "Projet social impactant pour améliorer les conditions de vie des communautés.",
-                "Initiative communautaire pour promouvoir l'éducation et le développement.",
-                "Programme social innovant pour l'autonomisation des populations vulnérables.",
+            4 => [ // Entrepreneuriat agricole durable
+                "Projet innovant visant à moderniser l'agriculture locale grâce aux nouvelles technologies.",
+                "Solution agricole durable pour améliorer la productivité et la qualité des récoltes.",
+                "Initiative d'agriculture intelligente pour réduire les pertes et optimiser les ressources.",
+            ],
+            5 => [ // Grand prix du jury
+                "Projet exceptionnellement créatif avec un impact transformateur.",
+                "Initiative audacieuse qui révolutionne son domaine d'application.",
+                "Solution innovante qui change la donne dans son secteur.",
             ],
         ];
 
-        $categorySummaries = $summaries[$category] ?? $summaries['tech'];
+        $categorySummaries = $summaries[$category] ?? $summaries[3];
         return $categorySummaries[array_rand($categorySummaries)];
     }
 
     /**
      * Génère une description du problème résolu
      */
-    private function generateProblemSolved(string $category): string
+    private function generateProblemSolved(int $category): string
     {
         $problems = [
-            'agri' => [
-                "Faible productivité agricole due aux méthodes traditionnelles",
-                "Manque d'accès aux informations météorologiques pour les agriculteurs",
-                "Difficultés de commercialisation des produits agricoles",
+            1 => [ // Promotion de l'esprit d'entreprise
+                "Manque de culture entrepreneuriale chez les jeunes",
+                "Absence d'inspiration et de modèles entrepreneuriaux",
+                "Faible dynamisme de l'écosystème entrepreneurial local",
             ],
-            'tech' => [
+            2 => [ // Éducation aux compétences entrepreneuriales
+                "Manque de formation pratique aux compétences entrepreneuriales",
+                "Difficultés d'accès aux savoir-faire essentiels",
+                "Absence de programmes d'accompagnement spécialisés",
+            ],
+            3 => [ // Transition numérique
                 "Manque de connectivité dans les zones rurales",
                 "Difficultés d'accès aux services numériques",
                 "Absence de solutions technologiques adaptées au contexte local",
             ],
-            'social' => [
-                "Inégalités d'accès à l'éducation et à la formation",
-                "Manque de services de santé dans les zones reculées",
-                "Difficultés d'intégration des populations vulnérables",
+            4 => [ // Entrepreneuriat agricole durable
+                "Faible productivité agricole due aux méthodes traditionnelles",
+                "Manque d'accès aux informations météorologiques pour les agriculteurs",
+                "Difficultés de commercialisation des produits agricoles",
+            ],
+            5 => [ // Grand prix du jury
+                "Défis complexes nécessitant des solutions créatives",
+                "Problématiques nécessitant une approche révolutionnaire",
+                "Challenges nécessitant une innovation exceptionnelle",
             ],
         ];
 
-        $categoryProblems = $problems[$category] ?? $problems['tech'];
+        $categoryProblems = $problems[$category] ?? $problems[3];
         return $categoryProblems[array_rand($categoryProblems)];
     }
 
     /**
      * Génère l'impact attendu
      */
-    private function generateExpectedImpact(string $category): string
+    private function generateExpectedImpact(int $category): string
     {
         $impacts = [
-            'agri' => [
-                "Augmentation de 30% de la productivité agricole",
-                "Réduction des pertes post-récolte de 40%",
-                "Amélioration des revenus des agriculteurs de 50%",
+            1 => [ // Promotion de l'esprit d'entreprise
+                "Inspiration de 1000 jeunes à entreprendre",
+                "Création d'un écosystème entrepreneurial dynamique",
+                "Formation de 200 mentors entrepreneuriaux",
             ],
-            'tech' => [
+            2 => [ // Éducation aux compétences entrepreneuriales
+                "Formation de 500 personnes aux compétences professionnelles",
+                "Amélioration des capacités de 300 entrepreneurs",
+                "Développement des compétences de 200 femmes entrepreneures",
+            ],
+            3 => [ // Transition numérique
                 "Connexion de 10 000 personnes aux services numériques",
                 "Réduction des coûts de communication de 60%",
                 "Amélioration de l'efficacité des services de 45%",
             ],
-            'social' => [
-                "Formation de 500 personnes aux compétences professionnelles",
-                "Amélioration de l'accès aux soins pour 2000 personnes",
-                "Autonomisation de 300 femmes entrepreneures",
+            4 => [ // Entrepreneuriat agricole durable
+                "Augmentation de 30% de la productivité agricole",
+                "Réduction des pertes post-récolte de 40%",
+                "Amélioration des revenus des agriculteurs de 50%",
+            ],
+            5 => [ // Grand prix du jury
+                "Impact transformateur sur 5000 personnes",
+                "Innovation révolutionnaire dans le secteur",
+                "Changement de paradigme dans l'approche du problème",
             ],
         ];
 
-        $categoryImpacts = $impacts[$category] ?? $impacts['tech'];
+        $categoryImpacts = $impacts[$category] ?? $impacts[3];
         return $categoryImpacts[array_rand($categoryImpacts)];
     }
 
     /**
      * Génère le public cible
      */
-    private function generateTargetAudience(string $category): string
+    private function generateTargetAudience(int $category): string
     {
         $audiences = [
-            'agri' => [
-                "Agriculteurs et éleveurs des zones rurales",
-                "Coopératives agricoles et organisations paysannes",
-                "Jeunes entrepreneurs agricoles",
+            1 => [ // Promotion de l'esprit d'entreprise
+                "Jeunes entrepreneurs et aspirants entrepreneurs",
+                "Étudiants et jeunes diplômés",
+                "Communautés locales et organisations de jeunesse",
             ],
-            'tech' => [
+            2 => [ // Éducation aux compétences entrepreneuriales
+                "Jeunes entrepreneurs en formation",
+                "Femmes entrepreneures et populations vulnérables",
+                "Professionnels en reconversion",
+            ],
+            3 => [ // Transition numérique
                 "Entreprises locales et startups",
                 "Étudiants et professionnels du secteur technologique",
                 "Communautés rurales et urbaines",
             ],
-            'social' => [
-                "Femmes et jeunes des communautés défavorisées",
-                "Étudiants et apprenants de tous âges",
-                "Professionnels de la santé et de l'éducation",
+            4 => [ // Entrepreneuriat agricole durable
+                "Agriculteurs et éleveurs des zones rurales",
+                "Coopératives agricoles et organisations paysannes",
+                "Jeunes entrepreneurs agricoles",
+            ],
+            5 => [ // Grand prix du jury
+                "Communautés diverses et populations variées",
+                "Secteurs multiples et domaines variés",
+                "Public général et société civile",
             ],
         ];
 
-        $categoryAudiences = $audiences[$category] ?? $audiences['tech'];
+        $categoryAudiences = $audiences[$category] ?? $audiences[3];
         return $categoryAudiences[array_rand($categoryAudiences)];
     }
 

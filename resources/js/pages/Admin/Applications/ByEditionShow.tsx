@@ -60,7 +60,7 @@ interface ByEditionShowProps extends PageProps {
     total: number;
   };
   statuses: Record<string, string>;
-  categories: number[]; // IDs des catégories
+  categories: (number | string)[]; // IDs des catégories
   filters: {
     search?: string;
     status?: string;
@@ -77,6 +77,27 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   const [selectedCategory, setSelectedCategory] = useState(filters.category?.toString() || 'all');
   const [scoreMin, setScoreMin] = useState(filters.score_min || '');
   const [scoreMax, setScoreMax] = useState(filters.score_max || '');
+
+  // Debug: Afficher les catégories reçues
+  console.log('Categories reçues:', categories);
+  console.log('Types des catégories:', categories.map(c => typeof c));
+  
+  // Nettoyer les catégories pour éviter les erreurs
+  const cleanCategories = categories
+    .map(categoryId => {
+      // Convertir en nombre si c'est une chaîne numérique
+      const numCategoryId = typeof categoryId === 'string' ? parseInt(categoryId, 10) : categoryId;
+      return numCategoryId;
+    })
+    .filter(categoryId => {
+      return categoryId !== null && 
+             categoryId !== undefined && 
+             !isNaN(categoryId) && 
+             categoryId > 0 && 
+             categoryId <= 5;
+    });
+  
+  console.log('Catégories nettoyées:', cleanCategories);
 
   // Fonction pour appliquer les filtres
   const applyFilters = () => {
@@ -106,10 +127,23 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     return applications.data.filter(app => app.status === status).length;
   };
 
+  // Fonction pour obtenir les détails de la catégorie par son ID
+  const getCategoryDetails = (categoryId: number | string) => {
+    // Convertir en nombre si c'est une chaîne
+    const numCategoryId = typeof categoryId === 'string' ? parseInt(categoryId, 10) : categoryId;
+    
+    if (!numCategoryId || numCategoryId <= 0 || numCategoryId > 5 || isNaN(numCategoryId)) {
+      return null;
+    }
+    const category = FONIJ.categories.find(cat => cat.id === numCategoryId);
+    return category || null;
+  };
+
   // Fonction pour obtenir le nom de la catégorie par son ID
-  const getCategoryName = (categoryId: number) => {
-    const category = FONIJ.categories.find(cat => cat.id === categoryId);
-    return category ? category.title : `Catégorie ${categoryId}`;
+  const getCategoryName = (categoryId: number | string) => {
+    const category = getCategoryDetails(categoryId);
+    const numCategoryId = typeof categoryId === 'string' ? parseInt(categoryId, 10) : categoryId;
+    return category ? category.title : `Catégorie ${numCategoryId}`;
   };
 
   const columns: ColumnDef<Application>[] = [
@@ -128,11 +162,29 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     {
       header: 'Catégorie',
       accessorKey: 'category',
-      cell: ({ row }: { row: { original: Application } }) => (
-        <span className="text-sm text-gray-700">
-          {getCategoryName(row.original.category)}
-        </span>
-      ),
+      cell: ({ row }: { row: { original: Application } }) => {
+        const category = getCategoryDetails(row.original.category);
+        if (!category) {
+          return (
+            <div className="max-w-[200px]">
+              <span className="text-sm text-gray-500 font-medium">
+                Catégorie {row.original.category}
+              </span>
+            </div>
+          );
+        }
+        
+        return (
+          <div className="max-w-[200px]">
+            <div className="font-medium text-sm text-gray-900 truncate" title={category.title}>
+              {category.title}
+            </div>
+            <div className="text-xs text-gray-500 truncate" title={category.description}>
+              {category.description}
+            </div>
+          </div>
+        );
+      },
     },
     {
       header: 'Statut',
@@ -206,79 +258,88 @@ export default function ByEditionShow({ edition, applications, statuses, categor
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           {/* En-tête */}
-          <div className="mb-6">
-            <div className="flex items-center gap-4 mb-4">
-              <Link href={route('admin.applications.by-edition')}>
-                <Button variant="outline" size="sm">
-                  <ArrowLeftIcon className="h-4 w-4 mr-2" />
-                  Retour
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <CalendarIcon className="h-8 w-8 text-blue-600" />
-                  {edition.name}
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  Édition {edition.year} - {applications.total} candidature{applications.total > 1 ? 's' : ''}
-                </p>
+          <div className="mb-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 shadow-md">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                <Link href={route('admin.applications.by-edition')}>
+                  <Button variant="outline" size="sm" className="bg-white hover:bg-gray-50 transition-colors">
+                    <ArrowLeftIcon className="h-4 w-4 mr-2 text-blue-600" />
+                    Retour
+                  </Button>
+                </Link>
+                <div>
+                  <h1 className="text-4xl font-extrabold text-gray-900 flex items-center gap-4">
+                    <CalendarIcon className="h-10 w-10 text-blue-600 bg-white rounded-full p-2 shadow-md" />
+                    {edition.name}
+                  </h1>
+                  <p className="text-gray-600 mt-2 text-lg">
+                    Édition {edition.year} - {applications.total} candidature{applications.total > 1 ? 's' : ''}
+                  </p>
+                </div>
               </div>
+              <Button 
+                onClick={handleExport} 
+                className="bg-green-500 hover:bg-green-600 text-white transition-colors shadow-md"
+              >
+                <DownloadIcon className="h-5 w-5 mr-2" />
+                Exporter les candidatures
+              </Button>
             </div>
           </div>
 
           {/* Statistiques */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <Card>
-              <CardContent className="p-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
                 <div className="flex items-center">
-                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                    <FileTextIcon className="h-6 w-6 text-blue-600" />
+                  <div className="h-14 w-14 rounded-full bg-blue-200 flex items-center justify-center mr-5 shadow-md">
+                    <FileTextIcon className="h-7 w-7 text-blue-700" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Total candidatures</p>
-                    <p className="text-2xl font-bold text-gray-900">{applications.total}</p>
+                    <p className="text-sm text-gray-700 font-semibold">Total candidatures</p>
+                    <p className="text-3xl font-bold text-blue-900">{applications.total}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
                 <div className="flex items-center">
-                  <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
-                    <UsersIcon className="h-6 w-6 text-green-600" />
+                  <div className="h-14 w-14 rounded-full bg-green-200 flex items-center justify-center mr-5 shadow-md">
+                    <UsersIcon className="h-7 w-7 text-green-700" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Validées</p>
-                    <p className="text-2xl font-bold text-gray-900">{getFilteredCount('validated')}</p>
+                    <p className="text-sm text-gray-700 font-semibold">Validées</p>
+                    <p className="text-3xl font-bold text-green-900">{getFilteredCount('validated')}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg">
                 <div className="flex items-center">
-                  <div className="h-12 w-12 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
-                    <CalendarIcon className="h-6 w-6 text-yellow-600" />
+                  <div className="h-14 w-14 rounded-full bg-yellow-200 flex items-center justify-center mr-5 shadow-md">
+                    <CalendarIcon className="h-7 w-7 text-yellow-700" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">En attente</p>
-                    <p className="text-2xl font-bold text-gray-900">{getFilteredCount('pending')}</p>
+                    <p className="text-sm text-gray-700 font-semibold">En attente</p>
+                    <p className="text-3xl font-bold text-yellow-900">{getFilteredCount('pending')}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
                 <div className="flex items-center">
-                  <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                    <UsersIcon className="h-6 w-6 text-purple-600" />
+                  <div className="h-14 w-14 rounded-full bg-purple-200 flex items-center justify-center mr-5 shadow-md">
+                    <UsersIcon className="h-7 w-7 text-purple-700" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Finalistes</p>
-                    <p className="text-2xl font-bold text-gray-900">{getFilteredCount('finalist')}</p>
+                    <p className="text-sm text-gray-700 font-semibold">Finalistes</p>
+                    <p className="text-3xl font-bold text-purple-900">{getFilteredCount('finalist')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -286,17 +347,17 @@ export default function ByEditionShow({ edition, applications, statuses, categor
           </div>
 
           {/* Filtres */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FilterIcon className="h-5 w-5" />
-                Filtres
+          <Card className="mb-6 bg-gradient-to-br from-gray-50 to-gray-100 shadow-lg">
+            <CardHeader className="bg-white/50 backdrop-blur-sm rounded-t-lg border-b border-gray-200">
+              <CardTitle className="flex items-center gap-3 text-xl font-bold text-gray-800">
+                <FilterIcon className="h-6 w-6 text-blue-600" />
+                Filtres de recherche
               </CardTitle>
-              <CardDescription>
-                Filtrez les candidatures selon vos critères
+              <CardDescription className="text-gray-600">
+                Affinez votre recherche avec des filtres précis
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 {/* Recherche */}
                 <div className="lg:col-span-2">
@@ -307,7 +368,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       placeholder="Nom, projet, email..."
-                      className="pl-10"
+                      className="pl-10 bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -320,13 +381,17 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     Statut
                   </label>
                   <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all">
                       <SelectValue placeholder="Tous les statuts" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Tous les statuts</SelectItem>
+                    <SelectContent className="bg-white shadow-lg rounded-lg">
+                      <SelectItem value="all" className="hover:bg-gray-100 transition-colors">Tous les statuts</SelectItem>
                       {Object.entries(statuses).map(([key, label]) => (
-                        <SelectItem key={key} value={key}>
+                        <SelectItem 
+                          key={key} 
+                          value={key} 
+                          className="hover:bg-gray-100 transition-colors"
+                        >
                           {label}
                         </SelectItem>
                       ))}
@@ -340,16 +405,31 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     Catégorie
                   </label>
                   <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all">
                       <SelectValue placeholder="Toutes les catégories" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Toutes les catégories</SelectItem>
-                      {categories.map((categoryId) => (
-                        <SelectItem key={categoryId} value={categoryId.toString()}>
-                          {getCategoryName(categoryId)}
-                        </SelectItem>
-                      ))}
+                    <SelectContent className="bg-white shadow-lg rounded-lg">
+                      <SelectItem value="all" className="hover:bg-gray-100 transition-colors">Toutes les catégories</SelectItem>
+                      {cleanCategories.map((categoryId) => {
+                        const numCategoryId = Number(categoryId);
+                        const category = getCategoryDetails(numCategoryId);
+                        return (
+                          <SelectItem 
+                            key={numCategoryId} 
+                            value={numCategoryId.toString()} 
+                            className="hover:bg-gray-100 transition-colors"
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-medium">{category?.title || `Catégorie ${numCategoryId}`}</span>
+                              {category && (
+                                <span className="text-xs text-gray-500 truncate max-w-[200px]">
+                                  {category.description}
+                                </span>
+                              )}
+                            </div>
+                          </SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
                 </div>
@@ -367,7 +447,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                       max="100"
                       value={scoreMin}
                       onChange={(e) => setScoreMin(e.target.value)}
-                      className="w-20"
+                      className="w-20 bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all"
                     />
                     <span className="flex items-center text-gray-500">-</span>
                     <Input
@@ -377,7 +457,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                       max="100"
                       value={scoreMax}
                       onChange={(e) => setScoreMax(e.target.value)}
-                      className="w-20"
+                      className="w-20 bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all"
                     />
                   </div>
                 </div>
@@ -386,11 +466,18 @@ export default function ByEditionShow({ edition, applications, statuses, categor
               {/* Boutons d'action */}
               <div className="flex justify-between items-center mt-4">
                 <div className="flex gap-2">
-                  <Button onClick={applyFilters} className="bg-blue-600 hover:bg-blue-700">
+                  <Button 
+                    onClick={applyFilters} 
+                    className="bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-md"
+                  >
                     <FilterIcon className="h-4 w-4 mr-2" />
                     Appliquer les filtres
                   </Button>
-                  <Button variant="outline" onClick={resetFilters}>
+                  <Button 
+                    variant="outline" 
+                    onClick={resetFilters} 
+                    className="border-gray-300 hover:bg-gray-100 transition-colors"
+                  >
                     <XIcon className="h-4 w-4 mr-2" />
                     Réinitialiser
                   </Button>
@@ -399,21 +486,46 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                 {/* Badges des filtres actifs */}
                 <div className="flex gap-2">
                   {filters.search && (
-                    <Badge variant="secondary" className="flex items-center gap-1">
+                    <Badge 
+                      variant="secondary" 
+                      className="flex items-center gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
+                    >
                       Recherche: {filters.search}
-                      <XIcon className="h-3 w-3 cursor-pointer" onClick={() => setSearchTerm('')} />
+                      <XIcon 
+                        className="h-3 w-3 cursor-pointer text-blue-600 hover:text-blue-800" 
+                        onClick={() => setSearchTerm('')} 
+                      />
                     </Badge>
                   )}
                   {filters.status && (
-                    <Badge variant="secondary" className="flex items-center gap-1">
+                    <Badge 
+                      variant="secondary" 
+                      className="flex items-center gap-1 bg-green-100 text-green-800 hover:bg-green-200 transition-colors"
+                    >
                       Statut: {statuses[filters.status]}
-                      <XIcon className="h-3 w-3 cursor-pointer" onClick={() => setSelectedStatus('all')} />
+                      <XIcon 
+                        className="h-3 w-3 cursor-pointer text-green-600 hover:text-green-800" 
+                        onClick={() => setSelectedStatus('all')} 
+                      />
                     </Badge>
                   )}
                   {filters.category && (
-                    <Badge variant="secondary" className="flex items-center gap-1">
-                      Catégorie: {getCategoryName(filters.category)}
-                      <XIcon className="h-3 w-3 cursor-pointer" onClick={() => setSelectedCategory('all')} />
+                    <Badge 
+                      variant="secondary" 
+                      className="flex items-center gap-1 bg-purple-100 text-purple-800 hover:bg-purple-200 transition-colors"
+                    >
+                      <div className="flex flex-col">
+                        <span className="font-medium">Catégorie: {getCategoryName(filters.category)}</span>
+                        {getCategoryDetails(filters.category) && (
+                          <span className="text-xs opacity-75 truncate max-w-[150px]">
+                            {getCategoryDetails(filters.category)?.description}
+                          </span>
+                        )}
+                      </div>
+                      <XIcon 
+                        className="h-3 w-3 cursor-pointer text-purple-600 hover:text-purple-800" 
+                        onClick={() => setSelectedCategory('all')} 
+                      />
                     </Badge>
                   )}
                 </div>
@@ -426,9 +538,21 @@ export default function ByEditionShow({ edition, applications, statuses, categor
             <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                  <CardTitle>Candidatures de l'édition {edition.name}</CardTitle>
+                  <CardTitle>
+                    Candidatures de l'édition {edition.name}
+                    {filters.category && (
+                      <span className="ml-2 text-sm font-normal text-gray-600">
+                        - Catégorie: {getCategoryName(filters.category)}
+                      </span>
+                    )}
+                  </CardTitle>
                   <CardDescription>
                     Liste des candidatures soumises pour cette édition
+                    {filters.category && (
+                      <span className="block text-xs text-gray-500 mt-1">
+                        {getCategoryDetails(filters.category)?.description}
+                      </span>
+                    )}
                   </CardDescription>
                 </div>
                 <Button onClick={handleExport}>

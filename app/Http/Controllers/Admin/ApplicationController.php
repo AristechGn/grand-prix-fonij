@@ -289,11 +289,17 @@ class ApplicationController extends Controller
             ->select('category')
             ->distinct()
             ->whereNotNull('category')
+            ->where('category', '!=', '')
             ->pluck('category')
             ->map(function($category) {
                 // Convertir en entier si c'est une chaîne numérique
                 return is_numeric($category) ? (int)$category : $category;
             })
+            ->filter(function($category) {
+                // Filtrer les valeurs vides et s'assurer que c'est un entier valide
+                return is_numeric($category) && $category > 0 && $category <= 5;
+            })
+            ->values()
             ->toArray();
         
         return Inertia::render('Admin/Applications/ByEditionShow', [

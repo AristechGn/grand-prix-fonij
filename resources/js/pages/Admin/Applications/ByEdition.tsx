@@ -48,9 +48,9 @@ interface ByEditionProps extends PageProps {
 export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
   // États pour les filtres
   const [search, setSearch] = useState(filters.search || '');
-  const [statusFilter, setStatusFilter] = useState(filters.status || '');
-  const [yearFilter, setYearFilter] = useState(filters.year || '');
-  const [categoryFilter, setCategoryFilter] = useState(filters.category || '');
+  const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
+  const [yearFilter, setYearFilter] = useState(filters.year || 'all');
+  const [categoryFilter, setCategoryFilter] = useState(filters.category || 'all');
 
   const statusColors: Record<string, string> = {
     draft: 'bg-gray-100 text-gray-800',
@@ -74,8 +74,8 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
       edition.name.toLowerCase().includes(search.toLowerCase()) ||
       edition.year.toString().includes(search);
     
-    const matchesStatus = !statusFilter || edition.status === statusFilter;
-    const matchesYear = !yearFilter || edition.year.toString() === yearFilter;
+    const matchesStatus = !statusFilter || statusFilter === 'all' || edition.status === statusFilter;
+    const matchesYear = !yearFilter || yearFilter === 'all' || edition.year.toString() === yearFilter;
     
     return matchesSearch && matchesStatus && matchesYear;
   });
@@ -86,13 +86,13 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
   // Fonction pour réinitialiser les filtres
   const resetFilters = () => {
     setSearch('');
-    setStatusFilter('');
-    setYearFilter('');
-    setCategoryFilter('');
+    setStatusFilter('all');
+    setYearFilter('all');
+    setCategoryFilter('all');
   };
 
   // Compter les filtres actifs
-  const activeFiltersCount = [search, statusFilter, yearFilter, categoryFilter].filter(Boolean).length;
+  const activeFiltersCount = [search, statusFilter !== 'all' ? statusFilter : '', yearFilter !== 'all' ? yearFilter : '', categoryFilter !== 'all' ? categoryFilter : ''].filter(Boolean).length;
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
@@ -162,7 +162,7 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
                       <SelectValue placeholder="Tous les statuts" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Tous les statuts</SelectItem>
+                      <SelectItem value="all">Tous les statuts</SelectItem>
                       {Object.entries(statusLabels).map(([value, label]) => (
                         <SelectItem key={value} value={value}>
                           {label}
@@ -182,7 +182,7 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
                       <SelectValue placeholder="Toutes les années" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Toutes les années</SelectItem>
+                      <SelectItem value="all">Toutes les années</SelectItem>
                       {uniqueYears.map(year => (
                         <SelectItem key={year} value={year.toString()}>
                           {year}
