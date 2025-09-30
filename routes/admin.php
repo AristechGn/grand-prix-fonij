@@ -47,6 +47,8 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class.':admin'])->prefix
     
     // Gestion des candidatures
     Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
+    Route::get('/applications/by-edition', [ApplicationController::class, 'byEdition'])->name('applications.by-edition');
+    Route::get('/applications/by-edition/{edition}', [ApplicationController::class, 'byEditionShow'])->name('applications.by-edition.show');
     Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
     Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
     Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');

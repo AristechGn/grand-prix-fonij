@@ -225,6 +225,45 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Affiche la liste des candidatures groupées par édition.
+     */
+    public function byEdition()
+    {
+        $editions = Edition::withCount('applications')
+            ->orderByDesc('year')
+            ->get();
+            
+        return Inertia::render('Admin/Applications/ByEdition', [
+            'editions' => $editions
+        ]);
+    }
+
+    /**
+     * Affiche les candidatures d'une édition spécifique.
+     */
+    public function byEditionShow(Edition $edition)
+    {
+        $applications = $edition->applications()
+            ->orderByDesc('submitted_at')
+            ->paginate(15);
+            
+        $applicationStatuses = [
+            'pending' => 'En attente',
+            'validated' => 'Validée',
+            'rejected' => 'Rejetée',
+            'selected' => 'Sélectionnée',
+            'finalist' => 'Finaliste',
+            'winner' => 'Lauréat'
+        ];
+        
+        return Inertia::render('Admin/Applications/ByEditionShow', [
+            'edition' => $edition,
+            'applications' => $applications,
+            'statuses' => $applicationStatuses
+        ]);
+    }
+
+    /**
      * Supprimer une candidature.
      */
     public function destroy(Application $application)

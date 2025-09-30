@@ -15,7 +15,8 @@ import {
   TrashIcon,
   SettingsIcon,
   InfoIcon,
-  StarIcon
+  StarIcon,
+  FileTextIcon
 } from 'lucide-react';
 import { ShowEditionProps } from '@/types';
 
@@ -288,6 +289,12 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
                   <Link href={route('admin.editions.prizes.index', edition.id)}>
                     <Button className="bg-amber-600 hover:bg-amber-700">
                       Gérer les prix
+                    </Button>
+                  </Link>
+                  <Link href={route('admin.applications.by-edition.show', edition.id)}>
+                    <Button className="bg-green-600 hover:bg-green-700">
+                      <FileTextIcon className="h-4 w-4 mr-2" />
+                      Voir les candidatures
                     </Button>
                   </Link>
                 </div>

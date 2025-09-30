@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, Users, FileText, Award, ChartBar, CheckCircle, AlertCircle, Briefcase, Calendar, Clock, Settings } from 'lucide-react';
+import { BookOpen, LayoutGrid, Users, FileText, Award, ChartBar, CheckCircle, AlertCircle, Briefcase, Calendar, Clock } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -38,6 +38,11 @@ const adminNavItems: NavItem[] = [
                 title: 'Liste des candidatures',
                 href: route('admin.applications.index'),
                 active: 'admin.applications.index'
+            },
+            {
+                title: 'Par édition',
+                href: route('admin.applications.by-edition'),
+                active: 'admin.applications.by-edition'
             },
             {
                 title: 'Évaluations',
@@ -93,6 +98,34 @@ const superAdminNavItems: NavItem[] = [
         href: '/admin/editions',
         active: 'admin.editions.*',
         icon: Calendar,
+    },
+    {
+        title: 'Candidatures',
+        href: '#',
+        icon: FileText,
+        active: 'admin.applications.*',
+        children: [
+            {
+                title: 'Liste des candidatures',
+                href: route('admin.applications.index'),
+                active: 'admin.applications.index'
+            },
+            {
+                title: 'Par édition',
+                href: route('admin.applications.by-edition'),
+                active: 'admin.applications.by-edition'
+            },
+            {
+                title: 'Évaluations',
+                href: route('admin.applications.index', { filter: 'to_rate' }),
+                active: 'admin.applications.index'
+            },
+            {
+                title: 'Statistiques',
+                href: route('admin.applications.index', { view: 'stats' }),
+                active: 'admin.applications.index'
+            }
+        ]
     },
     {
         title: 'Déroulement',

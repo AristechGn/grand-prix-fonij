@@ -1,11 +1,11 @@
-import AdminLayout from '@/layouts/AdminLayout';
+import AppLayout from '@/layouts/app-layout';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
 import { DataTable } from '@/components/ui/data-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
-import { Download, Filter, Search } from 'lucide-react';
+import { Download, Search } from 'lucide-react';
 import { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
@@ -153,7 +153,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
     };
 
     return (
-        <AdminLayout>
+        <AppLayout>
             <Head title="Gestion des candidatures" />
 
             <div className="py-12">
@@ -232,6 +232,6 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                     </div>
                 </div>
             </div>
-        </AdminLayout>
+        </AppLayout>
     );
 } 
