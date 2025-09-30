@@ -115,6 +115,7 @@ export interface Edition {
     phases_count?: number;
     prizes_count?: number;
     participants_count?: number;
+    applications_count?: number;
 }
 
 export interface Phase {

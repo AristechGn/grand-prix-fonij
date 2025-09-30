@@ -18,7 +18,6 @@ export function NavMain({ items, className }: NavMainProps) {
   const { url } = usePage();
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
-  console.log('NavMain items:', items); // Log pour déboguer
 
   // Fonction simple qui vérifie si l'URL actuelle correspond à l'URL de l'élément
   const isActive = (item: NavItem): boolean => {
@@ -54,7 +53,7 @@ export function NavMain({ items, className }: NavMainProps) {
   };
 
   const renderMenuItem = (item: NavItem) => {
-    console.log('Rendering item:', item); // Log pour déboguer
+    // console.log('Rendering item:', item); // Log pour déboguer
     const active = isActive(item);
     const hasChildren = item.children && item.children.length > 0;
     const isOpen = openMenus[item.title];

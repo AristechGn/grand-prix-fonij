@@ -241,12 +241,40 @@ class ApplicationController extends Controller
     /**
      * Affiche les candidatures d'une édition spécifique.
      */
-    public function byEditionShow(Edition $edition)
+    public function byEditionShow(Request $request, Edition $edition)
     {
-        $applications = $edition->applications()
-            ->orderByDesc('submitted_at')
-            ->paginate(15);
-            
+        $query = $edition->applications();
+        
+        // Filtres
+        if ($request->filled('search')) {
+            $search = $request->get('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('project_name', 'like', "%{$search}%")
+                  ->orWhere('application_number', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status') && $request->get('status') !== 'all') {
+            $query->where('status', $request->get('status'));
+        }
+        
+        if ($request->filled('category') && $request->get('category') !== 'all') {
+            $query->where('category', $request->get('category'));
+        }
+        
+        if ($request->filled('score_min')) {
+            $query->where('score', '>=', $request->get('score_min'));
+        }
+        
+        if ($request->filled('score_max')) {
+            $query->where('score', '<=', $request->get('score_max'));
+        }
+        
+        $applications = $query->orderByDesc('submitted_at')->paginate(15);
+        
         $applicationStatuses = [
             'pending' => 'En attente',
             'validated' => 'Validée',
@@ -256,10 +284,20 @@ class ApplicationController extends Controller
             'winner' => 'Lauréat'
         ];
         
+        // Récupérer les catégories uniques pour les filtres
+        $categories = $edition->applications()
+            ->select('category')
+            ->distinct()
+            ->whereNotNull('category')
+            ->pluck('category')
+            ->toArray();
+        
         return Inertia::render('Admin/Applications/ByEditionShow', [
             'edition' => $edition,
             'applications' => $applications,
-            'statuses' => $applicationStatuses
+            'statuses' => $applicationStatuses,
+            'categories' => $categories,
+            'filters' => $request->only(['search', 'status', 'category', 'score_min', 'score_max'])
         ]);
     }
 

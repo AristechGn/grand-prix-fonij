@@ -16,7 +16,7 @@ class EditionController extends Controller
      */
     public function index()
     {
-        $editions = Edition::withCount(['phases', 'prizes', 'participants'])
+        $editions = Edition::withCount(['phases', 'prizes', 'participants', 'applications'])
                         ->orderByDesc('year')
                         ->paginate(10);
         

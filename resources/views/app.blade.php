@@ -51,7 +51,6 @@
         <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
         <meta name="referrer" content="strict-origin-when-cross-origin">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
         <meta http-equiv="X-XSS-Protection" content="1; mode=block">
         <meta name="rating" content="General">
         <meta name="distribution" content="Global">

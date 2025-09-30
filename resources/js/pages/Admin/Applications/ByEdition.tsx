@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { PageProps } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { 
   CalendarIcon, 
   UsersIcon, 
   FileTextIcon,
   ArrowRightIcon,
-  EyeIcon
+  EyeIcon,
+  SearchIcon,
+  FilterIcon,
+  XIcon
 } from 'lucide-react';
 
 interface Edition {
@@ -26,9 +37,21 @@ interface Edition {
 
 interface ByEditionProps extends PageProps {
   editions: Edition[];
+  filters?: {
+    search?: string;
+    status?: string;
+    year?: string;
+    category?: string;
+  };
 }
 
-export default function ByEdition({ editions }: ByEditionProps) {
+export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
+  // États pour les filtres
+  const [search, setSearch] = useState(filters.search || '');
+  const [statusFilter, setStatusFilter] = useState(filters.status || '');
+  const [yearFilter, setYearFilter] = useState(filters.year || '');
+  const [categoryFilter, setCategoryFilter] = useState(filters.category || '');
+
   const statusColors: Record<string, string> = {
     draft: 'bg-gray-100 text-gray-800',
     published: 'bg-blue-100 text-blue-800',
@@ -44,6 +67,32 @@ export default function ByEdition({ editions }: ByEditionProps) {
     completed: 'Terminé',
     archived: 'Archivé'
   };
+
+  // Fonction pour filtrer les éditions
+  const filteredEditions = editions.filter(edition => {
+    const matchesSearch = !search || 
+      edition.name.toLowerCase().includes(search.toLowerCase()) ||
+      edition.year.toString().includes(search);
+    
+    const matchesStatus = !statusFilter || edition.status === statusFilter;
+    const matchesYear = !yearFilter || edition.year.toString() === yearFilter;
+    
+    return matchesSearch && matchesStatus && matchesYear;
+  });
+
+  // Obtenir les années uniques pour le filtre
+  const uniqueYears = [...new Set(editions.map(edition => edition.year))].sort((a, b) => b - a);
+
+  // Fonction pour réinitialiser les filtres
+  const resetFilters = () => {
+    setSearch('');
+    setStatusFilter('');
+    setYearFilter('');
+    setCategoryFilter('');
+  };
+
+  // Compter les filtres actifs
+  const activeFiltersCount = [search, statusFilter, yearFilter, categoryFilter].filter(Boolean).length;
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
@@ -69,8 +118,145 @@ export default function ByEdition({ editions }: ByEditionProps) {
             </p>
           </div>
 
+          {/* Section des filtres */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FilterIcon className="h-5 w-5" />
+                Filtres
+                {activeFiltersCount > 0 && (
+                  <Badge variant="secondary" className="ml-2">
+                    {activeFiltersCount} actif{activeFiltersCount > 1 ? 's' : ''}
+                  </Badge>
+                )}
+              </CardTitle>
+              <CardDescription>
+                Filtrez les éditions selon vos critères
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Recherche */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Recherche
+                  </label>
+                  <div className="relative">
+                    <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Input
+                      placeholder="Nom ou année..."
+                      className="pl-10"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Filtre par statut */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Statut
+                  </label>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Tous les statuts" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Tous les statuts</SelectItem>
+                      {Object.entries(statusLabels).map(([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Filtre par année */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Année
+                  </label>
+                  <Select value={yearFilter} onValueChange={setYearFilter}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Toutes les années" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Toutes les années</SelectItem>
+                      {uniqueYears.map(year => (
+                        <SelectItem key={year} value={year.toString()}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Actions des filtres */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Actions
+                  </label>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={resetFilters}
+                      disabled={activeFiltersCount === 0}
+                      className="flex-1"
+                    >
+                      <XIcon className="h-4 w-4 mr-1" />
+                      Réinitialiser
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Statistiques */}
+          <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total des éditions</p>
+                    <p className="text-2xl font-bold text-gray-900">{editions.length}</p>
+                  </div>
+                  <CalendarIcon className="h-8 w-8 text-blue-600" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Éditions filtrées</p>
+                    <p className="text-2xl font-bold text-gray-900">{filteredEditions.length}</p>
+                  </div>
+                  <FilterIcon className="h-8 w-8 text-green-600" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total candidatures</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {editions.reduce((sum, edition) => sum + edition.applications_count, 0)}
+                    </p>
+                  </div>
+                  <FileTextIcon className="h-8 w-8 text-purple-600" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {editions.map((edition) => (
+            {filteredEditions.map((edition) => (
               <Card key={edition.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
@@ -153,21 +339,32 @@ export default function ByEdition({ editions }: ByEditionProps) {
             ))}
           </div>
 
-          {editions.length === 0 && (
+          {filteredEditions.length === 0 && (
             <Card className="text-center py-12">
               <CardContent>
                 <FileTextIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Aucune édition trouvée
+                  {editions.length === 0 ? 'Aucune édition trouvée' : 'Aucune édition ne correspond aux filtres'}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Il n'y a actuellement aucune édition avec des candidatures.
+                  {editions.length === 0 
+                    ? 'Il n\'y a actuellement aucune édition avec des candidatures.'
+                    : 'Essayez de modifier vos critères de recherche ou de réinitialiser les filtres.'
+                  }
                 </p>
-                <Link href={route('admin.editions.index')}>
-                  <Button>
-                    Gérer les éditions
-                  </Button>
-                </Link>
+                <div className="flex gap-2 justify-center">
+                  {editions.length > 0 && (
+                    <Button variant="outline" onClick={resetFilters}>
+                      <XIcon className="h-4 w-4 mr-2" />
+                      Réinitialiser les filtres
+                    </Button>
+                  )}
+                  <Link href={route('admin.editions.index')}>
+                    <Button>
+                      Gérer les éditions
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
           )}

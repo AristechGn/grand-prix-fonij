@@ -31,7 +31,8 @@ import {
   TimerIcon,
   EyeIcon,
   ArrowLeftIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  FileTextIcon
 } from 'lucide-react';
 import { 
   DropdownMenu, 
@@ -146,6 +147,7 @@ export default function Editions({ editions }: EditionsPageProps) {
                       <TableHead className="text-slate-700 font-semibold">Édition</TableHead>
                       <TableHead className="text-slate-700 font-semibold">Période</TableHead>
                       <TableHead className="text-slate-700 font-semibold">Inscriptions</TableHead>
+                      <TableHead className="text-slate-700 font-semibold">Candidatures</TableHead>
                       <TableHead className="text-slate-700 font-semibold">Statut</TableHead>
                       <TableHead className="text-right text-slate-700 font-semibold">Actions</TableHead>
                     </TableRow>
@@ -197,6 +199,20 @@ export default function Editions({ editions }: EditionsPageProps) {
                             </div>
                           </TableCell>
                           <TableCell>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center text-sm">
+                                <FileTextIcon className="h-4 w-4 mr-2 text-blue-500" />
+                                <span className="font-medium">{edition.applications_count || 0}</span>
+                                <span className="text-slate-500 ml-1">candidature{(edition.applications_count || 0) > 1 ? 's' : ''}</span>
+                              </div>
+                              <Link href={route('admin.applications.by-edition.show', edition.id)}>
+                                <Button variant="outline" size="sm" className="h-6 px-2 text-xs">
+                                  Voir
+                                </Button>
+                              </Link>
+                            </div>
+                          </TableCell>
+                          <TableCell>
                             <Badge className={`${statusColors[edition.status] || 'bg-gray-100 text-gray-800'}`}>
                               {statusLabels[edition.status] || edition.status}
                             </Badge>
@@ -220,6 +236,12 @@ export default function Editions({ editions }: EditionsPageProps) {
                                   </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
+                                  <DropdownMenuItem>
+                                    <Link href={route('admin.applications.by-edition.show', edition.id)} className="flex items-center w-full">
+                                      <FileTextIcon className="h-4 w-4 mr-2" />
+                                      Voir les candidatures
+                                    </Link>
+                                  </DropdownMenuItem>
                                   <DropdownMenuItem>
                                     Définir comme courante
                                   </DropdownMenuItem>
@@ -246,7 +268,7 @@ export default function Editions({ editions }: EditionsPageProps) {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                        <TableCell colSpan={6} className="text-center py-8 text-gray-500">
                           {search ? 'Aucune édition ne correspond à votre recherche' : 'Aucune édition trouvée'}
                         </TableCell>
                       </TableRow>

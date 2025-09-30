@@ -191,16 +191,16 @@ const candidatNavItems: NavItem[] = [
 ];
 
 const footerNavItems: NavItem[] = [
-    {
-        title: 'Documentation',
-        href: '/docs',
-        icon: BookOpen,
-    },
-    {
-        title: 'Support',
-        href: '/support',
-        icon: AlertCircle,
-    },
+    // {
+    //     title: 'Documentation',
+    //     href: '/docs',
+    //     icon: BookOpen,
+    // },
+    // {
+    //     title: 'Support',
+    //     href: '/support',
+    //     icon: AlertCircle,
+    // },
 ];
 
 interface AppSidebarProps {
