@@ -49,11 +49,11 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class.':admin'])->prefix
     Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
     Route::get('/applications/by-edition', [ApplicationController::class, 'byEdition'])->name('applications.by-edition');
     Route::get('/applications/by-edition/{edition}', [ApplicationController::class, 'byEditionShow'])->name('applications.by-edition.show');
+    Route::get('/applications/export', [ApplicationController::class, 'export'])->name('applications.export');
     Route::get('/applications/{application}', [ApplicationController::class, 'show'])->name('applications.show');
     Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
     Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
-    Route::get('/applications/export', [ApplicationController::class, 'export'])->name('applications.export');
     Route::get('/applications/{application}/download/{document}', [ApplicationController::class, 'downloadDocument'])
         ->name('applications.download-document');
     

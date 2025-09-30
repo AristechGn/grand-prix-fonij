@@ -9,6 +9,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter;
 
 class ApplicationController extends Controller
 {
@@ -151,12 +158,12 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Exporter les candidatures au format CSV.
+     * Exporter les candidatures au format Excel.
      */
     public function export(Request $request)
     {
         $query = Application::query()
-            ->with('edition')
+            ->with(['edition', 'reviewer'])
             ->orderByDesc('submitted_at');
             
         // Appliquer les mêmes filtres que pour l'index
@@ -170,6 +177,16 @@ class ApplicationController extends Controller
         
         if ($request->has('category') && $request->category) {
             $query->where('category', $request->category);
+        }
+        
+        // Filtrer par score minimum
+        if ($request->has('score_min') && $request->score_min) {
+            $query->where('score', '>=', $request->score_min);
+        }
+        
+        // Filtrer par score maximum
+        if ($request->has('score_max') && $request->score_max) {
+            $query->where('score', '<=', $request->score_max);
         }
         
         if ($request->has('search') && $request->search) {
@@ -186,42 +203,165 @@ class ApplicationController extends Controller
         
         $applications = $query->get();
         
+        // Générer le nom du fichier avec les filtres appliqués
+        $editionName = $applications->first()?->edition?->name ?? 'toutes-editions';
+        $editionName = str_replace([' ', '/', '\\'], '-', strtolower($editionName));
+        $filename = "candidatures_{$editionName}_" . now()->format('Y-m-d_H-i-s') . '.xlsx';
+        
+        // Mapping des statuts
+        $statusLabels = [
+            'pending' => 'En attente',
+            'validated' => 'Validée',
+            'rejected' => 'Rejetée',
+            'selected' => 'Sélectionnée',
+            'finalist' => 'Finaliste',
+            'winner' => 'Lauréat'
+        ];
+        
+        // Mapping des catégories avec couleurs
+        $categoryLabels = [
+            1 => [
+                'name' => "Promotion de l'esprit d'entreprise",
+                'color' => 'FFE5B4' // Pêche
+            ],
+            2 => [
+                'name' => "Éducation aux compétences entrepreneuriales",
+                'color' => 'B0E0E6' // Poudre bleue
+            ],
+            3 => [
+                'name' => "Transition numérique",
+                'color' => 'DDA0DD' // Prune
+            ],
+            4 => [
+                'name' => "Entrepreneuriat agricole durable",
+                'color' => '98FB98' // Vert pâle
+            ],
+            5 => [
+                'name' => "Grand prix du jury (initiative la plus créative)",
+                'color' => 'FFB6C1' // Rose clair
+            ]
+        ];
+        
+        // Créer un nouveau spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Candidatures');
+        
+        // Définir les en-têtes (champs essentiels seulement)
         $headers = [
-            "Content-type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=candidatures.csv",
-            "Pragma" => "no-cache",
-            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
-            "Expires" => "0"
+            'A1' => 'Numéro de candidature',
+            'B1' => 'Nom',
+            'C1' => 'Prénom',
+            'D1' => 'Email',
+            'E1' => 'Téléphone',
+            'F1' => 'Nom du projet',
+            'G1' => 'Catégorie',
+            'H1' => 'Statut',
+            'I1' => 'Score',
+            'J1' => 'Date de soumission'
         ];
         
-        $columns = [
-            'Numéro', 'Nom', 'Prénom', 'Email', 'Téléphone', 
-            'Projet', 'Catégorie', 'Statut', 'Score', 'Date de soumission'
+        // Remplir les en-têtes
+        foreach ($headers as $cell => $value) {
+            $sheet->setCellValue($cell, $value);
+        }
+        
+        // Style des en-têtes
+        $headerStyle = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF']
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '016f10']
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000']
+                ]
+            ]
         ];
         
-        $callback = function() use ($applications, $columns) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
+        $sheet->getStyle('A1:J1')->applyFromArray($headerStyle);
+        
+        // Ajouter le filtre automatique
+        $sheet->setAutoFilter('A1:J1');
+        
+        // Remplir les données
+        $row = 2;
+        foreach ($applications as $application) {
+            $sheet->setCellValue('A' . $row, (string) $application->application_number);
+            $sheet->setCellValue('B' . $row, (string) $application->last_name);
+            $sheet->setCellValue('C' . $row, (string) $application->first_name);
+            $sheet->setCellValue('D' . $row, (string) $application->email);
+            $sheet->setCellValue('E' . $row, (string) $application->phone);
+            $sheet->setCellValue('F' . $row, (string) $application->project_name);
+            // Catégorie avec couleur
+            $categoryInfo = $categoryLabels[$application->category] ?? null;
+            $categoryName = $categoryInfo ? $categoryInfo['name'] : "Catégorie {$application->category}";
+            $sheet->setCellValue('G' . $row, (string) $categoryName);
             
-            foreach ($applications as $application) {
-                fputcsv($file, [
-                    $application->application_number,
-                    $application->last_name,
-                    $application->first_name,
-                    $application->email,
-                    $application->phone,
-                    $application->project_name,
-                    $application->category,
-                    $application->status,
-                    $application->score,
-                    $application->submitted_at ? $application->submitted_at->format('d/m/Y H:i') : '-'
-                ]);
+            // Appliquer la couleur de la catégorie
+            if ($categoryInfo && isset($categoryInfo['color'])) {
+                $sheet->getStyle('G' . $row)->getFill()
+                    ->setFillType(Fill::FILL_SOLID)
+                    ->getStartColor()->setRGB($categoryInfo['color']);
             }
-            
-            fclose($file);
-        };
+            $sheet->setCellValue('H' . $row, (string) ($statusLabels[$application->status] ?? $application->status));
+            $sheet->setCellValue('I' . $row, $application->score ? (string) ($application->score . '/100') : '-');
+            $sheet->setCellValue('J' . $row, $application->submitted_at ? $application->submitted_at->format('d/m/Y H:i') : '-');
+            $row++;
+        }
         
-        return response()->stream($callback, 200, $headers);
+        // Style des données
+        $dataStyle = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => 'CCCCCC']
+                ]
+            ],
+            'alignment' => [
+                'vertical' => Alignment::VERTICAL_CENTER
+            ]
+        ];
+        
+        if ($row > 2) {
+            $sheet->getStyle('A2:J' . ($row - 1))->applyFromArray($dataStyle);
+        }
+        
+        // Ajuster la largeur des colonnes
+        $sheet->getColumnDimension('A')->setWidth(20);
+        $sheet->getColumnDimension('B')->setWidth(15);
+        $sheet->getColumnDimension('C')->setWidth(15);
+        $sheet->getColumnDimension('D')->setWidth(25);
+        $sheet->getColumnDimension('E')->setWidth(15);
+        $sheet->getColumnDimension('F')->setWidth(30);
+        $sheet->getColumnDimension('G')->setWidth(35);
+        $sheet->getColumnDimension('H')->setWidth(15);
+        $sheet->getColumnDimension('I')->setWidth(10);
+        $sheet->getColumnDimension('J')->setWidth(18);
+        
+        // Créer le writer
+        $writer = new Xlsx($spreadsheet);
+        
+        // Générer le fichier en mémoire
+        $tempFile = tempnam(sys_get_temp_dir(), 'candidatures_');
+        $writer->save($tempFile);
+        
+        // Retourner le fichier
+        return response()->download($tempFile, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ])->deleteFileAfterSend(true);
     }
 
     /**

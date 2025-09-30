@@ -272,9 +272,19 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   };
 
   const handleExport = () => {
-    window.location.href = route('admin.applications.export', {
-      edition_id: edition.id
-    });
+    // Construire les paramètres d'export avec les filtres actuels
+    const params = new URLSearchParams();
+    params.append('edition_id', edition.id.toString());
+    
+    // Ajouter les filtres actifs
+    if (searchTerm) params.append('search', searchTerm);
+    if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
+    if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
+    if (scoreMin) params.append('score_min', scoreMin.toString());
+    if (scoreMax) params.append('score_max', scoreMax.toString());
+    
+    // Ouvrir le lien d'export dans un nouvel onglet
+    window.open(`${route('admin.applications.export')}?${params.toString()}`, '_blank');
   };
 
   // Fonction pour ouvrir le modal de suppression
