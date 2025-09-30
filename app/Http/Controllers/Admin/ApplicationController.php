@@ -329,7 +329,14 @@ class ApplicationController extends Controller
             Storage::disk('public')->delete($application->project_photo_path);
         }
         
+        $editionId = $application->edition_id;
         $application->delete();
+        
+        // Rediriger vers la page de l'édition si on vient de ByEditionShow
+        if (request()->header('Referer') && str_contains(request()->header('Referer'), 'by-edition')) {
+            return redirect()->route('admin.applications.by-edition.show', $editionId)
+                ->with('success', 'Candidature supprimée avec succès.');
+        }
         
         return redirect()->route('admin.applications.index')
             ->with('success', 'Candidature supprimée avec succès.');

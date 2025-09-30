@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { PageProps } from '@/types';
 import { DataTable } from '@/components/ui/data-table';
@@ -7,6 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { 
   Select,
   SelectContent,
@@ -24,7 +32,8 @@ import {
   EditIcon,
   SearchIcon,
   FilterIcon,
-  XIcon
+  XIcon,
+  TrashIcon
 } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
 import { FONIJ } from '@/utils';
@@ -77,6 +86,10 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   const [selectedCategory, setSelectedCategory] = useState(filters.category?.toString() || 'all');
   const [scoreMin, setScoreMin] = useState(filters.score_min || '');
   const [scoreMax, setScoreMax] = useState(filters.score_max || '');
+  
+  // États pour le modal de suppression
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [applicationToDelete, setApplicationToDelete] = useState<Application | null>(null);
 
   // Debug: Afficher les catégories reçues
   console.log('Categories reçues:', categories);
@@ -218,15 +231,28 @@ export default function ByEditionShow({ edition, applications, statuses, categor
             variant="outline"
             size="sm"
             onClick={() => window.location.href = route('admin.applications.show', row.original.id)}
+            className="hover:bg-blue-50 hover:border-blue-300 transition-colors"
+            title="Voir les détails"
           >
-            <EyeIcon className="h-4 w-4" />
+            <EyeIcon className="h-4 w-4 text-blue-600" />
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.location.href = route('admin.applications.edit', row.original.id)}
+            className="hover:bg-green-50 hover:border-green-300 transition-colors"
+            title="Modifier"
           >
-            <EditIcon className="h-4 w-4" />
+            <EditIcon className="h-4 w-4 text-green-600" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleDeleteClick(row.original)}
+            className="hover:bg-red-50 hover:border-red-300 transition-colors"
+            title="Supprimer"
+          >
+            <TrashIcon className="h-4 w-4 text-red-600" />
           </Button>
         </div>
       ),
@@ -249,6 +275,34 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     window.location.href = route('admin.applications.export', {
       edition_id: edition.id
     });
+  };
+
+  // Fonction pour ouvrir le modal de suppression
+  const handleDeleteClick = (application: Application) => {
+    setApplicationToDelete(application);
+    setDeleteModalOpen(true);
+  };
+
+  // Fonction pour confirmer la suppression
+  const handleConfirmDelete = () => {
+    if (applicationToDelete) {
+      // Utiliser Inertia pour faire une vraie requête DELETE
+      router.delete(route('admin.applications.destroy', applicationToDelete.id), {
+        onSuccess: () => {
+          setDeleteModalOpen(false);
+          setApplicationToDelete(null);
+        },
+        onError: (errors) => {
+          console.error('Erreur lors de la suppression:', errors);
+        }
+      });
+    }
+  };
+
+  // Fonction pour annuler la suppression
+  const handleCancelDelete = () => {
+    setDeleteModalOpen(false);
+    setApplicationToDelete(null);
   };
 
   return (
@@ -576,6 +630,50 @@ export default function ByEditionShow({ edition, applications, statuses, categor
           </Card>
         </div>
       </div>
+
+      {/* Modal de confirmation de suppression */}
+      <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-red-600 flex items-center gap-2">
+              <TrashIcon className="h-5 w-5" />
+              Confirmer la suppression
+            </DialogTitle>
+            <DialogDescription className="text-gray-600">
+              Êtes-vous sûr de vouloir supprimer la candidature de{' '}
+              <span className="font-semibold text-gray-900">
+                {applicationToDelete?.first_name} {applicationToDelete?.last_name}
+              </span>
+              {' '}pour le projet{' '}
+              <span className="font-semibold text-gray-900">
+                "{applicationToDelete?.project_name}"
+              </span>
+              ?
+              <br />
+              <br />
+              <span className="text-red-600 font-medium">
+                Cette action est irréversible et supprimera définitivement tous les fichiers associés.
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button 
+              variant="outline"
+              onClick={handleCancelDelete}
+              className="border-gray-300 hover:bg-gray-100 transition-colors"
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleConfirmDelete}
+              className="bg-red-600 hover:bg-red-700 text-white transition-colors"
+            >
+              <TrashIcon className="h-4 w-4 mr-2" />
+              Supprimer définitivement
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }
