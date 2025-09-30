@@ -262,7 +262,7 @@ class ApplicationController extends Controller
         }
         
         if ($request->filled('category') && $request->get('category') !== 'all') {
-            $query->where('category', $request->get('category'));
+            $query->where('category', (int)$request->get('category'));
         }
         
         if ($request->filled('score_min')) {
@@ -284,12 +284,16 @@ class ApplicationController extends Controller
             'winner' => 'Lauréat'
         ];
         
-        // Récupérer les catégories uniques pour les filtres
+        // Récupérer les IDs des catégories uniques pour les filtres
         $categories = $edition->applications()
             ->select('category')
             ->distinct()
             ->whereNotNull('category')
             ->pluck('category')
+            ->map(function($category) {
+                // Convertir en entier si c'est une chaîne numérique
+                return is_numeric($category) ? (int)$category : $category;
+            })
             ->toArray();
         
         return Inertia::render('Admin/Applications/ByEditionShow', [

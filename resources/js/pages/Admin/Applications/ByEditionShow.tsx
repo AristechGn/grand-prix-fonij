@@ -27,6 +27,7 @@ import {
   XIcon
 } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
+import { FONIJ } from '@/utils';
 
 interface Application {
   id: number;
@@ -36,7 +37,7 @@ interface Application {
   email: string;
   phone: string;
   project_name: string;
-  category: string;
+  category: number; // ID de la catégorie
   status: string;
   score: number;
   submitted_at: string;
@@ -59,11 +60,11 @@ interface ByEditionShowProps extends PageProps {
     total: number;
   };
   statuses: Record<string, string>;
-  categories: string[];
+  categories: number[]; // IDs des catégories
   filters: {
     search?: string;
     status?: string;
-    category?: string;
+    category?: number;
     score_min?: number;
     score_max?: number;
   };
@@ -73,7 +74,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   // États pour les filtres
   const [searchTerm, setSearchTerm] = useState(filters.search || '');
   const [selectedStatus, setSelectedStatus] = useState(filters.status || 'all');
-  const [selectedCategory, setSelectedCategory] = useState(filters.category || 'all');
+  const [selectedCategory, setSelectedCategory] = useState(filters.category?.toString() || 'all');
   const [scoreMin, setScoreMin] = useState(filters.score_min || '');
   const [scoreMax, setScoreMax] = useState(filters.score_max || '');
 
@@ -105,6 +106,12 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     return applications.data.filter(app => app.status === status).length;
   };
 
+  // Fonction pour obtenir le nom de la catégorie par son ID
+  const getCategoryName = (categoryId: number) => {
+    const category = FONIJ.categories.find(cat => cat.id === categoryId);
+    return category ? category.title : `Catégorie ${categoryId}`;
+  };
+
   const columns: ColumnDef<Application>[] = [
     {
       header: 'Référence',
@@ -121,6 +128,11 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     {
       header: 'Catégorie',
       accessorKey: 'category',
+      cell: ({ row }: { row: { original: Application } }) => (
+        <span className="text-sm text-gray-700">
+          {getCategoryName(row.original.category)}
+        </span>
+      ),
     },
     {
       header: 'Statut',
@@ -333,9 +345,9 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Toutes les catégories</SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
+                      {categories.map((categoryId) => (
+                        <SelectItem key={categoryId} value={categoryId.toString()}>
+                          {getCategoryName(categoryId)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -400,7 +412,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                   )}
                   {filters.category && (
                     <Badge variant="secondary" className="flex items-center gap-1">
-                      Catégorie: {filters.category}
+                      Catégorie: {getCategoryName(filters.category)}
                       <XIcon className="h-3 w-3 cursor-pointer" onClick={() => setSelectedCategory('all')} />
                     </Badge>
                   )}
