@@ -79,6 +79,7 @@ class Application extends Model
         'jury_scores' => 'array',
         'age' => 'integer',
         'score' => 'integer',
+        // Les champs enum ne nécessitent pas de cast spécial
     ];
 
     /**
