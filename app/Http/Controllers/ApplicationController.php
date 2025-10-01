@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Edition;
 use App\Traits\HasSEO;
+use App\Events\ApplicationSubmitted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -126,8 +127,8 @@ class ApplicationController extends Controller
         
         $application->save();
         
-        // Envoyer une notification ou un email au candidat
-        // TODO: Implémenter la notification
+        // Déclencher l'événement de candidature soumise
+        ApplicationSubmitted::dispatch($application);
         
         return response()->json([
             'success' => true,

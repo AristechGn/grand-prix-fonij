@@ -1,0 +1,9 @@
+# Ignorer tous les fichiers de certificats SSL
+*.pem
+*.crt
+*.key
+*.p12
+*.pfx
+
+# Mais garder ce fichier .gitignore
+!.gitignore
