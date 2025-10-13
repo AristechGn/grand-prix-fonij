@@ -394,7 +394,7 @@ trait SeoTools
         
         $keywords = $this->createIntelligentSeoKeywords('programmes', 'haute', 'national', 'education');
         
-        $this->setSeoMeta($title, $description, $keywords, route('program'), '/images/programmes/SMART-Entrepreneur.jpg', 'website');
+        $this->setSeoMeta($title, $description, $keywords, route('programme'), '/images/programmes/SMART-Entrepreneur.jpg', 'website');
     }
     
     /**
