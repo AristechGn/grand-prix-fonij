@@ -81,13 +81,14 @@ export function NavMain({ items, className }: NavMainProps) {
                 <Link
                   key={child.title}
                   href={child.href}
-                  className={`flex items-center py-1.5 px-2 rounded-lg text-sm ${
+                  className={`flex items-center py-1.5 px-2 rounded-lg text-sm gap-2 ${
                     isActive(child) 
                       ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" 
                       : "text-foreground hover:bg-accent hover:text-accent-foreground"
                   }`}
                 >
-                  {child.title}
+                {child.icon && <child.icon className="mr-2 h-4 w-4" />}
+                  <span>{child.title}</span>
                 </Link>
               ))}
             </div>
