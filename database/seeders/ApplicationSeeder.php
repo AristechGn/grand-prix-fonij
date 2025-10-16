@@ -30,157 +30,265 @@ class ApplicationSeeder extends Seeder
             return;
         }
 
-        // Données de test pour les candidatures
-        // Catégories FONIJ: 1=Promotion esprit entreprise, 2=Éducation compétences, 3=Transition numérique, 4=Entrepreneuriat agricole, 5=Grand prix jury
-        $applicationsData = [
-            [
-                'first_name' => 'Aminata',
-                'last_name' => 'Diallo',
-                'email' => 'aminata.diallo@email.com',
-                'phone' => '+224 612 34 56 78',
-                'city' => 'Conakry',
-                'region' => 'Conakry',
-                'project_name' => 'AgriTech Connect',
-                'category' => 4, // Entrepreneuriat agricole durable
-                'status' => 'validated',
-                'score' => 85,
-                'education_level' => 'universitaire',
-                'profession' => 'Ingénieur agronome',
-                'gender' => 'F',
-            ],
-            [
-                'first_name' => 'Mamadou',
-                'last_name' => 'Camara',
-                'email' => 'mamadou.camara@email.com',
-                'phone' => '+224 623 45 67 89',
-                'city' => 'Kankan',
-                'region' => 'Kankan',
-                'project_name' => 'EduTech Mobile',
-                'category' => 3, // Transition numérique
-                'status' => 'pending',
-                'score' => null,
-                'education_level' => 'universitaire',
-                'profession' => 'Développeur',
-                'gender' => 'M',
-            ],
-            [
-                'first_name' => 'Fatoumata',
-                'last_name' => 'Bah',
-                'email' => 'fatoumata.bah@email.com',
-                'phone' => '+224 634 56 78 90',
-                'city' => 'Labé',
-                'region' => 'Labé',
-                'project_name' => 'Santé Communautaire',
-                'category' => 1, // Promotion de l'esprit d'entreprise
-                'status' => 'selected',
-                'score' => 92,
-                'education_level' => 'universitaire',
-                'profession' => 'Médecin',
-                'gender' => 'F',
-            ],
-            [
-                'first_name' => 'Ibrahima',
-                'last_name' => 'Sow',
-                'email' => 'ibrahima.sow@email.com',
-                'phone' => '+224 645 67 89 01',
-                'city' => 'N\'Zérékoré',
-                'region' => 'N\'Zérékoré',
-                'project_name' => 'Green Energy Solutions',
-                'category' => 3, // Transition numérique
-                'status' => 'finalist',
-                'score' => 88,
-                'education_level' => 'universitaire',
-                'profession' => 'Ingénieur énergie',
-                'gender' => 'M',
-            ],
-            [
-                'first_name' => 'Mariama',
-                'last_name' => 'Keita',
-                'email' => 'mariama.keita@email.com',
-                'phone' => '+224 656 78 90 12',
-                'city' => 'Boké',
-                'region' => 'Boké',
-                'project_name' => 'Artisanat Digital',
-                'category' => 5, // Grand prix du jury (initiative la plus créative)
-                'status' => 'winner',
-                'score' => 95,
-                'education_level' => 'secondaire',
-                'profession' => 'Artisan',
-                'gender' => 'F',
-            ],
-        ];
+        $this->command->info('🌍 Génération des candidatures guinéennes...');
 
-        $this->command->info('Création des candidatures...');
+        // Données guinéennes pour générer des candidatures réalistes
+        $guineanData = $this->getGuineanData();
 
-        foreach ($applicationsData as $index => $appData) {
-            // Sélectionner une édition aléatoire
-            $edition = $editions->random();
+        $totalApplications = 0;
+
+        // Générer au moins 100 candidatures par édition
+        foreach ($editions as $edition) {
+            $this->command->info("📝 Génération des candidatures pour l'édition: {$edition->name}");
             
-            // Sélectionner un utilisateur aléatoire (optionnel)
+            $applicationsPerEdition = rand(100, 150); // Entre 100 et 150 candidatures par édition
+            
+            for ($i = 0; $i < $applicationsPerEdition; $i++) {
+                $this->createGuineanApplication($edition, $users, $guineanData, $i + 1);
+            }
+            
+            $totalApplications += $applicationsPerEdition;
+            $this->command->info("✅ {$applicationsPerEdition} candidatures créées pour l'édition {$edition->name}");
+        }
+
+        $this->command->info("🎉 Total de {$totalApplications} candidatures créées avec succès!");
+    }
+
+    /**
+     * Crée une candidature guinéenne réaliste
+     */
+    private function createGuineanApplication($edition, $users, $guineanData, $index): void
+    {
+        // Sélectionner un utilisateur candidat aléatoire
+        $candidateUsers = $users->where('role', 'candidate');
+        if ($candidateUsers->isEmpty()) {
             $user = $users->random();
-            
-            // Générer un numéro de candidature
-            $applicationNumber = Application::generateApplicationNumber();
+        } else {
+            $user = $candidateUsers->random();
+        }
+
+        // Générer un numéro de candidature unique avec timestamp et index
+        $applicationNumber = 'FONIJ-' . date('Ymd') . '-' . str_pad($index, 4, '0', STR_PAD_LEFT) . '-' . strtoupper(substr(uniqid(), -4));
+        
+        // Données personnelles aléatoires
+        $gender = fake()->randomElement(['M', 'F']);
+        $firstName = $gender === 'M' 
+            ? fake()->randomElement($guineanData['maleFirstNames'])
+            : fake()->randomElement($guineanData['femaleFirstNames']);
+        $lastName = fake()->randomElement($guineanData['lastNames']);
+        $city = fake()->randomElement($guineanData['cities']);
+        $region = $this->getRegionFromCity($city);
+        
+        // Génération d'un numéro de téléphone guinéen unique
+        $phonePrefixes = ['60', '61', '62', '63', '64', '65', '66', '67', '68', '69'];
+        $phoneNumber = '+224 ' . fake()->randomElement($phonePrefixes) . ' ' . fake()->unique()->numerify('## ## ##');
+        
+        // Email unique
+        $email = strtolower($firstName . '.' . $lastName . '.' . fake()->unique()->numerify('###') . '@' . fake()->randomElement(['gmail.com', 'yahoo.fr', 'hotmail.com', 'outlook.com']));
             
             // Calculer l'âge (entre 18 et 45 ans)
             $age = rand(18, 45);
             $birthDate = Carbon::now()->subYears($age)->subDays(rand(0, 365));
+        
+        // Catégorie et projet
+        $category = fake()->randomElement([1, 2, 3, 4, 5]);
+        $projectData = $this->generateProjectData($category, $guineanData);
+        
+        // Statut et score
+        $statusData = $this->generateStatusAndScore();
             
             // Dates de soumission (derniers 6 mois)
             $submittedAt = Carbon::now()->subDays(rand(0, 180))->subHours(rand(0, 23))->subMinutes(rand(0, 59));
             
             // Si la candidature a un score, elle a été examinée
-            $reviewedAt = $appData['score'] ? $submittedAt->copy()->addDays(rand(1, 30)) : null;
-            $reviewedBy = $appData['score'] ? $users->random()->id : null;
+        $reviewedAt = $statusData['score'] ? $submittedAt->copy()->addDays(rand(1, 30)) : null;
+        $reviewedBy = $statusData['score'] ? $users->where('role', 'jury')->random()->id ?? $users->random()->id : null;
 
             Application::create([
                 'edition_id' => $edition->id,
                 'user_id' => $user->id,
                 'application_number' => $applicationNumber,
-                'status' => $appData['status'],
-                'first_name' => $appData['first_name'],
-                'last_name' => $appData['last_name'],
+            'status' => $statusData['status'],
+            'first_name' => $firstName,
+            'last_name' => $lastName,
                 'birth_date' => $birthDate,
                 'age' => $age,
-                'gender' => $appData['gender'],
-                'email' => $appData['email'],
-                'phone' => $appData['phone'],
-                'city' => $appData['city'],
-                'region' => $appData['region'],
-                'education_level' => $appData['education_level'],
-                'profession' => $appData['profession'],
-                'category' => $appData['category'],
+            'gender' => $gender,
+            'email' => $email,
+            'phone' => $phoneNumber,
+            'city' => $city,
+            'region' => $region,
+            'education_level' => fake()->randomElement(['primaire', 'secondaire', 'universitaire', 'technique']),
+            'profession' => fake()->randomElement($guineanData['professions']),
+            'category' => $category,
                 'program' => null,
-                'project_name' => $appData['project_name'],
-                'project_summary' => $this->generateProjectSummary($appData['project_name'], $appData['category']),
-                'problem_solved' => $this->generateProblemSolved($appData['category']),
-                'expected_impact' => $this->generateExpectedImpact($appData['category']),
-                'target_audience' => $this->generateTargetAudience($appData['category']),
+            'project_name' => $projectData['name'],
+            'project_summary' => $projectData['summary'],
+            'problem_solved' => $projectData['problem'],
+            'expected_impact' => $projectData['impact'],
+            'target_audience' => $projectData['audience'],
                 'project_launched' => rand(0, 1) == 1 ? 'oui' : 'non',
                 'project_start_date' => rand(0, 1) == 1 ? Carbon::now()->subMonths(rand(1, 12)) : null,
                 'prototype_exists' => rand(0, 1) == 1 ? 'oui' : 'non',
                 'availability_morning' => rand(0, 1) == 1,
                 'availability_afternoon' => rand(0, 1) == 1,
                 'availability_evening' => rand(0, 1) == 1,
-                'id_document_path' => 'applications/id_documents/sample_id_' . ($index + 1) . '.pdf',
-                'business_plan_path' => 'applications/business_plans/sample_bp_' . ($index + 1) . '.pdf',
-                'project_photo_path' => 'applications/project_photos/sample_photo_' . ($index + 1) . '.jpg',
-                'presentation_video_url' => rand(0, 1) == 1 ? 'https://youtube.com/watch?v=sample_' . ($index + 1) : null,
+            'id_document_path' => 'applications/id_documents/sample_id_' . $index . '.pdf',
+            'business_plan_path' => 'applications/business_plans/sample_bp_' . $index . '.pdf',
+            'project_photo_path' => 'applications/project_photos/sample_photo_' . $index . '.jpg',
+            'presentation_video_url' => rand(0, 1) == 1 ? 'https://youtube.com/watch?v=sample_' . $index : null,
                 'certification_accuracy' => true,
                 'free_participation' => true,
                 'communication_authorization' => true,
-                'score' => $appData['score'],
-                'evaluation_notes' => $appData['score'] ? $this->generateEvaluationNotes($appData['score']) : null,
-                'jury_scores' => $appData['score'] ? $this->generateJuryScores($appData['score']) : null,
+            'score' => $statusData['score'],
+            'evaluation_notes' => $statusData['score'] ? $this->generateEvaluationNotes($statusData['score']) : null,
+            'jury_scores' => $statusData['score'] ? $this->generateJuryScores($statusData['score']) : null,
                 'submitted_at' => $submittedAt,
                 'reviewed_at' => $reviewedAt,
                 'reviewed_by' => $reviewedBy,
             ]);
+    }
 
-            $this->command->info("Candidature créée: {$appData['first_name']} {$appData['last_name']} - {$appData['project_name']}");
+    /**
+     * Retourne les données guinéennes pour générer des candidatures réalistes
+     */
+    private function getGuineanData(): array
+    {
+        return [
+            'maleFirstNames' => [
+                'Mamadou', 'Ibrahima', 'Alpha', 'Mohamed', 'Ousmane', 'Sekou', 'Amadou', 'Boubacar',
+                'Moussa', 'Abdoulaye', 'Saidou', 'Lamine', 'Fode', 'Bakary', 'Mamady', 'Souleymane',
+                'Thierno', 'Mamadouba', 'Sekouba', 'Fodeba', 'Mamadouba', 'Sekouba', 'Fodeba', 'Mamadouba',
+                'Sekouba', 'Fodeba', 'Mamadouba', 'Sekouba', 'Fodeba', 'Mamadouba', 'Sekouba', 'Fodeba'
+            ],
+            'femaleFirstNames' => [
+                'Fatoumata', 'Mariama', 'Aminata', 'Kadiatou', 'Aissatou', 'Hawa', 'Kadiatou', 'Mariama',
+                'Fatoumata', 'Aminata', 'Aissatou', 'Hawa', 'Kadiatou', 'Mariama', 'Fatoumata', 'Aminata',
+                'Aissatou', 'Hawa', 'Kadiatou', 'Mariama', 'Fatoumata', 'Aminata', 'Aissatou', 'Hawa',
+                'Kadiatou', 'Mariama', 'Fatoumata', 'Aminata', 'Aissatou', 'Hawa', 'Kadiatou', 'Mariama'
+            ],
+            'lastNames' => [
+                'Diallo', 'Bah', 'Camara', 'Sow', 'Barry', 'Traore', 'Keita', 'Conde', 'Sylla', 'Toure',
+                'Cisse', 'Sangare', 'Kone', 'Drame', 'Fofana', 'Coulibaly', 'Diakite', 'Kante', 'Sidibe',
+                'Doumbouya', 'Bangoura', 'Kourouma', 'Kouyate', 'Diabate', 'Coulibaly', 'Traore', 'Keita',
+                'Conde', 'Sylla', 'Toure', 'Cisse', 'Sangare', 'Kone', 'Drame', 'Fofana'
+            ],
+            'cities' => [
+                'Conakry', 'Kankan', 'Kindia', 'Boké', 'Labé', 'Mamou', 'Faranah', 'Nzérékoré', 'Kissidougou',
+                'Guéckédou', 'Macenta', 'Siguiri', 'Dabola', 'Pita', 'Télimélé', 'Coyah', 'Dubréka', 'Forécariah',
+                'Mandiana', 'Kouroussa', 'Kérouané', 'Beyla', 'Yomou', 'Lola', 'Gaoual', 'Tougué', 'Koubia',
+                'Dalaba', 'Mali', 'Lélouma', 'Télimélé', 'Coyah', 'Dubréka', 'Forécariah', 'Mandiana'
+            ],
+            'professions' => [
+                'Enseignant', 'Médecin', 'Ingénieur', 'Commerçant', 'Agriculteur', 'Étudiant', 'Fonctionnaire',
+                'Infirmier', 'Pharmacien', 'Avocat', 'Journaliste', 'Artisan', 'Chauffeur', 'Secrétaire',
+                'Comptable', 'Technicien', 'Électricien', 'Plombier', 'Cuisinier', 'Serveur', 'Garde',
+                'Agent de sécurité', 'Réceptionniste', 'Vendeur', 'Gestionnaire', 'Directeur', 'Chef de projet',
+                'Développeur', 'Designer', 'Photographe', 'Musicien', 'Artiste', 'Écrivain', 'Traducteur'
+            ],
+            'projectNames' => [
+                1 => [ // Promotion de l'esprit d'entreprise
+                    'Inspire Entrepreneur', 'Jeunesse Active', 'Créativité Locale', 'Esprit Innovant',
+                    'Dynamisme Communautaire', 'Leadership Jeune', 'Initiative Créative', 'Passion Entrepreneuriale'
+                ],
+                2 => [ // Éducation aux compétences entrepreneuriales
+                    'Formation Pro', 'Compétences Plus', 'Apprentissage Pratique', 'Développement Talents',
+                    'Formation Innovante', 'Savoir-Faire Local', 'Éducation Moderne', 'Compétences Avancées'
+                ],
+                3 => [ // Transition numérique
+                    'Tech Connect', 'Digital Solution', 'Innovation Mobile', 'Plateforme Intelligente',
+                    'App Communautaire', 'Service Digital', 'Technologie Locale', 'Solution Connectée'
+                ],
+                4 => [ // Entrepreneuriat agricole durable
+                    'AgriTech Plus', 'Ferme Intelligente', 'Agriculture Moderne', 'Produits Bio',
+                    'Technologie Agricole', 'Innovation Rurale', 'Développement Agricole', 'Agriculture Durable'
+                ],
+                5 => [ // Grand prix du jury
+                    'Innovation Exceptionnelle', 'Projet Révolutionnaire', 'Solution Créative', 'Initiative Unique',
+                    'Projet Innovant', 'Solution Avancée', 'Projet Créatif', 'Innovation Locale'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Génère les données du projet selon la catégorie
+     */
+    private function generateProjectData(int $category, array $guineanData): array
+    {
+        $projectNames = $guineanData['projectNames'][$category] ?? $guineanData['projectNames'][3];
+        $projectName = fake()->randomElement($projectNames) . ' ' . fake()->randomElement(['Guinée', 'Conakry', 'Local', 'Communautaire']);
+        
+        return [
+            'name' => $projectName,
+            'summary' => $this->generateProjectSummary($projectName, $category),
+            'problem' => $this->generateProblemSolved($category),
+            'impact' => $this->generateExpectedImpact($category),
+            'audience' => $this->generateTargetAudience($category),
+        ];
+    }
+
+    /**
+     * Génère le statut et le score de la candidature
+     */
+    private function generateStatusAndScore(): array
+    {
+        $rand = rand(1, 100);
+        
+        if ($rand <= 5) {
+            return ['status' => 'winner', 'score' => rand(90, 100)];
+        } elseif ($rand <= 15) {
+            return ['status' => 'finalist', 'score' => rand(80, 89)];
+        } elseif ($rand <= 30) {
+            return ['status' => 'selected', 'score' => rand(70, 79)];
+        } elseif ($rand <= 60) {
+            return ['status' => 'validated', 'score' => rand(60, 69)];
+        } elseif ($rand <= 85) {
+            return ['status' => 'pending', 'score' => null];
+        } else {
+            return ['status' => 'rejected', 'score' => rand(30, 59)];
         }
+    }
 
-        $this->command->info('✅ ' . count($applicationsData) . ' candidatures créées avec succès!');
+    /**
+     * Retourne la région correspondant à une ville
+     */
+    private function getRegionFromCity(string $city): string
+    {
+        $cityRegionMap = [
+            'Conakry' => 'Conakry',
+            'Kankan' => 'Kankan',
+            'Kindia' => 'Kindia',
+            'Boké' => 'Boké',
+            'Labé' => 'Labé',
+            'Mamou' => 'Mamou',
+            'Faranah' => 'Faranah',
+            'Nzérékoré' => 'Nzérékoré',
+            'Kissidougou' => 'Nzérékoré',
+            'Guéckédou' => 'Nzérékoré',
+            'Macenta' => 'Nzérékoré',
+            'Siguiri' => 'Kankan',
+            'Dabola' => 'Faranah',
+            'Pita' => 'Labé',
+            'Télimélé' => 'Kindia',
+            'Coyah' => 'Conakry',
+            'Dubréka' => 'Conakry',
+            'Forécariah' => 'Conakry',
+            'Mandiana' => 'Kankan',
+            'Kouroussa' => 'Kankan',
+            'Kérouané' => 'Nzérékoré',
+            'Beyla' => 'Nzérékoré',
+            'Yomou' => 'Nzérékoré',
+            'Lola' => 'Nzérékoré',
+            'Gaoual' => 'Boké',
+            'Tougué' => 'Labé',
+            'Koubia' => 'Labé',
+            'Dalaba' => 'Mamou',
+            'Mali' => 'Labé',
+            'Lélouma' => 'Labé',
+        ];
+
+        return $cityRegionMap[$city] ?? 'Conakry';
     }
 
     /**

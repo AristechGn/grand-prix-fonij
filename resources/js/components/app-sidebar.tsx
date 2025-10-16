@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, LayoutGrid, Users, FileText, Award, ChartBar, CheckCircle, AlertCircle, Briefcase, Calendar, Clock } from 'lucide-react';
+import { LayoutGrid, Users, FileText, Award, CheckCircle, Calendar } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -84,16 +84,6 @@ const superAdminNavItems: NavItem[] = [
         icon: Users,
     },
     {
-        title: 'Statistiques globales',
-        href: '/admin/statistiques',
-        icon: ChartBar,
-    },
-    {
-        title: 'Gestion des partenaires',
-        href: '/admin/partenaires',
-        icon: Briefcase,
-    },
-    {
         title: 'Gestion des éditions',
         href: '/admin/editions',
         active: 'admin.editions.*',
@@ -126,11 +116,6 @@ const superAdminNavItems: NavItem[] = [
                 active: 'admin.applications.index'
             }
         ]
-    },
-    {
-        title: 'Déroulement',
-        href: '/deroulement',
-        icon: Clock,
     },
 ];
 
@@ -165,11 +150,6 @@ const juryNavItems: NavItem[] = [
         href: '/programmes',
         icon: Award,
     },
-    {
-        title: 'Déroulement',
-        href: '/deroulement',
-        icon: Clock,
-    },
 ];
 
 const candidatNavItems: NavItem[] = [
@@ -182,11 +162,6 @@ const candidatNavItems: NavItem[] = [
         title: 'Gestion des projets',
         href: '/projets',
         icon: FileText,
-    },
-    {
-        title: 'Déroulement',
-        href: '/deroulement',
-        icon: Clock,
     },
 ];
 

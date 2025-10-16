@@ -54,11 +54,11 @@ class RegisteredUserController extends Controller
 
     public function init(): RedirectResponse
     {
-        $count_user = User::count();
-        if($count_user > 0)
-        {
-            return redirect(route('home'))->with('error','You can not do this action');
-        }
+        // $count_user = User::count();
+        // if($count_user > 0)
+        // {
+        //     return redirect(route('home'))->with('error','You can not do this action');
+        // }
         $super_user = $this->create_super_user();
 
         

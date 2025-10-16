@@ -18,13 +18,20 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $super_admin = $request->user()?->role === 'super_admin';
+
         $search = $request->input('search', '');
         $role = $request->input('role', 'all');
-        $perPage = $request->input('per_page', 10);
-        
+        $perPage = $request->input('per_page', 50);
+
         $query = User::query()
-            ->where('role', '!=', 'super_admin')
             ->where('role', '!=', 'candidate');
+
+        if(!$super_admin)
+        {
+            $query = User::query()
+                ->where('role', '!=', 'super_admin');
+        }
             
         // Filtrage par recherche
         if ($search) {
@@ -206,5 +213,55 @@ class UserController extends Controller
         
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Utilisateur supprimé avec succès');
+    }
+
+    /**
+     * Restaure un utilisateur supprimé
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur restauré avec succès.');
+    }
+
+    /**
+     * Supprime définitivement un utilisateur
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        
+        // Empêcher la suppression définitive du super admin
+        if ($user->role === 'super_admin') {
+            return redirect()->back()->with('error', 'Impossible de supprimer définitivement un super administrateur.');
+        }
+
+        $user->forceDelete();
+
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur supprimé définitivement.');
+    }
+
+    /**
+     * Affiche les utilisateurs supprimés
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trashed()
+    {
+        $users = User::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')
+            ->paginate(50);
+
+        return Inertia::render('Admin/Users/Trashed', [
+            'users' => $users
+        ]);
     }
 }

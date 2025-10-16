@@ -1,11 +1,18 @@
-import React from 'react';
-import { Head, Link } from '@inertiajs/react';
+import React, { useCallback } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
 import { 
   CalendarIcon, 
   ClockIcon, 
@@ -16,11 +23,13 @@ import {
   SettingsIcon,
   InfoIcon,
   StarIcon,
-  FileTextIcon
+  FileTextIcon,
+  RotateCcwIcon,
+  MoreHorizontalIcon
 } from 'lucide-react';
 import { ShowEditionProps } from '@/types';
 
-export default function ShowEdition({ edition }: ShowEditionProps) {
+const ShowEdition = React.memo(function ShowEdition({ edition }: ShowEditionProps) {
   const statusColors: Record<string, string> = {
     draft: 'bg-gray-100 text-gray-800',
     published: 'bg-blue-100 text-blue-800',
@@ -36,6 +45,44 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
     completed: 'Terminé',
     archived: 'Archivé'
   };
+
+  // Handlers optimisés avec useCallback
+  const handleDelete = useCallback(() => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette édition ?')) {
+      router.delete(route('admin.editions.destroy', edition.id), {
+        onSuccess: () => {
+          // Optionnel: afficher un message de succès
+        },
+        onError: (errors) => {
+          console.error('Erreur lors de la suppression:', errors);
+        }
+      });
+    }
+  }, [edition.id]);
+
+  const handleRestore = useCallback(() => {
+    router.post(route('admin.editions.restore', edition.id), {}, {
+      onSuccess: () => {
+        // Optionnel: afficher un message de succès
+      },
+      onError: (errors) => {
+        console.error('Erreur lors de la restauration:', errors);
+      }
+    });
+  }, [edition.id]);
+
+  const handleForceDelete = useCallback(() => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer définitivement cette édition ? Cette action est irréversible.')) {
+      router.delete(route('admin.editions.force-delete', edition.id), {
+        onSuccess: () => {
+          // Optionnel: afficher un message de succès
+        },
+        onError: (errors) => {
+          console.error('Erreur lors de la suppression définitive:', errors);
+        }
+      });
+    }
+  }, [edition.id]);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
@@ -71,6 +118,11 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
                           Édition courante
                         </Badge>
                       )}
+                      {edition.deleted_at && (
+                        <Badge className="bg-red-100 text-red-800">
+                          Supprimée
+                        </Badge>
+                      )}
                     </CardDescription>
                   </div>
                   <div className="flex space-x-2">
@@ -80,16 +132,41 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
                         Modifier
                       </Button>
                     </Link>
-                    <Link 
-                      href={route('admin.editions.destroy', edition.id)} 
-                      method="delete" 
-                      as="button"
-                    >
-                      <Button variant="destructive" className="flex items-center gap-2">
-                        <TrashIcon className="h-4 w-4" />
-                        Supprimer
-                      </Button>
-                    </Link>
+                    
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="flex items-center gap-2">
+                          <MoreHorizontalIcon className="h-4 w-4" />
+                          Actions
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {edition.deleted_at ? (
+                          <>
+                            <DropdownMenuItem onClick={handleRestore}>
+                              <RotateCcwIcon className="h-4 w-4 mr-2" />
+                              Restaurer
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem 
+                              className="text-red-500" 
+                              onClick={handleForceDelete}
+                            >
+                              <TrashIcon className="h-4 w-4 mr-2" />
+                              Supprimer définitivement
+                            </DropdownMenuItem>
+                          </>
+                        ) : (
+                          <DropdownMenuItem 
+                            className="text-red-500" 
+                            onClick={handleDelete}
+                          >
+                            <TrashIcon className="h-4 w-4 mr-2" />
+                            Supprimer
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </CardHeader>
@@ -131,6 +208,14 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
                               {edition.description || 'Aucune description fournie'}
                             </p>
                           </div>
+                          {edition.deleted_at && (
+                            <div>
+                              <span className="font-medium text-slate-700">Supprimée le:</span>
+                              <p className="mt-1 text-red-600">
+                                {formatDate(edition.deleted_at)}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -305,4 +390,6 @@ export default function ShowEdition({ edition }: ShowEditionProps) {
       </div>
     </AppLayout>
   );
-} 
+});
+
+export default ShowEdition; 

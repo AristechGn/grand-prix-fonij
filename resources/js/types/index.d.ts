@@ -57,6 +57,7 @@ export interface User {
     profession: string;
     created_at: string;
     updated_at: string;
+    deleted_at: string | null;
     [key: string]: unknown; // This allows for additional properties...
 }
 
@@ -116,6 +117,7 @@ export interface Edition {
     prizes_count?: number;
     participants_count?: number;
     applications_count?: number;
+    deleted_at: string | null;
 }
 
 export interface Phase {

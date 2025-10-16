@@ -141,11 +141,11 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
     <AppLayout>
       <Head title={`Candidature ${application.application_number}`} />
 
-      <div className="py-6">
+      <div className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* En-tête */}
           <div className="mb-6">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-4">
               <Link href={route('admin.applications.index')}>
                 <Button variant="outline" size="sm">
                   <ArrowLeftIcon className="h-4 w-4 mr-2" />
@@ -161,9 +161,9 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                   {application.first_name} {application.last_name} - {application.project_name}
                 </p>
               </div>
-              <div className="flex gap-2">
-                <Link href={route('admin.applications.edit', application.id)}>
-                  <Button>
+              <div className="flex gap-2 w-full lg:w-auto">
+                <Link href={route('admin.applications.edit', application.id)} className="flex-1 lg:flex-none">
+                  <Button className="w-full lg:w-auto">
                     <EditIcon className="h-4 w-4 mr-2" />
                     Modifier
                   </Button>

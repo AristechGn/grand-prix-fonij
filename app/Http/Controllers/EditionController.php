@@ -133,19 +133,19 @@ class EditionController extends Controller
     /**
      * Remove the specified edition from storage.
      */
-    public function destroy(Edition $edition)
-    {
-        // Check if there are participants before deleting
-        if ($edition->participants()->count() > 0) {
-            return redirect()->back()
-                        ->with('error', 'Impossible de supprimer cette édition car elle contient des participants.');
-        }
+    // public function destroy(Edition $edition)
+    // {
+    //     // Check if there are participants before deleting
+    //     if ($edition->participants()->count() > 0) {
+    //         return redirect()->back()
+    //                     ->with('error', 'Impossible de supprimer cette édition car elle contient des participants.');
+    //     }
         
-        $edition->delete();
+    //     $edition->delete();
 
-        return redirect()->route('admin.editions.index')
-                        ->with('success', 'Édition supprimée avec succès.');
-    }
+    //     return redirect()->route('admin.editions.index')
+    //                     ->with('success', 'Édition supprimée avec succès.');
+    // }
     
     /**
      * Create default phases for a new edition.
@@ -279,5 +279,74 @@ class EditionController extends Controller
         foreach ($prizes as $prize) {
             $edition->prizes()->create($prize);
         }
+    }
+
+    /**
+     * Supprime une édition (soft delete)
+     *
+     * @param  \App\Models\Edition  $edition
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Edition $edition)
+    {
+        // Vérifier s'il y a des candidatures associées (optimisé avec exists())
+        if ($edition->applications()->exists()) {
+            return redirect()->back()->with('error', 'Impossible de supprimer une édition qui contient des candidatures.');
+        }
+
+        $edition->delete();
+
+        return redirect()->route('admin.editions.index')->with('success', 'Édition supprimée avec succès.');
+    }
+
+    /**
+     * Restaure une édition supprimée
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $edition = Edition::withTrashed()->findOrFail($id);
+        $edition->restore();
+
+        return redirect()->route('admin.editions.index')->with('success', 'Édition restaurée avec succès.');
+    }
+
+    /**
+     * Supprime définitivement une édition
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete($id)
+    {
+        $edition = Edition::withTrashed()->findOrFail($id);
+        
+        // Vérifier s'il y a des candidatures associées (optimisé avec exists())
+        if ($edition->applications()->withTrashed()->exists()) {
+            return redirect()->back()->with('error', 'Impossible de supprimer définitivement une édition qui contient des candidatures.');
+        }
+
+        $edition->forceDelete();
+
+        return redirect()->route('admin.editions.index')->with('success', 'Édition supprimée définitivement.');
+    }
+
+    /**
+     * Affiche les éditions supprimées
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trashed()
+    {
+        $editions = Edition::onlyTrashed()
+            ->withCount(['phases', 'prizes', 'participants', 'applications'])
+            ->orderBy('deleted_at', 'desc')
+            ->paginate(10);
+
+        return Inertia::render('Admin/Editions/Trashed', [
+            'editions' => $editions
+        ]);
     }
 } 

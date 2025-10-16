@@ -13,15 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         // Appeler les seeders dans l'ordre
         $this->call([
+            GuineanUsersSeeder::class,  // Créer les utilisateurs guinéens en premier
             EditionSeeder::class,
             ApplicationSeeder::class,
         ]);

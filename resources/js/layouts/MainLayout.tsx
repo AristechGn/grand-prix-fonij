@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { 
     Menu, X, Home, Award, GraduationCap, Send, 
@@ -6,7 +6,11 @@ import {
     ArrowUp,
     PhoneCall,
     CalendarDays,
-    HandHelping
+    HandHelping,
+    CheckCircle,
+    AlertCircle,
+    Info,
+    X as CloseIcon
 } from 'lucide-react';
 
 import { FONIJ } from '@/utils';
@@ -38,6 +42,17 @@ interface RouteItem {
     active: string;
 }
 
+interface FlashMessage {
+    success?: string;
+    error?: string;
+    warning?: string;
+    info?: string;
+}
+
+interface CustomPageProps {
+    flash?: FlashMessage;
+}
+
 export default function MainLayout({ 
     children, 
     title = 'Grand Prix FONIJ',
@@ -51,7 +66,11 @@ export default function MainLayout({
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [showBackToTop, setShowBackToTop] = useState(false);
+    const [flashMessage, setFlashMessage] = useState<FlashMessage | null>(null);
     const mainContentRef = useRef<HTMLElement>(null);
+    
+    // Récupérer les messages flash depuis Inertia
+    const { flash } = usePage().props as CustomPageProps;
     
     // Routes configuration
     const route_list: RouteItem[] = [
@@ -129,6 +148,11 @@ export default function MainLayout({
         }
     }, [isMenuOpen]);
 
+    // Fonction pour fermer le message flash
+    const closeFlashMessage = useCallback(() => {
+        setFlashMessage(null);
+    }, []);
+
     useEffect(() => {
         // Add event listeners
         window.addEventListener('scroll', handleScroll);
@@ -143,6 +167,20 @@ export default function MainLayout({
             window.removeEventListener('resize', handleResize);
         };
     }, [handleScroll, handleResize]);
+
+    // Gérer les messages flash
+    useEffect(() => {
+        if (flash) {
+            setFlashMessage(flash);
+            
+            // Auto-fermer après 5 secondes
+            const timer = setTimeout(() => {
+                setFlashMessage(null);
+            }, 5000);
+            
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
@@ -367,6 +405,37 @@ export default function MainLayout({
                     </div>
                 )}
             </nav>
+
+            {/* Messages Flash */}
+            {flashMessage && (
+                <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 max-w-md w-full mx-4">
+                    <div className={`rounded-lg shadow-lg border-l-4 p-4 flex items-center justify-between ${
+                        flashMessage.success 
+                            ? 'bg-green-50 border-green-400 text-green-800' 
+                            : flashMessage.error 
+                            ? 'bg-red-50 border-red-400 text-red-800'
+                            : flashMessage.warning 
+                            ? 'bg-yellow-50 border-yellow-400 text-yellow-800'
+                            : 'bg-blue-50 border-blue-400 text-blue-800'
+                    }`}>
+                        <div className="flex items-center">
+                            {flashMessage.success && <CheckCircle className="h-5 w-5 mr-3 text-green-500" />}
+                            {flashMessage.error && <AlertCircle className="h-5 w-5 mr-3 text-red-500" />}
+                            {flashMessage.warning && <AlertCircle className="h-5 w-5 mr-3 text-yellow-500" />}
+                            {flashMessage.info && <Info className="h-5 w-5 mr-3 text-blue-500" />}
+                            <span className="text-sm font-medium">
+                                {flashMessage.success || flashMessage.error || flashMessage.warning || flashMessage.info}
+                            </span>
+                        </div>
+                        <button
+                            onClick={closeFlashMessage}
+                            className="ml-4 text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            <CloseIcon className="h-4 w-4" />
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* Main Content - moins de padding sur mobile */}
             <main ref={mainContentRef} className="flex-grow pt-16 sm:pt-20 md:pt-24">{children}</main>

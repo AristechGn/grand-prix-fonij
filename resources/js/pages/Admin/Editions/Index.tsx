@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,7 +32,9 @@ import {
   EyeIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
-  FileTextIcon
+  FileTextIcon,
+  ArchiveIcon,
+  RotateCcwIcon
 } from 'lucide-react';
 import { 
   DropdownMenu, 
@@ -41,17 +43,41 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
+
 import { EditionsPageProps } from '@/types';
 
-export default function Editions({ editions }: EditionsPageProps) {
+const Editions = React.memo(function Editions({ editions }: EditionsPageProps) {
   // état pour la recherche
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // filtrer les éditions selon la recherche
-  const filteredEditions = editions.data.filter(edition => 
-    edition.name.toLowerCase().includes(search.toLowerCase()) ||
-    edition.description?.toLowerCase().includes(search.toLowerCase())
-  );
+  // Debouncing pour la recherche (optimise les performances)
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+    
+    // Annuler le timeout précédent
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+    
+    // Définir un nouveau timeout
+    debounceTimeoutRef.current = setTimeout(() => {
+      setDebouncedSearch(value);
+    }, 300); // 300ms de délai
+  }, []);
+  
+  // filtrer les éditions selon la recherche (optimisé avec useMemo)
+  const filteredEditions = useMemo(() => {
+    if (!debouncedSearch.trim()) return editions.data;
+    
+    const searchLower = debouncedSearch.toLowerCase();
+    return editions.data.filter(edition => 
+      edition.name.toLowerCase().includes(searchLower) ||
+      edition.description?.toLowerCase().includes(searchLower)
+    );
+  }, [editions.data, debouncedSearch]);
 
   const statusColors: Record<string, string> = {
     draft: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
@@ -69,6 +95,53 @@ export default function Editions({ editions }: EditionsPageProps) {
     archived: 'Archivé'
   };
 
+  // Handlers optimisés avec useCallback
+  const handleDelete = useCallback((editionId: number) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette édition ?')) {
+      router.delete(route('admin.editions.destroy', editionId), {
+        onSuccess: () => {
+          // Optionnel: afficher un message de succès
+        },
+        onError: (errors) => {
+          console.error('Erreur lors de la suppression:', errors);
+        }
+      });
+    }
+  }, []);
+
+  const handleRestore = useCallback((editionId: number) => {
+    router.post(route('admin.editions.restore', editionId), {}, {
+      onSuccess: () => {
+        // Optionnel: afficher un message de succès
+      },
+      onError: (errors) => {
+        console.error('Erreur lors de la restauration:', errors);
+      }
+    });
+  }, []);
+
+  const handleForceDelete = useCallback((editionId: number) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer définitivement cette édition ? Cette action est irréversible.')) {
+      router.delete(route('admin.editions.force-delete', editionId), {
+        onSuccess: () => {
+          // Optionnel: afficher un message de succès
+        },
+        onError: (errors) => {
+          console.error('Erreur lors de la suppression définitive:', errors);
+        }
+      });
+    }
+  }, []);
+
+  // Cleanup du timeout au démontage du composant
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Fonction pour formater les dates
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
@@ -78,6 +151,69 @@ export default function Editions({ editions }: EditionsPageProps) {
       year: 'numeric' 
     });
   };
+
+  // Composant mémorisé pour les actions d'édition
+  const EditionActions = React.memo(function EditionActions({ edition }: { edition: EditionsPageProps['editions']['data'][0] }) {
+    return (
+      <div className="flex justify-end space-x-2">
+        <Link href={route('admin.editions.show', edition.id)}>
+          <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+            <EyeIcon className="h-4 w-4" />
+          </Button>
+        </Link>
+        <Link href={route('admin.editions.edit', edition.id)}>
+          <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+            <PencilIcon className="h-4 w-4" />
+          </Button>
+        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+              <MoreHorizontalIcon className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <Link href={route('admin.applications.by-edition.show', edition.id)} className="flex items-center w-full">
+                <FileTextIcon className="h-4 w-4 mr-2" />
+                Voir les candidatures
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Définir comme courante
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Dupliquer
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {edition.deleted_at ? (
+              <>
+                <DropdownMenuItem onClick={() => handleRestore(edition.id)}>
+                  <RotateCcwIcon className="h-4 w-4 mr-2" />
+                  Restaurer
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="text-red-600" 
+                  onClick={() => handleForceDelete(edition.id)}
+                >
+                  <TrashIcon className="h-4 w-4 mr-2" />
+                  Supprimer définitivement
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <DropdownMenuItem 
+                className="text-red-600" 
+                onClick={() => handleDelete(edition.id)}
+              >
+                <TrashIcon className="h-4 w-4 mr-2" />
+                Supprimer
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    );
+  });
 
   return (
     <AppLayout>
@@ -118,6 +254,13 @@ export default function Editions({ editions }: EditionsPageProps) {
                     </DropdownMenuContent>
                   </DropdownMenu>
                   
+                  <Link href={route('admin.editions.trashed')}>
+                    <Button variant="outline" className="flex items-center">
+                      <ArchiveIcon className="h-4 w-4 mr-2" />
+                      Éditions supprimées
+                    </Button>
+                  </Link>
+                  
                   <Link href={route('admin.editions.create')}>
                     <Button className="flex items-center bg-green-600 hover:bg-green-700">
                       <PlusIcon className="h-4 w-4 mr-2" />
@@ -135,7 +278,7 @@ export default function Editions({ editions }: EditionsPageProps) {
                     placeholder="Rechercher une édition..."
                     className="pl-10"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={handleSearchChange}
                   />
                 </div>
               </div>
@@ -166,6 +309,9 @@ export default function Editions({ editions }: EditionsPageProps) {
                                   {edition.name}
                                   {edition.is_current && (
                                     <Badge className="ml-2 bg-green-100 text-green-800 hover:bg-green-200">Courante</Badge>
+                                  )}
+                                  {edition.deleted_at && (
+                                    <Badge className="ml-2 bg-red-100 text-red-800 hover:bg-red-200">Supprimée</Badge>
                                   )}
                                 </div>
                                 <div className="text-sm text-slate-500">
@@ -218,51 +364,7 @@ export default function Editions({ editions }: EditionsPageProps) {
                             </Badge>
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex justify-end space-x-2">
-                              <Link href={route('admin.editions.show', edition.id)}>
-                                <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                                  <EyeIcon className="h-4 w-4" />
-                                </Button>
-                              </Link>
-                              <Link href={route('admin.editions.edit', edition.id)}>
-                                <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                                  <PencilIcon className="h-4 w-4" />
-                                </Button>
-                              </Link>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                                    <MoreHorizontalIcon className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem>
-                                    <Link href={route('admin.applications.by-edition.show', edition.id)} className="flex items-center w-full">
-                                      <FileTextIcon className="h-4 w-4 mr-2" />
-                                      Voir les candidatures
-                                    </Link>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    Définir comme courante
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    Dupliquer
-                                  </DropdownMenuItem>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem className="text-red-600">
-                                    <Link 
-                                      href={route('admin.editions.destroy', edition.id)} 
-                                      method="delete" 
-                                      as="button"
-                                      className="w-full text-left flex items-center"
-                                    >
-                                      <TrashIcon className="h-4 w-4 mr-2" />
-                                      Supprimer
-                                    </Link>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
+                            <EditionActions edition={edition} />
                           </TableCell>
                         </TableRow>
                       ))
@@ -315,4 +417,6 @@ export default function Editions({ editions }: EditionsPageProps) {
       </div>
     </AppLayout>
   );
-}
+});
+
+export default Editions;

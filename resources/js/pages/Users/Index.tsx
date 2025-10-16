@@ -29,12 +29,13 @@ import {
     FilterIcon,
     UsersIcon,
     DownloadIcon,
+    ShieldCheckIcon,
     ArrowLeftIcon,
     ArrowRightIcon,
-    CheckIcon,
     ShieldIcon,
     BadgeIcon,
-    BellIcon
+    BellIcon,
+    ArchiveIcon
 } from 'lucide-react';
 import { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
@@ -60,6 +61,7 @@ export default function Users({ users }: UsersPageProps) {
     const [selectedFilter, setSelectedFilter] = useState('all');
     
     const roleColors: Record<string, string> = {
+        super_admin: 'bg-green-800 text-green-200 hover:bg-green-700',
         admin: 'bg-green-100 text-green-800 hover:bg-green-200',
         jury: 'bg-green-100 text-green-800 hover:bg-green-200',
         user: 'bg-slate-100 text-slate-800 hover:bg-slate-200'
@@ -67,6 +69,7 @@ export default function Users({ users }: UsersPageProps) {
     
     const roleIcons: Record<string, React.ReactElement> = {
         admin: <ShieldIcon className="h-3 w-3 mr-1" />,
+        super_admin: <ShieldCheckIcon className="h-3 w-3 mr-1" />,
         jury: <BadgeIcon className="h-3 w-3 mr-1" />,
         user: <UserIcon className="h-3 w-3 mr-1" />
     };
@@ -135,6 +138,13 @@ export default function Users({ users }: UsersPageProps) {
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
+                                    
+                                    <Link href={route('admin.users.trashed')}>
+                                        <Button variant="outline" className="flex items-center">
+                                            <ArchiveIcon className="h-4 w-4 mr-2" />
+                                            Utilisateurs supprimés
+                                        </Button>
+                                    </Link>
                                     
                                     <Link href={route('admin.users.create')}>
                                         <Button className="flex items-center bg-green-600 hover:bg-green-700">
@@ -240,7 +250,8 @@ export default function Users({ users }: UsersPageProps) {
                                                     <TableCell>
                                                         <Badge className={`${roleColors[user.role] || 'bg-gray-100 text-gray-800'} flex items-center`}>
                                                             {roleIcons[user.role]}
-                                                            {user.role === 'admin' ? 'Administrateur' : 
+                                                            {user.role === 'super_admin' ? 'Super Admin' : 
+                                                            user.role === 'admin' ? 'Administrateur' : 
                                                              user.role === 'jury' ? 'Jury' : 'Utilisateur'}
                                                         </Badge>
                                                     </TableCell>
@@ -284,6 +295,7 @@ export default function Users({ users }: UsersPageProps) {
                                                                             method="delete" 
                                                                             as="button"
                                                                             className="text-red-500 w-full text-left"
+                                                                            data-confirm="Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action peut être annulée."
                                                                         >
                                                                             <TrashIcon className="h-4 w-4 mr-2" />
                                                                             Supprimer

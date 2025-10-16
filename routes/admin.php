@@ -24,11 +24,12 @@ use App\Http\Controllers\Admin\ApplicationRatingController;
 Route::middleware(['auth', 'verified', AdminMiddleware::class.':admin'])->prefix('admin')->name('admin.')->group(function () {
     
     // Dashboard d'administration
-    Route::get('/dashboard', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'admin'])->name('dashboard');
     
     // Gestion des utilisateurs
+    Route::get('/users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
+    Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('/users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
     Route::resource('users', UserController::class);
     
     // Statistiques
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'verified', AdminMiddleware::class.':admin'])->prefix
     })->name('statistics');
 
     // Gestion des éditions et configurations
+    Route::get('/editions/trashed', [EditionController::class, 'trashed'])->name('editions.trashed');
+    Route::post('/editions/{id}/restore', [EditionController::class, 'restore'])->name('editions.restore');
+    Route::delete('/editions/{id}/force-delete', [EditionController::class, 'forceDelete'])->name('editions.force-delete');
     Route::resource('editions', EditionController::class);
 
     // Gestion des phases par édition

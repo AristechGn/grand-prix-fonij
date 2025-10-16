@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Edition extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -39,6 +40,7 @@ class Edition extends Model
         'registration_start_date' => 'datetime',
         'registration_deadline' => 'datetime',
         'is_current' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     /**

@@ -319,12 +319,12 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     <AppLayout>
       <Head title={`Candidatures - ${edition.name}`} />
 
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* En-tête */}
           <div className="mb-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 shadow-md">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="flex items-center gap-4">
                 <Link href={route('admin.applications.by-edition')}>
                   <Button variant="outline" size="sm" className="bg-white hover:bg-gray-50 transition-colors">
                     <ArrowLeftIcon className="h-4 w-4 mr-2 text-blue-600" />
@@ -343,7 +343,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
               </div>
               <Button 
                 onClick={handleExport} 
-                className="bg-green-500 hover:bg-green-600 text-white transition-colors shadow-md"
+                className="bg-green-500 hover:bg-green-600 text-white transition-colors shadow-md w-full lg:w-auto"
               >
                 <DownloadIcon className="h-5 w-5 mr-2" />
                 Exporter les candidatures
@@ -422,9 +422,9 @@ export default function ByEditionShow({ edition, applications, statuses, categor
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Recherche */}
-                <div className="lg:col-span-2">
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Recherche
                   </label>
