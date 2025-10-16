@@ -413,7 +413,11 @@ class ApplicationController extends Controller
             $query->where('score', '<=', $request->get('score_max'));
         }
         
-        $applications = $query->orderByDesc('submitted_at')->paginate(15);
+        // Récupérer le nombre d'éléments par page (par défaut 50)
+        $perPage = $request->get('per_page', 50);
+        $perPage = in_array($perPage, [10, 25, 50, 100]) ? $perPage : 50;
+        
+        $applications = $query->orderByDesc('submitted_at')->paginate($perPage);
         
         $applicationStatuses = [
             'pending' => 'En attente',
@@ -447,7 +451,7 @@ class ApplicationController extends Controller
             'applications' => $applications,
             'statuses' => $applicationStatuses,
             'categories' => $categories,
-            'filters' => $request->only(['search', 'status', 'category', 'score_min', 'score_max'])
+            'filters' => $request->only(['search', 'status', 'category', 'score_min', 'score_max', 'per_page'])
         ]);
     }
 

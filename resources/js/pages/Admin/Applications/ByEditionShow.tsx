@@ -67,6 +67,7 @@ interface ByEditionShowProps extends PageProps {
     current_page: number;
     per_page: number;
     total: number;
+    last_page: number;
   };
   statuses: Record<string, string>;
   categories: (number | string)[]; // IDs des catégories
@@ -76,6 +77,7 @@ interface ByEditionShowProps extends PageProps {
     category?: number;
     score_min?: number;
     score_max?: number;
+    per_page?: number;
   };
 }
 
@@ -121,6 +123,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
     if (scoreMin) params.append('score_min', scoreMin.toString());
     if (scoreMax) params.append('score_max', scoreMax.toString());
+    if (filters.per_page) params.append('per_page', filters.per_page.toString());
     
     window.location.href = `${route('admin.applications.by-edition.show', edition.id)}?${params.toString()}`;
   };
@@ -313,6 +316,41 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   const handleCancelDelete = () => {
     setDeleteModalOpen(false);
     setApplicationToDelete(null);
+  };
+
+  // Fonction pour changer de page
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams();
+    
+    // Conserver tous les filtres actuels
+    if (searchTerm) params.append('search', searchTerm);
+    if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
+    if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
+    if (scoreMin) params.append('score_min', scoreMin.toString());
+    if (scoreMax) params.append('score_max', scoreMax.toString());
+    if (filters.per_page) params.append('per_page', filters.per_page.toString());
+    
+    // Ajouter la nouvelle page
+    params.append('page', page.toString());
+    
+    window.location.href = `${route('admin.applications.by-edition.show', edition.id)}?${params.toString()}`;
+  };
+
+  // Fonction pour changer le nombre d'éléments par page
+  const handleItemsPerPageChange = (itemsPerPage: number) => {
+    const params = new URLSearchParams();
+    
+    // Conserver tous les filtres actuels
+    if (searchTerm) params.append('search', searchTerm);
+    if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
+    if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
+    if (scoreMin) params.append('score_min', scoreMin.toString());
+    if (scoreMax) params.append('score_max', scoreMax.toString());
+    
+    // Ajouter le nouveau nombre d'éléments par page
+    params.append('per_page', itemsPerPage.toString());
+    
+    window.location.href = `${route('admin.applications.by-edition.show', edition.id)}?${params.toString()}`;
   };
 
   return (
@@ -632,9 +670,12 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                 pagination={{
                   pageIndex: applications.current_page - 1,
                   pageSize: applications.per_page,
-                  pageCount: Math.ceil(applications.total / applications.per_page),
+                  pageCount: applications.last_page,
                   total: applications.total,
                 }}
+                onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
+                itemsPerPageOptions={[10, 25, 50, 100]}
               />
             </CardContent>
           </Card>

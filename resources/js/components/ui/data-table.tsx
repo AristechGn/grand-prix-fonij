@@ -5,7 +5,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table"
@@ -18,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { ServerPagination } from "@/components/ui/server-pagination"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -28,26 +28,26 @@ interface DataTableProps<TData, TValue> {
     pageCount: number;
     total: number;
   }
+  onPageChange?: (page: number) => void;
+  onItemsPerPageChange?: (itemsPerPage: number) => void;
+  itemsPerPageOptions?: number[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pagination
+  pagination,
+  onPageChange,
+  onItemsPerPageChange,
+  itemsPerPageOptions
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      pagination: pagination ? {
-        pageIndex: pagination.pageIndex,
-        pageSize: pagination.pageSize
-      } : undefined
-    }
+    manualPagination: true, // Désactiver la pagination côté client
   })
 
   return (
@@ -94,6 +94,19 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      
+      {/* Pagination côté serveur */}
+      {pagination && onPageChange && (
+        <ServerPagination
+          currentPage={pagination.pageIndex + 1}
+          totalPages={pagination.pageCount}
+          totalItems={pagination.total}
+          itemsPerPage={pagination.pageSize}
+          onPageChange={onPageChange}
+          onItemsPerPageChange={onItemsPerPageChange}
+          itemsPerPageOptions={itemsPerPageOptions}
+        />
+      )}
     </div>
   )
 } 
