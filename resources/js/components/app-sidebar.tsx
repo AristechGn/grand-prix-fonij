@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Users, FileText, Award, CheckCircle, Calendar } from 'lucide-react';
+import { LayoutGrid, Users, FileText, Award, CheckCircle, Calendar, ReceiptText } from 'lucide-react';
 import AppLogo from './app-logo';
 
 
@@ -37,23 +37,15 @@ const adminNavItems: NavItem[] = [
             {
                 title: 'Liste des candidatures',
                 href: route('admin.applications.index'),
-                active: 'admin.applications.index'
+                active: 'admin.applications.index',
+                icon: ReceiptText,
             },
             {
                 title: 'Par édition',
                 href: route('admin.applications.by-edition'),
-                active: 'admin.applications.by-edition'
+                active: 'admin.applications.by-edition',
+                icon: Calendar,
             },
-            {
-                title: 'Évaluations',
-                href: route('admin.applications.index', { filter: 'to_rate' }),
-                active: 'admin.applications.index'
-            },
-            {
-                title: 'Statistiques',
-                href: route('admin.applications.index', { view: 'stats' }),
-                active: 'admin.applications.index'
-            }
         ]
     },
     {
@@ -98,23 +90,15 @@ const superAdminNavItems: NavItem[] = [
             {
                 title: 'Liste des candidatures',
                 href: route('admin.applications.index'),
-                active: 'admin.applications.index'
+                active: 'admin.applications.index',
+                icon: ReceiptText,
             },
             {
                 title: 'Par édition',
                 href: route('admin.applications.by-edition'),
-                active: 'admin.applications.by-edition'
+                active: 'admin.applications.by-edition',
+                icon: Calendar,
             },
-            {
-                title: 'Évaluations',
-                href: route('admin.applications.index', { filter: 'to_rate' }),
-                active: 'admin.applications.index'
-            },
-            {
-                title: 'Statistiques',
-                href: route('admin.applications.index', { view: 'stats' }),
-                active: 'admin.applications.index'
-            }
         ]
     },
 ];
