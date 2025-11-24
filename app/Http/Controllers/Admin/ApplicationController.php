@@ -255,10 +255,11 @@ class ApplicationController extends Controller
             'D1' => 'Email',
             'E1' => 'Téléphone',
             'F1' => 'Nom du projet',
-            'G1' => 'Catégorie',
-            'H1' => 'Statut',
-            'I1' => 'Score',
-            'J1' => 'Date de soumission'
+            'G1' => 'Ville',
+            'H1' => 'Catégorie',
+            'I1' => 'Statut',
+            'J1' => 'Score',
+            'K1' => 'Date de soumission'
         ];
         
         // Remplir les en-têtes
@@ -302,20 +303,21 @@ class ApplicationController extends Controller
             $sheet->setCellValue('D' . $row, (string) $application->email);
             $sheet->setCellValue('E' . $row, (string) $application->phone);
             $sheet->setCellValue('F' . $row, (string) $application->project_name);
+            $sheet->setCellValue('G' . $row, (string) $application->city);
             // Catégorie avec couleur
             $categoryInfo = $categoryLabels[$application->category] ?? null;
             $categoryName = $categoryInfo ? $categoryInfo['name'] : "Catégorie {$application->category}";
-            $sheet->setCellValue('G' . $row, (string) $categoryName);
+            $sheet->setCellValue('H' . $row, (string) $categoryName);
             
             // Appliquer la couleur de la catégorie
             if ($categoryInfo && isset($categoryInfo['color'])) {
-                $sheet->getStyle('G' . $row)->getFill()
+                $sheet->getStyle('H' . $row)->getFill()
                     ->setFillType(Fill::FILL_SOLID)
                     ->getStartColor()->setRGB($categoryInfo['color']);
             }
-            $sheet->setCellValue('H' . $row, (string) ($statusLabels[$application->status] ?? $application->status));
-            $sheet->setCellValue('I' . $row, $application->score ? (string) ($application->score . '/100') : '-');
-            $sheet->setCellValue('J' . $row, $application->submitted_at ? $application->submitted_at->format('d/m/Y H:i') : '-');
+            $sheet->setCellValue('I' . $row, (string) ($statusLabels[$application->status] ?? $application->status));
+            $sheet->setCellValue('J' . $row, $application->score ? (string) ($application->score . '/100') : '-');
+            $sheet->setCellValue('K' . $row, $application->submitted_at ? $application->submitted_at->format('d/m/Y H:i') : '-');
             $row++;
         }
         
@@ -333,7 +335,7 @@ class ApplicationController extends Controller
         ];
         
         if ($row > 2) {
-            $sheet->getStyle('A2:J' . ($row - 1))->applyFromArray($dataStyle);
+            $sheet->getStyle('A2:K' . ($row - 1))->applyFromArray($dataStyle);
         }
         
         // Ajuster la largeur des colonnes
@@ -347,6 +349,7 @@ class ApplicationController extends Controller
         $sheet->getColumnDimension('H')->setWidth(15);
         $sheet->getColumnDimension('I')->setWidth(10);
         $sheet->getColumnDimension('J')->setWidth(18);
+        $sheet->getColumnDimension('K')->setWidth(18);
         
         // Créer le writer
         $writer = new Xlsx($spreadsheet);
