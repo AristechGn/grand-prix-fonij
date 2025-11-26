@@ -421,7 +421,7 @@ class ApplicationController extends Controller
 
         // Récupérer le nombre d'éléments par page (par défaut 50)
         $perPage = $request->get('per_page', 50);
-        $perPage = in_array($perPage, [10, 25, 50, 100]) ? $perPage : 50;
+        $perPage = in_array($perPage, [10, 25, 50, 70, 80, 100]) ? $perPage : 50;
 
         $applications = $query->orderByDesc('submitted_at')->paginate($perPage);
 
