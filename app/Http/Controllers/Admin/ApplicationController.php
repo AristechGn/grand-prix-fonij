@@ -467,37 +467,49 @@ class ApplicationController extends Controller
      */
     public function exportFolders(Request $request)
     {
-        $query = Application::query()
-            ->with(['edition', 'reviewer'])
-            ->orderBy('last_name')
-            ->orderBy('first_name');
+        // Si des IDs spécifiques sont fournis, utiliser uniquement ceux-ci
+        if ($request->has('application_ids') && is_array($request->application_ids) && count($request->application_ids) > 0) {
+            $applicationIds = array_map('intval', $request->application_ids);
+            $applications = Application::query()
+                ->with(['edition', 'reviewer'])
+                ->whereIn('id', $applicationIds)
+                ->orderBy('last_name')
+                ->orderBy('first_name')
+                ->get();
+        } else {
+            // Sinon, utiliser les filtres comme avant
+            $query = Application::query()
+                ->with(['edition', 'reviewer'])
+                ->orderBy('last_name')
+                ->orderBy('first_name');
 
-        // Appliquer les mêmes filtres que pour l'index
-        if ($request->has('edition_id') && $request->edition_id) {
-            $query->where('edition_id', $request->edition_id);
+            // Appliquer les mêmes filtres que pour l'index
+            if ($request->has('edition_id') && $request->edition_id) {
+                $query->where('edition_id', $request->edition_id);
+            }
+
+            if ($request->has('status') && $request->status) {
+                $query->where('status', $request->status);
+            }
+
+            if ($request->has('category') && $request->category) {
+                $query->where('category', $request->category);
+            }
+
+            if ($request->has('search') && $request->search) {
+                $search = $request->search;
+                $query->where(function($q) use ($search) {
+                    $q->where('application_number', 'like', "%{$search}%")
+                      ->orWhere('first_name', 'like', "%{$search}%")
+                      ->orWhere('last_name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('phone', 'like', "%{$search}%")
+                      ->orWhere('project_name', 'like', "%{$search}%");
+                });
+            }
+
+            $applications = $query->get();
         }
-
-        if ($request->has('status') && $request->status) {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
-        }
-
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('application_number', 'like', "%{$search}%")
-                  ->orWhere('first_name', 'like', "%{$search}%")
-                  ->orWhere('last_name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%")
-                  ->orWhere('project_name', 'like', "%{$search}%");
-            });
-        }
-
-        $applications = $query->get();
 
         if ($applications->isEmpty()) {
             return redirect()->back()->with('error', 'Aucune candidature ne correspond aux filtres sélectionnés.');

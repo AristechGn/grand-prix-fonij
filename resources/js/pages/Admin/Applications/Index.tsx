@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Download, Search, Eye, Edit, FileText, Users, Calendar } from 'lucide-react';
+import { Download, Search, Eye, Edit, FileText, Users, Calendar, FolderArchive } from 'lucide-react';
 import { useState } from 'react';
 import { ColumnDef, Row } from '@tanstack/react-table';
 
@@ -55,8 +55,46 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
     const [selectedEdition, setSelectedEdition] = useState(filters.edition_id || '');
     const [selectedStatus, setSelectedStatus] = useState(filters.status || '');
     const [selectedCategory, setSelectedCategory] = useState(filters.category || '');
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+    const toggleSelection = (id: number) => {
+        setSelectedIds(prev =>
+            prev.includes(id)
+                ? prev.filter(selectedId => selectedId !== id)
+                : [...prev, id]
+        );
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedIds.length === applications.data.length) {
+            setSelectedIds([]);
+        } else {
+            setSelectedIds(applications.data.map(app => app.id));
+        }
+    };
 
     const columns: ColumnDef<Application>[] = [
+        {
+            id: 'select',
+            header: () => (
+                <input
+                    type="checkbox"
+                    checked={selectedIds.length === applications.data.length && applications.data.length > 0}
+                    onChange={toggleSelectAll}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+            ),
+            cell: ({ row }: { row: Row<Application> }) => (
+                <input
+                    type="checkbox"
+                    checked={selectedIds.includes(row.original.id)}
+                    onChange={() => toggleSelection(row.original.id)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        },
         {
             header: 'Référence',
             accessorKey: 'application_number',
@@ -194,6 +232,26 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
         });
     };
 
+    const handleExportFolders = () => {
+        if (selectedIds.length === 0) {
+            alert('Veuillez sélectionner au moins une candidature à exporter.');
+            return;
+        }
+
+        const params = new URLSearchParams();
+        selectedIds.forEach(id => {
+            params.append('application_ids[]', id.toString());
+        });
+
+        // Ajouter les filtres pour référence
+        if (searchTerm) params.append('search', searchTerm);
+        if (selectedEdition) params.append('edition_id', selectedEdition);
+        if (selectedStatus) params.append('status', selectedStatus);
+        if (selectedCategory) params.append('category', selectedCategory);
+
+        window.location.href = `${route('admin.applications.export-folders')}?${params.toString()}`;
+    };
+
     return (
         <AppLayout>
             <Head title="Gestion des candidatures" />
@@ -212,10 +270,20 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                     Consultez et gérez toutes les candidatures soumises
                                 </p>
                             </div>
-                            <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700 w-full lg:w-auto">
-                                <Download className="w-4 h-4 mr-2" />
-                                Exporter
-                            </Button>
+                            <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                                <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700">
+                                    <Download className="w-4 h-4 mr-2" />
+                                    Exporter Excel
+                                </Button>
+                                <Button
+                                    onClick={handleExportFolders}
+                                    className="bg-blue-600 hover:bg-blue-700"
+                                    disabled={selectedIds.length === 0}
+                                >
+                                    <FolderArchive className="w-4 h-4 mr-2" />
+                                    Exporter Dossiers ({selectedIds.length})
+                                </Button>
+                            </div>
                         </div>
                     </div>
 

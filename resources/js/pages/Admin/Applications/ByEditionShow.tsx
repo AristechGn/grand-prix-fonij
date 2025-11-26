@@ -89,10 +89,27 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   const [selectedCategory, setSelectedCategory] = useState(filters.category?.toString() || 'all');
   const [scoreMin, setScoreMin] = useState(filters.score_min || '');
   const [scoreMax, setScoreMax] = useState(filters.score_max || '');
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   // États pour le modal de suppression
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [applicationToDelete, setApplicationToDelete] = useState<Application | null>(null);
+
+  const toggleSelection = (id: number) => {
+    setSelectedIds(prev =>
+      prev.includes(id)
+        ? prev.filter(selectedId => selectedId !== id)
+        : [...prev, id]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === applications.data.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(applications.data.map(app => app.id));
+    }
+  };
 
   // Debug: Afficher les catégories reçues
   console.log('Categories reçues:', categories);
@@ -164,6 +181,27 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   };
 
   const columns: ColumnDef<Application>[] = [
+    {
+      id: 'select',
+      header: () => (
+        <input
+          type="checkbox"
+          checked={selectedIds.length === applications.data.length && applications.data.length > 0}
+          onChange={toggleSelectAll}
+          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        />
+      ),
+      cell: ({ row }: { row: Row<Application> }) => (
+        <input
+          type="checkbox"
+          checked={selectedIds.includes(row.original.id)}
+          onChange={() => toggleSelection(row.original.id)}
+          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       header: 'Référence',
       accessorKey: 'application_number',
@@ -300,11 +338,20 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   };
 
   const handleExportFolders = () => {
-    // Construire les paramètres d'export avec les filtres actuels
+    if (selectedIds.length === 0) {
+      alert('Veuillez sélectionner au moins une candidature à exporter.');
+      return;
+    }
+
     const params = new URLSearchParams();
     params.append('edition_id', edition.id.toString());
 
-    // Ajouter les filtres actifs
+    // Ajouter les IDs sélectionnés
+    selectedIds.forEach(id => {
+      params.append('application_ids[]', id.toString());
+    });
+
+    // Ajouter les filtres actifs pour référence
     if (searchTerm) params.append('search', searchTerm);
     if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
     if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
@@ -415,9 +462,10 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                 <Button
                   onClick={handleExportFolders}
                   className="bg-blue-500 hover:bg-blue-600 text-white transition-colors shadow-md"
+                  disabled={selectedIds.length === 0}
                 >
                   <FolderArchive className="h-5 w-5 mr-2" />
-                  Exporter Dossiers
+                  Exporter Dossiers ({selectedIds.length})
                 </Button>
               </div>
             </div>
@@ -696,9 +744,14 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     <DownloadIcon className="h-4 w-4 mr-2" />
                     Excel
                   </Button>
-                  <Button onClick={handleExportFolders} variant="outline" size="sm">
+                  <Button
+                    onClick={handleExportFolders}
+                    variant="outline"
+                    size="sm"
+                    disabled={selectedIds.length === 0}
+                  >
                     <FolderArchive className="h-4 w-4 mr-2" />
-                    Dossiers
+                    Dossiers ({selectedIds.length})
                   </Button>
                 </div>
               </div>
