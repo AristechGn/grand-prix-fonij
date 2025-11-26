@@ -769,7 +769,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                 }}
                 onPageChange={handlePageChange}
                 onItemsPerPageChange={handleItemsPerPageChange}
-                itemsPerPageOptions={[10, 25, 50, 100]}
+                itemsPerPageOptions={[10, 25, 50,70, 80, 100]}
               />
               </div>
             </CardContent>
