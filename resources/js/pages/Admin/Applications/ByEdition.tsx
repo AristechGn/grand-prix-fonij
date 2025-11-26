@@ -6,16 +6,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
-  CalendarIcon, 
-  UsersIcon, 
+import {
+  CalendarIcon,
+  UsersIcon,
   FileTextIcon,
   ArrowRightIcon,
   EyeIcon,
@@ -59,7 +59,7 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
     completed: 'bg-purple-100 text-purple-800',
     archived: 'bg-amber-100 text-amber-800'
   };
-  
+
   const statusLabels: Record<string, string> = {
     draft: 'Brouillon',
     published: 'Publié',
@@ -70,13 +70,13 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
 
   // Fonction pour filtrer les éditions
   const filteredEditions = editions.filter(edition => {
-    const matchesSearch = !search || 
+    const matchesSearch = !search ||
       edition.name.toLowerCase().includes(search.toLowerCase()) ||
       edition.year.toString().includes(search);
-    
+
     const matchesStatus = !statusFilter || statusFilter === 'all' || edition.status === statusFilter;
     const matchesYear = !yearFilter || yearFilter === 'all' || edition.year.toString() === yearFilter;
-    
+
     return matchesSearch && matchesStatus && matchesYear;
   });
 
@@ -96,10 +96,10 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
-    return new Date(dateString).toLocaleDateString('fr-FR', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   };
 
@@ -107,34 +107,79 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
     <AppLayout>
       <Head title="Candidatures par édition" />
 
-      <div className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Candidatures par édition
-            </h1>
-            <p className="mt-2 text-gray-600">
-              Gérez et consultez les candidatures organisées par édition
-            </p>
-          </div>
+      <div className="py-8 overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-6">
+          <Card className="bg-gradient-to-r from-blue-50 via-white to-purple-50 border-none shadow-md">
+            <CardContent className="p-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="min-w-0">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow">
+                    <CalendarIcon className="h-6 w-6" />
+                  </div>
+                  <div className="min-w-0">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">
+                      Candidatures par édition
+                    </h1>
+                    <p className="mt-1 text-gray-600 break-words">
+                      Gérez et consultez les candidatures organisées par édition
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                  <div className="bg-white/80 rounded-xl border border-white/60 p-4 shadow-sm">
+                    <p className="text-sm text-gray-500">Total des éditions</p>
+                    <p className="text-2xl font-semibold text-gray-900">{editions.length}</p>
+                  </div>
+                  <div className="bg-white/80 rounded-xl border border-white/60 p-4 shadow-sm">
+                    <p className="text-sm text-gray-500">Candidatures</p>
+                    <p className="text-2xl font-semibold text-blue-600">
+                      {editions.reduce((sum, edition) => sum + edition.applications_count, 0)}
+                    </p>
+                  </div>
+                  <div className="bg-white/80 rounded-xl border border-white/60 p-4 shadow-sm">
+                    <p className="text-sm text-gray-500">Éditions actives</p>
+                    <p className="text-2xl font-semibold text-emerald-600">
+                      {editions.filter(edition => edition.status === 'active').length}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white/70 rounded-xl border border-white/60 shadow-sm px-4 py-3 text-sm text-gray-600 w-full lg:w-auto">
+                Filtres actifs :{' '}
+                <span className="font-semibold">{activeFiltersCount}</span>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Section des filtres */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FilterIcon className="h-5 w-5" />
-                Filtres
-                {activeFiltersCount > 0 && (
-                  <Badge variant="secondary" className="ml-2">
-                    {activeFiltersCount} actif{activeFiltersCount > 1 ? 's' : ''}
-                  </Badge>
-                )}
-              </CardTitle>
-              <CardDescription>
-                Filtrez les éditions selon vos critères
-              </CardDescription>
+          <Card className="mb-6 bg-gradient-to-br from-gray-50 to-white border-none shadow-md">
+            <CardHeader className="border-b border-white/70">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <FilterIcon className="h-5 w-5 text-blue-600" />
+                    Filtres
+                    {activeFiltersCount > 0 && (
+                      <Badge variant="secondary" className="ml-2 bg-blue-100 text-blue-700">
+                        {activeFiltersCount} actif{activeFiltersCount > 1 ? 's' : ''}
+                      </Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>Affinez vos critères de recherche</CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={resetFilters}
+                  disabled={activeFiltersCount === 0}
+                  className="border-gray-200 hover:bg-gray-100"
+                >
+                  <XIcon className="h-4 w-4 mr-2" />
+                  Réinitialiser
+                </Button>
+              </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Recherche */}
                 <div className="space-y-2">
@@ -195,18 +240,16 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
                 {/* Actions des filtres */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">
-                    Actions
+                    Actions rapides
                   </label>
                   <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={resetFilters}
-                      disabled={activeFiltersCount === 0}
-                      className="flex-1"
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="flex-1 bg-blue-600 text-white hover:bg-blue-700"
+                      onClick={() => window.location.href = route('admin.applications.index')}
                     >
-                      <XIcon className="h-4 w-4 mr-1" />
-                      Réinitialiser
+                      Voir toutes les candidatures
                     </Button>
                   </div>
                 </div>
@@ -216,43 +259,38 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
 
           {/* Statistiques */}
           <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Total des éditions</p>
-                    <p className="text-2xl font-bold text-gray-900">{editions.length}</p>
+            {[
+              {
+                label: 'Total des éditions',
+                value: editions.length,
+                icon: <CalendarIcon className="h-8 w-8 text-blue-600" />,
+                bg: 'from-blue-50 to-white'
+              },
+              {
+                label: 'Éditions filtrées',
+                value: filteredEditions.length,
+                icon: <FilterIcon className="h-8 w-8 text-green-600" />,
+                bg: 'from-green-50 to-white'
+              },
+              {
+                label: 'Total candidatures',
+                value: editions.reduce((sum, edition) => sum + edition.applications_count, 0),
+                icon: <FileTextIcon className="h-8 w-8 text-purple-600" />,
+                bg: 'from-purple-50 to-white'
+              },
+            ].map(stat => (
+              <Card key={stat.label} className="shadow-sm border border-gray-100">
+                <CardContent className={`p-4 bg-gradient-to-br ${stat.bg} rounded-lg`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">{stat.label}</p>
+                      <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                    </div>
+                    {stat.icon}
                   </div>
-                  <CalendarIcon className="h-8 w-8 text-blue-600" />
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Éditions filtrées</p>
-                    <p className="text-2xl font-bold text-gray-900">{filteredEditions.length}</p>
-                  </div>
-                  <FilterIcon className="h-8 w-8 text-green-600" />
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Total candidatures</p>
-                    <p className="text-2xl font-bold text-gray-900">
-                      {editions.reduce((sum, edition) => sum + edition.applications_count, 0)}
-                    </p>
-                  </div>
-                  <FileTextIcon className="h-8 w-8 text-purple-600" />
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ))}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -260,12 +298,12 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
               <Card key={edition.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <CardTitle className="text-lg flex items-center gap-2">
-                        <CalendarIcon className="h-5 w-5 text-blue-600" />
-                        {edition.name}
+                        <CalendarIcon className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                        <span className="truncate">{edition.name}</span>
                       </CardTitle>
-                      <CardDescription className="mt-1">
+                      <CardDescription className="mt-1 break-words">
                         Édition {edition.year}
                       </CardDescription>
                     </div>
@@ -318,7 +356,7 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
 
                     {/* Actions */}
                     <div className="flex gap-2 pt-2">
-                      <Link 
+                      <Link
                         href={route('admin.applications.by-edition.show', edition.id)}
                         className="flex-1"
                       >
@@ -347,7 +385,7 @@ export default function ByEdition({ editions, filters = {} }: ByEditionProps) {
                   {editions.length === 0 ? 'Aucune édition trouvée' : 'Aucune édition ne correspond aux filtres'}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  {editions.length === 0 
+                  {editions.length === 0
                     ? 'Il n\'y a actuellement aucune édition avec des candidatures.'
                     : 'Essayez de modifier vos critères de recherche ou de réinitialiser les filtres.'
                   }

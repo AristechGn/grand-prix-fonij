@@ -22,10 +22,10 @@ export function NavMain({ items, className }: NavMainProps) {
   // Fonction simple qui vérifie si l'URL actuelle correspond à l'URL de l'élément
   const isActive = (item: NavItem): boolean => {
     if (!item || !item.href) return false;
-    
+
     // Si l'URL correspond exactement
     if (item.href === url) return true;
-    
+
     // Si nous avons un pattern "active" (comme "admin.editions.*")
     if (item.active) {
       try {
@@ -35,12 +35,12 @@ export function NavMain({ items, className }: NavMainProps) {
         return false;
       }
     }
-    
+
     // Vérifier si un sous-menu est actif
     if (item.children) {
       return item.children.some(child => isActive(child));
     }
-    
+
     return false;
   };
 
@@ -62,10 +62,10 @@ export function NavMain({ items, className }: NavMainProps) {
       return (
         <SidebarMenuItem key={item.title}>
           <div className="space-y-1">
-            <SidebarMenuButton 
+            <SidebarMenuButton
               onClick={() => toggleMenu(item.title)}
               className={`w-full flex items-center justify-between p-2 rounded-lg ${
-                active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : 
+                active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" :
                 "text-foreground hover:bg-accent hover:text-accent-foreground"
               }`}
             >
@@ -75,15 +75,15 @@ export function NavMain({ items, className }: NavMainProps) {
               </div>
               <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
             </SidebarMenuButton>
-            
+
             <div className={`ml-4 space-y-1 ${isOpen ? 'block' : 'hidden'}`}>
               {item.children?.map((child) => (
                 <Link
                   key={child.title}
                   href={child.href}
                   className={`flex items-center py-1.5 px-2 rounded-lg text-sm gap-2 ${
-                    isActive(child) 
-                      ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" 
+                    isActive(child)
+                      ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700"
                       : "text-foreground hover:bg-accent hover:text-accent-foreground"
                   }`}
                 >
@@ -99,10 +99,10 @@ export function NavMain({ items, className }: NavMainProps) {
 
     return (
       <SidebarMenuItem key={item.title}>
-        <SidebarMenuButton 
+        <SidebarMenuButton
           asChild
           className={`w-full p-2 ${
-            active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" : 
+            active ? "text-white bg-green-600 hover:text-gray-200 hover:bg-green-700" :
             "text-foreground hover:bg-accent hover:text-accent-foreground"
           }`}
         >

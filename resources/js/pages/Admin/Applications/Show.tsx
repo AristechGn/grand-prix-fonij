@@ -5,7 +5,7 @@ import { PageProps } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
+import {
   ArrowLeftIcon,
   CalendarIcon,
   UserIcon,
@@ -112,18 +112,18 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
-    return new Date(dateString).toLocaleDateString('fr-FR', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   };
 
   const formatDateTime = (dateString: string | null) => {
     if (!dateString) return 'Non définie';
-    return new Date(dateString).toLocaleString('fr-FR', { 
-      day: 'numeric', 
-      month: 'long', 
+    return new Date(dateString).toLocaleString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
@@ -141,36 +141,40 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
     <AppLayout>
       <Head title={`Candidature ${application.application_number}`} />
 
-      <div className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8 overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-6">
           {/* En-tête */}
-          <div className="mb-6">
-            <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-4">
-              <Link href={route('admin.applications.index')}>
-                <Button variant="outline" size="sm">
-                  <ArrowLeftIcon className="h-4 w-4 mr-2" />
-                  Retour à la liste
-                </Button>
-              </Link>
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <FileTextIcon className="h-8 w-8 text-blue-600" />
-                  Candidature {application.application_number}
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  {application.first_name} {application.last_name} - {application.project_name}
-                </p>
+          <Card className="bg-gradient-to-r from-blue-50 via-white to-indigo-50 border-none shadow-md">
+            <CardContent className="p-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <Link href={route('admin.applications.index')}>
+                    <Button variant="outline" size="sm" className="bg-white/70 hover:bg-white">
+                      <ArrowLeftIcon className="h-4 w-4 mr-2" />
+                      Retour
+                    </Button>
+                  </Link>
+                  <div className="min-w-0">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                      <FileTextIcon className="h-8 w-8 text-blue-600 flex-shrink-0" />
+                      <span className="truncate">Candidature {application.application_number}</span>
+                    </h1>
+                    <p className="text-gray-600 mt-1 break-words">
+                      {application.first_name} {application.last_name} · {application.project_name}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                  <Link href={route('admin.applications.edit', application.id)} className="flex-1 lg:flex-none">
+                    <Button className="w-full lg:w-auto bg-blue-600 hover:bg-blue-700">
+                      <EditIcon className="h-4 w-4 mr-2" />
+                      Modifier
+                    </Button>
+                  </Link>
+                </div>
               </div>
-              <div className="flex gap-2 w-full lg:w-auto">
-                <Link href={route('admin.applications.edit', application.id)} className="flex-1 lg:flex-none">
-                  <Button className="w-full lg:w-auto">
-                    <EditIcon className="h-4 w-4 mr-2" />
-                    Modifier
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Colonne principale */}
@@ -249,7 +253,7 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                     <label className="text-sm font-medium text-gray-700">Nom du projet</label>
                     <p className="text-lg font-semibold text-gray-900">{application.project_name}</p>
                   </div>
-                  
+
                   <div>
                     <label className="text-sm font-medium text-gray-700">Catégorie</label>
                     <Badge variant="outline" className="mt-1">
@@ -259,17 +263,17 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
 
                   <div>
                     <label className="text-sm font-medium text-gray-700">Résumé du projet</label>
-                    <p className="text-gray-900 mt-1">{application.project_summary}</p>
+                    <p className="text-gray-900 mt-1 break-words">{application.project_summary}</p>
                   </div>
 
                   <div>
                     <label className="text-sm font-medium text-gray-700">Problème résolu</label>
-                    <p className="text-gray-900 mt-1">{application.problem_solved}</p>
+                    <p className="text-gray-900 mt-1 break-words">{application.problem_solved}</p>
                   </div>
 
                   <div>
                     <label className="text-sm font-medium text-gray-700">Impact attendu</label>
-                    <p className="text-gray-900 mt-1">{application.expected_impact}</p>
+                    <p className="text-gray-900 mt-1 break-words">{application.expected_impact}</p>
                   </div>
 
                   <div>
@@ -316,9 +320,9 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                     <div>
                       <label className="text-sm font-medium text-gray-700">Vidéo de présentation</label>
                       <div className="mt-1">
-                        <a 
-                          href={application.presentation_video_url} 
-                          target="_blank" 
+                        <a
+                          href={application.presentation_video_url}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800 underline"
                         >
@@ -477,9 +481,9 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {application.id_document_path && (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       className="w-full justify-start"
                       onClick={() => downloadDocument('id_document')}
                     >
@@ -487,11 +491,11 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                       Pièce d'identité
                     </Button>
                   )}
-                  
+
                   {application.business_plan_path && (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       className="w-full justify-start"
                       onClick={() => downloadDocument('business_plan')}
                     >
@@ -499,11 +503,11 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                       Plan d'affaires
                     </Button>
                   )}
-                  
+
                   {application.project_photo_path && (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
+                    <Button
+                      variant="outline"
+                      size="sm"
                       className="w-full justify-start"
                       onClick={() => downloadDocument('project_photo')}
                     >
@@ -531,7 +535,7 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                     )}
                     <span className="text-sm">Exactitude des informations</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     {application.free_participation ? (
                       <CheckCircleIcon className="h-4 w-4 text-green-500" />
@@ -540,7 +544,7 @@ export default function ShowApplication({ application }: ShowApplicationProps) {
                     )}
                     <span className="text-sm">Participation gratuite</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     {application.communication_authorization ? (
                       <CheckCircleIcon className="h-4 w-4 text-green-500" />

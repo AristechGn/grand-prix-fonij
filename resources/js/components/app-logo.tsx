@@ -7,7 +7,7 @@ export default function AppLogo() {
                 <AppLogoIcon className="size-12 rounded-full fill-current text-white" />
             </div>
             <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">Grand Prix FONIG</span>
+                <span className="mb-0.5 truncate leading-none font-semibold">Grand Prix FONIJ</span>
             </div>
         </>
     );

@@ -15,14 +15,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { 
+import {
   ArrowLeftIcon,
   CalendarIcon,
   UsersIcon,
@@ -33,9 +33,10 @@ import {
   SearchIcon,
   FilterIcon,
   XIcon,
-  TrashIcon
+  TrashIcon,
+  FolderArchive
 } from 'lucide-react';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import { FONIJ } from '@/utils';
 
 interface Application {
@@ -88,7 +89,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   const [selectedCategory, setSelectedCategory] = useState(filters.category?.toString() || 'all');
   const [scoreMin, setScoreMin] = useState(filters.score_min || '');
   const [scoreMax, setScoreMax] = useState(filters.score_max || '');
-  
+
   // États pour le modal de suppression
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [applicationToDelete, setApplicationToDelete] = useState<Application | null>(null);
@@ -96,7 +97,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   // Debug: Afficher les catégories reçues
   console.log('Categories reçues:', categories);
   console.log('Types des catégories:', categories.map(c => typeof c));
-  
+
   // Nettoyer les catégories pour éviter les erreurs
   const cleanCategories = categories
     .map(categoryId => {
@@ -105,26 +106,26 @@ export default function ByEditionShow({ edition, applications, statuses, categor
       return numCategoryId;
     })
     .filter(categoryId => {
-      return categoryId !== null && 
-             categoryId !== undefined && 
-             !isNaN(categoryId) && 
-             categoryId > 0 && 
+      return categoryId !== null &&
+             categoryId !== undefined &&
+             !isNaN(categoryId) &&
+             categoryId > 0 &&
              categoryId <= 5;
     });
-  
+
   console.log('Catégories nettoyées:', cleanCategories);
 
   // Fonction pour appliquer les filtres
   const applyFilters = () => {
     const params = new URLSearchParams();
-    
+
     if (searchTerm) params.append('search', searchTerm);
     if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
     if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
     if (scoreMin) params.append('score_min', scoreMin.toString());
     if (scoreMax) params.append('score_max', scoreMax.toString());
     if (filters.per_page) params.append('per_page', filters.per_page.toString());
-    
+
     window.location.href = `${route('admin.applications.by-edition.show', edition.id)}?${params.toString()}`;
   };
 
@@ -147,7 +148,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   const getCategoryDetails = (categoryId: number | string) => {
     // Convertir en nombre si c'est une chaîne
     const numCategoryId = typeof categoryId === 'string' ? parseInt(categoryId, 10) : categoryId;
-    
+
     if (!numCategoryId || numCategoryId <= 0 || numCategoryId > 5 || isNaN(numCategoryId)) {
       return null;
     }
@@ -166,6 +167,14 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     {
       header: 'Référence',
       accessorKey: 'application_number',
+      cell: ({ row }: { row: Row<Application> }) => (
+        <a
+          href={route('admin.applications.show', row.original.id)}
+          className="font-mono text-blue-600 hover:underline"
+        >
+          {row.getValue('application_number')}
+        </a>
+      ),
     },
     {
       header: 'Candidat',
@@ -189,7 +198,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
             </div>
           );
         }
-        
+
         return (
           <div className="max-w-[200px]">
             <div className="font-medium text-sm text-gray-900 truncate" title={category.title}>
@@ -205,7 +214,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     {
       header: 'Statut',
       accessorKey: 'status',
-      cell: ({ row }: { row: { original: Application } }) => (
+      cell: ({ row }: { row: Row<Application> }) => (
         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(row.original.status)}`}>
           {statuses[row.original.status]}
         </span>
@@ -214,7 +223,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     {
       header: 'Score',
       accessorKey: 'score',
-      cell: ({ row }: { row: { original: Application } }) => (
+      cell: ({ row }: { row: Row<Application> }) => (
         <span className="font-mono">
           {row.original.score ? `${row.original.score}/100` : '-'}
         </span>
@@ -223,7 +232,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     {
       header: 'Date',
       accessorKey: 'submitted_at',
-      cell: ({ row }: { row: { original: Application } }) => 
+      cell: ({ row }: { row: { original: Application } }) =>
         new Date(row.original.submitted_at).toLocaleDateString('fr-FR'),
     },
     {
@@ -278,16 +287,32 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     // Construire les paramètres d'export avec les filtres actuels
     const params = new URLSearchParams();
     params.append('edition_id', edition.id.toString());
-    
+
     // Ajouter les filtres actifs
     if (searchTerm) params.append('search', searchTerm);
     if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
     if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
     if (scoreMin) params.append('score_min', scoreMin.toString());
     if (scoreMax) params.append('score_max', scoreMax.toString());
-    
+
     // Ouvrir le lien d'export dans un nouvel onglet
     window.open(`${route('admin.applications.export')}?${params.toString()}`, '_blank');
+  };
+
+  const handleExportFolders = () => {
+    // Construire les paramètres d'export avec les filtres actuels
+    const params = new URLSearchParams();
+    params.append('edition_id', edition.id.toString());
+
+    // Ajouter les filtres actifs
+    if (searchTerm) params.append('search', searchTerm);
+    if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
+    if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
+    if (scoreMin) params.append('score_min', scoreMin.toString());
+    if (scoreMax) params.append('score_max', scoreMax.toString());
+
+    // Télécharger le ZIP
+    window.location.href = `${route('admin.applications.export-folders')}?${params.toString()}`;
   };
 
   // Fonction pour ouvrir le modal de suppression
@@ -321,7 +346,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
   // Fonction pour changer de page
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams();
-    
+
     // Conserver tous les filtres actuels
     if (searchTerm) params.append('search', searchTerm);
     if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
@@ -329,27 +354,27 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     if (scoreMin) params.append('score_min', scoreMin.toString());
     if (scoreMax) params.append('score_max', scoreMax.toString());
     if (filters.per_page) params.append('per_page', filters.per_page.toString());
-    
+
     // Ajouter la nouvelle page
     params.append('page', page.toString());
-    
+
     window.location.href = `${route('admin.applications.by-edition.show', edition.id)}?${params.toString()}`;
   };
 
   // Fonction pour changer le nombre d'éléments par page
   const handleItemsPerPageChange = (itemsPerPage: number) => {
     const params = new URLSearchParams();
-    
+
     // Conserver tous les filtres actuels
     if (searchTerm) params.append('search', searchTerm);
     if (selectedStatus && selectedStatus !== 'all') params.append('status', selectedStatus);
     if (selectedCategory && selectedCategory !== 'all') params.append('category', selectedCategory);
     if (scoreMin) params.append('score_min', scoreMin.toString());
     if (scoreMax) params.append('score_max', scoreMax.toString());
-    
+
     // Ajouter le nouveau nombre d'éléments par page
     params.append('per_page', itemsPerPage.toString());
-    
+
     window.location.href = `${route('admin.applications.by-edition.show', edition.id)}?${params.toString()}`;
   };
 
@@ -357,8 +382,8 @@ export default function ByEditionShow({ edition, applications, statuses, categor
     <AppLayout>
       <Head title={`Candidatures - ${edition.name}`} />
 
-      <div className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8 overflow-x-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-6 overflow-x-hidden">
           {/* En-tête */}
           <div className="mb-6 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 shadow-md">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -369,23 +394,32 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     Retour
                   </Button>
                 </Link>
-                <div>
-                  <h1 className="text-4xl font-extrabold text-gray-900 flex items-center gap-4">
-                    <CalendarIcon className="h-10 w-10 text-blue-600 bg-white rounded-full p-2 shadow-md" />
-                    {edition.name}
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 flex items-center gap-2 sm:gap-4">
+                    <CalendarIcon className="h-8 w-8 sm:h-10 sm:w-10 text-blue-600 bg-white rounded-full p-2 shadow-md flex-shrink-0" />
+                    <span className="truncate">{edition.name}</span>
                   </h1>
-                  <p className="text-gray-600 mt-2 text-lg">
+                  <p className="text-gray-600 mt-2 text-sm sm:text-lg break-words">
                     Édition {edition.year} - {applications.total} candidature{applications.total > 1 ? 's' : ''}
                   </p>
                 </div>
               </div>
-              <Button 
-                onClick={handleExport} 
-                className="bg-green-500 hover:bg-green-600 text-white transition-colors shadow-md w-full lg:w-auto"
-              >
-                <DownloadIcon className="h-5 w-5 mr-2" />
-                Exporter les candidatures
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                <Button
+                  onClick={handleExport}
+                  className="bg-green-500 hover:bg-green-600 text-white transition-colors shadow-md"
+                >
+                  <DownloadIcon className="h-5 w-5 mr-2" />
+                  Exporter Excel
+                </Button>
+                <Button
+                  onClick={handleExportFolders}
+                  className="bg-blue-500 hover:bg-blue-600 text-white transition-colors shadow-md"
+                >
+                  <FolderArchive className="h-5 w-5 mr-2" />
+                  Exporter Dossiers
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -462,7 +496,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
             <CardContent className="p-6 space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Recherche */}
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 min-w-0">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Recherche
                   </label>
@@ -470,7 +504,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
                       placeholder="Nom, projet, email..."
-                      className="pl-10 bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all"
+                      className="pl-10 bg-white border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all w-full"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -489,9 +523,9 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                     <SelectContent className="bg-white shadow-lg rounded-lg">
                       <SelectItem value="all" className="hover:bg-gray-100 transition-colors">Tous les statuts</SelectItem>
                       {Object.entries(statuses).map(([key, label]) => (
-                        <SelectItem 
-                          key={key} 
-                          value={key} 
+                        <SelectItem
+                          key={key}
+                          value={key}
                           className="hover:bg-gray-100 transition-colors"
                         >
                           {label}
@@ -516,9 +550,9 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                         const numCategoryId = Number(categoryId);
                         const category = getCategoryDetails(numCategoryId);
                         return (
-                          <SelectItem 
-                            key={numCategoryId} 
-                            value={numCategoryId.toString()} 
+                          <SelectItem
+                            key={numCategoryId}
+                            value={numCategoryId.toString()}
                             className="hover:bg-gray-100 transition-colors"
                           >
                             <div className="flex flex-col">
@@ -566,67 +600,67 @@ export default function ByEditionShow({ edition, applications, statuses, categor
               </div>
 
               {/* Boutons d'action */}
-              <div className="flex justify-between items-center mt-4">
-                <div className="flex gap-2">
-                  <Button 
-                    onClick={applyFilters} 
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4">
+                <div className="flex gap-2 flex-wrap">
+                  <Button
+                    onClick={applyFilters}
                     className="bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-md"
                   >
                     <FilterIcon className="h-4 w-4 mr-2" />
                     Appliquer les filtres
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={resetFilters} 
+                  <Button
+                    variant="outline"
+                    onClick={resetFilters}
                     className="border-gray-300 hover:bg-gray-100 transition-colors"
                   >
                     <XIcon className="h-4 w-4 mr-2" />
                     Réinitialiser
                   </Button>
                 </div>
-                
+
                 {/* Badges des filtres actifs */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap min-w-0">
                   {filters.search && (
-                    <Badge 
-                      variant="secondary" 
-                      className="flex items-center gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors max-w-full"
                     >
-                      Recherche: {filters.search}
-                      <XIcon 
-                        className="h-3 w-3 cursor-pointer text-blue-600 hover:text-blue-800" 
-                        onClick={() => setSearchTerm('')} 
+                      <span className="truncate">Recherche: {filters.search}</span>
+                      <XIcon
+                        className="h-3 w-3 cursor-pointer text-blue-600 hover:text-blue-800 flex-shrink-0"
+                        onClick={() => setSearchTerm('')}
                       />
                     </Badge>
                   )}
                   {filters.status && (
-                    <Badge 
-                      variant="secondary" 
-                      className="flex items-center gap-1 bg-green-100 text-green-800 hover:bg-green-200 transition-colors"
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1 bg-green-100 text-green-800 hover:bg-green-200 transition-colors max-w-full"
                     >
-                      Statut: {statuses[filters.status]}
-                      <XIcon 
-                        className="h-3 w-3 cursor-pointer text-green-600 hover:text-green-800" 
-                        onClick={() => setSelectedStatus('all')} 
+                      <span className="truncate">Statut: {statuses[filters.status]}</span>
+                      <XIcon
+                        className="h-3 w-3 cursor-pointer text-green-600 hover:text-green-800 flex-shrink-0"
+                        onClick={() => setSelectedStatus('all')}
                       />
                     </Badge>
                   )}
                   {filters.category && (
-                    <Badge 
-                      variant="secondary" 
-                      className="flex items-center gap-1 bg-purple-100 text-purple-800 hover:bg-purple-200 transition-colors"
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1 bg-purple-100 text-purple-800 hover:bg-purple-200 transition-colors max-w-full"
                     >
-                      <div className="flex flex-col">
-                        <span className="font-medium">Catégorie: {getCategoryName(filters.category)}</span>
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-medium truncate">Catégorie: {getCategoryName(filters.category)}</span>
                         {getCategoryDetails(filters.category) && (
                           <span className="text-xs opacity-75 truncate max-w-[150px]">
                             {getCategoryDetails(filters.category)?.description}
                           </span>
                         )}
                       </div>
-                      <XIcon 
-                        className="h-3 w-3 cursor-pointer text-purple-600 hover:text-purple-800" 
-                        onClick={() => setSelectedCategory('all')} 
+                      <XIcon
+                        className="h-3 w-3 cursor-pointer text-purple-600 hover:text-purple-800 flex-shrink-0"
+                        onClick={() => setSelectedCategory('all')}
                       />
                     </Badge>
                   )}
@@ -638,9 +672,9 @@ export default function ByEditionShow({ edition, applications, statuses, categor
           {/* Table des candidatures */}
           <Card>
             <CardHeader>
-              <div className="flex justify-between items-center">
-                <div>
-                  <CardTitle>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="min-w-0 flex-1">
+                  <CardTitle className="break-words">
                     Candidatures de l'édition {edition.name}
                     {filters.category && (
                       <span className="ml-2 text-sm font-normal text-gray-600">
@@ -648,23 +682,30 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                       </span>
                     )}
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="break-words">
                     Liste des candidatures soumises pour cette édition
                     {filters.category && (
-                      <span className="block text-xs text-gray-500 mt-1">
+                      <span className="block text-xs text-gray-500 mt-1 break-words">
                         {getCategoryDetails(filters.category)?.description}
                       </span>
                     )}
                   </CardDescription>
                 </div>
-                <Button onClick={handleExport}>
-                  <DownloadIcon className="h-4 w-4 mr-2" />
-                  Exporter
-                </Button>
+                <div className="flex gap-2 flex-shrink-0">
+                  <Button onClick={handleExport} variant="outline" size="sm">
+                    <DownloadIcon className="h-4 w-4 mr-2" />
+                    Excel
+                  </Button>
+                  <Button onClick={handleExportFolders} variant="outline" size="sm">
+                    <FolderArchive className="h-4 w-4 mr-2" />
+                    Dossiers
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
-              <DataTable
+              <div className="overflow-x-auto w-full">
+                <DataTable
                 columns={columns}
                 data={applications.data}
                 pagination={{
@@ -677,6 +718,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
                 onItemsPerPageChange={handleItemsPerPageChange}
                 itemsPerPageOptions={[10, 25, 50, 100]}
               />
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -708,7 +750,7 @@ export default function ByEditionShow({ edition, applications, statuses, categor
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2">
-            <Button 
+            <Button
               variant="outline"
               onClick={handleCancelDelete}
               className="border-gray-300 hover:bg-gray-100 transition-colors"

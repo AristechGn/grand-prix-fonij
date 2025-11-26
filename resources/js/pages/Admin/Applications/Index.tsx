@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Download, Search, Eye, Edit, FileText, Users, Calendar } from 'lucide-react';
 import { useState } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 
 interface Application {
     id: number;
@@ -60,10 +60,13 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
         {
             header: 'Référence',
             accessorKey: 'application_number',
-            cell: ({ row }) => (
-                <div className="font-mono text-sm text-blue-600">
-                    {row.getValue('application_number')}
-                </div>
+            cell: ({ row }: { row: Row<Application> }) => (
+                <a
+                    href={route('admin.applications.show', row.original.id)}
+                    className="font-mono text-sm text-blue-600 hover:underline"
+                >
+                    {row.original.application_number}
+                </a>
             ),
         },
         {
@@ -196,7 +199,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
             <Head title="Gestion des candidatures" />
 
             <div className="py-8">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* En-tête avec statistiques */}
                     <div className="mb-6">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -231,7 +234,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                 </div>
                             </CardContent>
                         </Card>
-                        
+
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center">
@@ -247,7 +250,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                 </div>
                             </CardContent>
                         </Card>
-                        
+
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center">
@@ -263,7 +266,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                 </div>
                             </CardContent>
                         </Card>
-                        
+
                         <Card>
                             <CardContent className="p-4">
                                 <div className="flex items-center">
@@ -304,7 +307,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                         </Button>
                                     </div>
                                 </div>
-                                
+
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700">Édition</label>
                                     <Select
@@ -319,7 +322,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                         ))}
                                     </Select>
                                 </div>
-                                
+
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700">Statut</label>
                                     <Select
@@ -334,7 +337,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                                         ))}
                                     </Select>
                                 </div>
-                                
+
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700">Catégorie</label>
                                     <Select
@@ -360,7 +363,7 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="overflow-x-auto">
+                            <div className="overflow-x-auto w-full">
                                 <DataTable
                                     columns={columns}
                                     data={applications.data}
@@ -378,4 +381,4 @@ export default function ApplicationsIndex({ applications, editions, filters, sta
             </div>
         </AppLayout>
     );
-} 
+}
